@@ -1,0 +1,62 @@
+# To get started with security, check out the documentation:
+# http://symfony.com/doc/current/security.html
+security:
+
+    encoders:
+        AppBundle\Entity\User: bcrypt
+
+
+    # http://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
+    providers:
+        resource:
+            id: "app.manager.user"
+
+        in_memory:
+            memory: ~
+
+    firewalls:
+        # disables authentication for assets and the profiler, adapt it according to your needs
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        oauth_token:
+                pattern:    ^/oauth/v2/token
+                security:   false
+
+        oauth_authorize:
+            pattern:    ^/oauth/v2/auth
+            form_login:
+                 #provider: fos_userbundle
+                 check_path: /oauth/v2/auth/login_check
+                 login_path: /oauth/v2/auth/login
+            anonymous: true
+            # Add your favorite authentication process here
+
+        api:
+            pattern:    ^/api
+            fos_oauth:  true
+            stateless:  true
+            anonymous:  false # can be omitted as its default value
+
+        main:
+            anonymous: ~
+            pattern: ^/
+            form_login:
+                check_path: app_security_login
+                login_path: app_security_login
+            logout:
+                invalidate_session: true
+                path:   app_security_logout
+                target: /
+            # activate different ways to authenticate
+
+            # http://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
+            #http_basic: ~
+
+            # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
+            #form_login: ~
+    access_control:
+                - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+                - { path: ^/, roles: [ IS_AUTHENTICATED_ANONYMOUSLY ] }
+                - { path: ^/api, roles: [ IS_AUTHENTICATED_FULLY ] }

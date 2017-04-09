@@ -1,0 +1,9 @@
+app_homepage:
+    path:     /
+    defaults: { _controller: AppBundle:Default:index }
+
+app_security:
+    resource: "routing/security.yml"
+
+app_oauth_authorize:
+    resource: "routing/api/oauth-authorize.yml"

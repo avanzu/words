@@ -1,0 +1,8 @@
+
+app_oauth_authorize_login:
+    path: /oauth/v2/auth/login
+    defaults:
+        _controller: app.controller.security:loginAction
+
+app_oauth_authorize_check:
+    path: /oauth/v2/auth/login_check
