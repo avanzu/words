@@ -8,6 +8,7 @@
 namespace AppBundle\Entity\Api;
 use FOS\OAuthServerBundle\Entity\Client as BaseClient;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Client
@@ -26,14 +27,10 @@ class Client extends BaseClient
     /**
      * @var string
      * @ORM\Column()
+     * @Assert\NotBlank()
      */
     protected $name;
 
-    public function __construct()
-    {
-        parent::__construct();
-        // your own logic
-    }
 
     /**
      * @return string
@@ -54,7 +51,5 @@ class Client extends BaseClient
 
         return $this;
     }
-
-
 
 }

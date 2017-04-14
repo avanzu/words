@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 class OauthCreateClientCommand extends ContainerAwareCommand
 {
@@ -25,11 +26,12 @@ class OauthCreateClientCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+
+        $io          = new SymfonyStyle($input, $output);
         $container   = $this->getContainer();
-        $oauthServer = $container->get('fos_oauth_server.server');
         $name        = $input->getArgument('name');
         $redirectUri = $input->getArgument('redirectUri');
-        $grantType = $input->getArgument('grantType');
+        $grantType   = $input->getArgument('grantType');
 
         $clientManager = $container->get('fos_oauth_server.client_manager.default');
         $client = $clientManager->createClient();
