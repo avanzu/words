@@ -54,7 +54,7 @@ class ResourceManager
      */
     public function validate($model, $groups=null, $constraints = null)
     {
-        return $this->validator->validate($model,$constraints, $groups);
+        return $this->getValidator()->validate($model,$constraints, $groups);
     }
 
     /**
@@ -76,6 +76,7 @@ class ResourceManager
      */
     public function save($models = [], $flush = true)
     {
+
         if( ! is_array($models) ) {
             $models = [$models];
         }
@@ -118,6 +119,9 @@ class ResourceManager
     {
         $accessor = PropertyAccess::createPropertyAccessor();
         foreach($properties as $propertyName => $property) {
+            if( ! $accessor->isWritable($model, $propertyName) ) {
+                continue;
+            }
             $accessor->setValue($model, $propertyName, $property);
         }
         return $model;
@@ -129,7 +133,7 @@ class ResourceManager
      */
     public function getRepository()
     {
-        return $this->entityManager->getRepository($this->className);
+        return $this->getEntityManager()->getRepository($this->className);
     }
 
     /**
