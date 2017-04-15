@@ -1,0 +1,7 @@
+services:
+    app.subscriber.serializer.hateoas:
+        class: AppBundle\EventListener\HateoasSerializationSubscriber
+        calls:
+            - [setContainer, ["@service_container"]]
+        tags:
+            - { name: "jms_serializer.event_subscriber" }
