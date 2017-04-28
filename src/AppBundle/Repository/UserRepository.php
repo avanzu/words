@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\User;
+use Doctrine\ORM\EntityRepository;
 
 /**
  * UserRepository
@@ -12,6 +13,6 @@ use AppBundle\Entity\User;
  *
  * @method User findOneBy(array $criteria, array $orderBy=null)
  */
-class UserRepository extends \Doctrine\ORM\EntityRepository
+class UserRepository extends EntityRepository
 {
 }

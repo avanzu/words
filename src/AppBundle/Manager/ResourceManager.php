@@ -13,7 +13,9 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-
+/**
+ * Class ResourceManager
+ */
 class ResourceManager
 {
     /**

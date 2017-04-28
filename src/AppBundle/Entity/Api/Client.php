@@ -9,10 +9,12 @@ namespace AppBundle\Entity\Api;
 use FOS\OAuthServerBundle\Entity\Client as BaseClient;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity as AssertUnique;
 
 /**
  * Class Client
  * @ORM\Entity
+ * @AssertUnique({"name"})
  */
 class Client extends BaseClient
 {
@@ -31,6 +33,13 @@ class Client extends BaseClient
      */
     protected $name;
 
+    /**
+     * @var array
+     * @Assert\All({
+     *  @Assert\Regex("#^(authorization_code|token|password|client_credentials|refresh_token|https?://.+|urn:.+)$#")
+     * })
+     */
+    protected $allowedGrantTypes = array();
 
     /**
      * @return string
