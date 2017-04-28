@@ -1,0 +1,10 @@
+services:
+    app.collector:
+        class: AppBundle\Collector\AppCollector
+        arguments:
+            - "%app_name%"
+            - "%app_icon%"
+            - "%kernel.default_locale%"
+            - "%app.resources%"
+        tags:
+            - { name: data_collector, id: app, template: "AppBundle:Collector:app.html.twig" }
