@@ -1,6 +1,7 @@
 imports:
     - { resource: "container/controllers.yml" }
     - { resource: "container/serializer.yml" }
+    - { resource: "container/devtools.yml" }
 
 parameters:
  #   app.model.user.class: AppBundle\Entity\User

@@ -1,0 +1,38 @@
+{% extends '@WebProfiler/Profiler/layout.html.twig' %}
+{% block toolbar %}
+    {% set icon %}
+        <img width="20" height="30" alt="{{ collector.appName }}" src="{{ collector.appIcon }}" />
+        <span class="sf-toolbar-value">{{ collector.version }}</span>
+    {% endset %}
+
+    {% set text %}
+        <div class="sf-toolbar-info-group">
+            <div class="sf-toolbar-info-piece">
+                <b>{{ collector.appName }}</b>
+                <span><a href="http://sylius.org">{{ collector.version }}</a></span>
+            </div>
+            <div class="sf-toolbar-info-piece">
+                <b>Default locale</b>
+
+                <span class="sf-toolbar-status sf-toolbar-status-green">
+                    <abbr title="Current {% if collector.localeCode == collector.requestLocaleCode %}and default {% endif %}locale">
+                        {{ collector.requestLocaleCode|default('Undefined') }}
+                    </abbr>
+                </span>
+            </div>
+            {% for resource, class in collector.appResources %}
+                <div class="sf-toolbar-info-group">
+                    <div class="sf-toolbar-info-piece">
+                        <b>{{ resource }}</b>
+                        <span class="sf-toolbar-status sf-toolbar-status-green">
+                        {{ class }}
+                </span>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endset %}
+
+    {% include '@WebProfiler/Profiler/toolbar_item.html.twig' with {'link': false, additional_classes: 'sf-toolbar-block-right'} %}
+
+{% endblock %}

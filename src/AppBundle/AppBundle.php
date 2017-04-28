@@ -11,7 +11,9 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class AppBundle extends Bundle
 {
-    /** @inheritdoc */
+    /**
+     * {@inheritdoc}
+     */
     public function build(ContainerBuilder $container)
     {
         $container->addCompilerPass(new RelationProviderPass());

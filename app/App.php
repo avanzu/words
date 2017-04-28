@@ -8,6 +8,14 @@
 
 class App
 {
+
+    const VERSION = '0.0.1';
+    const VERSION_ID = 000001;
+    const MAJOR_VERSION = 0;
+    const MINOR_VERSION = 0;
+    const RELEASE_VERSION = 1;
+    const EXTRA_VERSION = '';
+
     /**
      * @var \Symfony\Component\DependencyInjection\ContainerInterface
      */

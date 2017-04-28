@@ -47,8 +47,10 @@ class AppExtension extends Extension
      */
     protected function initializeClasses($config, ContainerBuilder $container)
     {
+        $resourceNames = [];
         foreach($config['resources'] as $key => $settings) {
             $container->setParameter(sprintf('app.resource.%s.class', $key), $settings['model']);
+            $resourceNames[$key] = $settings['model'];
             $definition = new Definition($settings['manager'], [
                $settings['model'],
                new Reference('doctrine.orm.entity_manager'),
@@ -60,6 +62,8 @@ class AppExtension extends Extension
             }
 
             $container->setDefinition(sprintf('app.manager.%s', $key), $definition);
+            $container->setParameter('app.resources', $resourceNames);
+
         }
     }
 
