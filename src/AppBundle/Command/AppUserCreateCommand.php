@@ -10,8 +10,14 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Validator\ConstraintViolation;
 
+/**
+ * Class AppUserCreateCommand
+ */
 class AppUserCreateCommand extends ContainerAwareCommand
 {
+    /**
+     *
+     */
     protected function configure()
     {
         $this
@@ -20,18 +26,23 @@ class AppUserCreateCommand extends ContainerAwareCommand
             ->addArgument('username', InputArgument::REQUIRED, 'The desired username (must be unique)')
             ->addArgument('email', InputArgument::REQUIRED, "The user's email (must be unique)")
             ->addArgument('password', InputArgument::REQUIRED, "The user's password")
-            ->addArgument('roles', InputArgument::OPTIONAL, 'The user roles', ['ROLE_USER'])
-            //->addOption('option', null, InputOption::VALUE_NONE, 'Option description')
+            ->addArgument('roles', InputArgument::OPTIONAL, 'The user roles', 'ROLE_USER')
         ;
     }
 
+    /**
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     *
+     * @return int
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io       = new SymfonyStyle($input, $output);
         $username = $input->getArgument('username');
         $email    = $input->getArgument('email');
         $password = $input->getArgument('password');
-        $roles    = $input->getArgument('roles');
+        $roles    = array_map('trim', explode(',', $input->getArgument('roles')));
         $manager  = $this->getUserManager();
         $user     = $manager
             ->createNew(
@@ -39,7 +50,7 @@ class AppUserCreateCommand extends ContainerAwareCommand
                     'username'      => $username,
                     'email'         => $email,
                     'plainPassword' => $password,
-                    'roles'         => $roles
+                    'roles'         => $roles,
                 ]
             );
 
