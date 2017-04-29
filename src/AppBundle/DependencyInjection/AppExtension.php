@@ -37,6 +37,9 @@ class AppExtension extends Extension
     public function configure(array $configs, ContainerBuilder $container)
     {
         $config = $this->loadConfiguration($configs, $container);
+
+        $container->setParameter('app.email.sender', [$config['email']['address'] => $config['email']['alias']]);
+
         $this->initializeClasses($config, $container);
 
     }
