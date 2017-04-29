@@ -2,9 +2,9 @@ app_homepage:
     path:     /
     defaults: { _controller: AppBundle:Default:index }
 
-app_registration:
-    prefix: /register
-    resource: "routing/registration.yml"
+app_account:
+    prefix: /account
+    resource: "routing/account.yml"
 
 app_security:
     resource: "routing/security.yml"

@@ -6,3 +6,7 @@ services:
     app.controller.registration:
         class: AppBundle\Controller\RegistrationController
         parent: app.controller.user
+
+    app.controller.resetting:
+        class: AppBundle\Controller\ResetController
+        parent: app.controller.user

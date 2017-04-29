@@ -1,0 +1,7 @@
+app_registration:
+    prefix: /register
+    resource: "registration.yml"
+
+app_resetting:
+    prefix: /reset
+    resource: "resetting.yml"

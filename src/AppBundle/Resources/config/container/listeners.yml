@@ -3,3 +3,10 @@ services:
         class: AppBundle\EventListener\KernelControllerSubscriber
         tags:
             - { name: kernel.event_subscriber }
+
+    app.notification.subscriber:
+        class: AppBundle\EventListener\NotificationSubscriber
+        arguments:
+            - "@app.manager.email"
+        tags:
+            - { name: kernel.event_subscriber }
