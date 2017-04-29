@@ -37,6 +37,9 @@ class AppExtension extends Extension
     public function configure(array $configs, ContainerBuilder $container)
     {
         $config = $this->loadConfiguration($configs, $container);
+
+        $container->setParameter('app.email.sender', [$config['email']['address'] => $config['email']['alias']]);
+
         $this->initializeClasses($config, $container);
 
     }
@@ -47,24 +50,58 @@ class AppExtension extends Extension
      */
     protected function initializeClasses($config, ContainerBuilder $container)
     {
-        $resourceNames = [];
+        $resourceNames = $container->hasParameter('app.resources') ? $container->getParameter('app.resources') : [];
+
         foreach($config['resources'] as $key => $settings) {
+
             $container->setParameter(sprintf('app.resource.%s.class', $key), $settings['model']);
+
+            $this->addManagerDefinition($key, $settings, $container);
+            $this->addControllerDefinition($key, $settings, $container);
+
             $resourceNames[$key] = $settings['model'];
-            $definition = new Definition($settings['manager'], [
-               $settings['model'],
-               new Reference('doctrine.orm.entity_manager'),
-               new Reference('validator')
-            ]);
-
-            if( is_a($settings['manager'], ContainerAwareInterface::class, true) ) {
-                $definition->addMethodCall('setContainer', [new Reference('service_container')]);
-            }
-
-            $container->setDefinition(sprintf('app.manager.%s', $key), $definition);
-            $container->setParameter('app.resources', $resourceNames);
-
         }
+
+        $container->setParameter('app.resources', $resourceNames);
+
+    }
+
+    /**
+     * @param                  $key
+     * @param                  $settings
+     * @param ContainerBuilder $container
+     */
+    protected function addControllerDefinition($key, $settings, ContainerBuilder $container)
+    {
+        $definition = new Definition($settings['controller'], [
+           new Reference(sprintf('app.manager.%s', $key))
+        ]);
+
+        if( is_a($settings['controller'], ContainerAwareInterface::class, true) ) {
+            $definition->addMethodCall('setContainer', [new Reference('service_container')]);
+        }
+
+        $container->setDefinition(sprintf('app.controller.%s', $key), $definition);
+    }
+
+    /**
+     * @param                  $key
+     * @param                  $settings
+     * @param ContainerBuilder $container
+     */
+    protected function addManagerDefinition($key, $settings, ContainerBuilder $container)
+    {
+        $definition          = new Definition($settings['manager'], [
+            $settings['model'],
+            new Reference('doctrine.orm.entity_manager'),
+            new Reference('validator')
+        ]);
+
+        if( is_a($settings['manager'], ContainerAwareInterface::class, true) ) {
+            $definition->addMethodCall('setContainer', [new Reference('service_container')]);
+        }
+
+        $container->setDefinition(sprintf('app.manager.%s', $key), $definition);
     }
 
     /**

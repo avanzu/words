@@ -8,6 +8,7 @@
 namespace AppBundle\DependencyInjection;
 
 
+use AppBundle\Controller\ResourceController;
 use AppBundle\Manager\ResourceManager;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -27,6 +28,14 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
+                ->arrayNode('email')
+                    ->children()
+                        ->scalarNode('address')
+                        ->end()
+                        ->scalarNode('alias')
+                        ->end()
+                    ->end()
+                ->end()
                 ->arrayNode('resources')
                 ->useAttributeAsKey('name')
                 ->prototype('array')
@@ -34,6 +43,9 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('model')->end()
                         ->scalarNode('manager')
                             ->defaultValue(ResourceManager::class)
+                        ->end()
+                        ->scalarNode('controller')
+                            ->defaultValue(ResourceController::class)
                         ->end()
                     ->end()
             ->end()
