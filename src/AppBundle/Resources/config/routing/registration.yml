@@ -3,3 +3,9 @@ app_registration_index:
     defaults:
         _controller: app.controller.registration:registerAction
         _template: "@App/Registration/register.html.twig"
+
+app_registration_activate:
+    path: /activate/{token}
+    defaults:
+        _controller: app.controller.registration:activateAction
+        _template: "@App/Registration/activate.html.twig"

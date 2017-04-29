@@ -104,6 +104,9 @@ fos_rest:
             json: fos_rest.decoder.jsontoform
 
 app:
+    email:
+        address: noreply@restfully.org
+        alias: RESTFully
     resources:
         user:
             model: AppBundle\Entity\User
@@ -116,3 +119,4 @@ app:
             model: AppBundle\Entity\Api\AccessToken
         api.refresh_token:
             model: AppBundle\Entity\Api\RefreshToken
+

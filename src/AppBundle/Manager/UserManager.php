@@ -9,7 +9,12 @@ namespace AppBundle\Manager;
 
 
 use AppBundle\Entity\User;
+use AppBundle\Event\UserEvent;
+use AppBundle\Event\UserEvents;
 use AppBundle\Repository\UserRepository;
+use Components\Exception\ActivationFailedException;
+use Components\Exception\RegistrationFailedException;
+use Components\Exception\ResetAccountException;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
@@ -28,20 +33,12 @@ class UserManager extends ResourceManager implements UserProviderInterface, Cont
 
     const INTENT_RESET    = 'reset';
 
+    const INTENT_ACTIVATE = 'activate';
+
     /**
      * @var ContainerInterface
      */
     protected $container;
-
-    /**
-     * { @inheritdoc }
-     */
-    protected function preProcess($model, $intent)
-    {
-        if( static::INTENT_REGISTER === $intent) {
-            $this->encodePassword($model);
-        }
-    }
 
 
     /**
@@ -61,6 +58,115 @@ class UserManager extends ResourceManager implements UserProviderInterface, Cont
         $user = $this->getRepository()->findOneBy(['username' => $username]);
         if( ! $user ) throw new UsernameNotFoundException();
         return $user;
+    }
+
+    /**
+     * @param $criteria
+     *
+     * @return User|false
+     */
+    public function loadUserByCriteria($criteria)
+    {
+        return $this->getRepository()->findUserByUsernameOrEmail($criteria);
+    }
+
+    /**
+     * @param $token
+     *
+     * @return User
+     */
+    public function loadUserByToken($token)
+    {
+        return $this->getRepository()->findOneBy(['token' => $token ]);
+    }
+
+    /**
+     * @param User $user
+     * @throws RegistrationFailedException
+     */
+    public function registerUser(User $user)
+    {
+        $this->encodePassword($user);
+        $user->setToken(uniqid(static::INTENT_ACTIVATE));
+        $this->getEntityManager()->beginTransaction();
+        try {
+
+            $this->save($user, true, static::INTENT_ACTIVATE);
+            $this->dispatch(UserEvents::USER_REGISTER_DONE, new UserEvent($user, UserManager::INTENT_REGISTER));
+            $this->getEntityManager()->commit();
+
+        } catch(\Exception $e) {
+            $this->getEntityManager()->rollback();
+            throw new RegistrationFailedException('Could not create user account.', 0, $e);
+        }
+    }
+
+    /**
+     * @param User $user
+     *
+     * @throws ActivationFailedException
+     */
+    public function activateUser(User $user)
+    {
+        $user->setToken(null)->setIsActive(true);
+        $this->getEntityManager()->beginTransaction();
+
+        try {
+            $this->save($user, true, static::INTENT_ACTIVATE);
+            $this->dispatch(UserEvents::USER_ACTIVATE_DONE, new UserEvent($user, UserManager::INTENT_ACTIVATE));
+            $this->getEntityManager()->commit();
+
+        } catch(\Exception $e) {
+
+            $this->getEntityManager()->rollback();
+            throw new ActivationFailedException('Could not activate user account.', 0, $e);
+        }
+    }
+
+    /**
+     * @param User $user
+     *
+     * @throws ResetAccountException
+     */
+    public function enableReset(User $user)
+    {
+        $user->setToken(uniqid(static::INTENT_RESET));
+        $this->getEntityManager()->beginTransaction();
+
+        try {
+            $this->save($user, true, static::INTENT_RESET);
+            $this->dispatch(UserEvents::USER_RESET, new UserEvent($user, UserManager::INTENT_RESET));
+
+            $this->getEntityManager()->commit();
+
+        } catch(\Exception $e) {
+            $this->getEntityManager()->rollback();
+            throw new ResetAccountException('Could not initialize account reset.', 0, $e);
+        }
+    }
+
+
+    /**
+     * @param User $user
+     *
+     * @throws ResetAccountException
+     */
+    public function resetUser(User $user)
+    {
+        $this->encodePassword($user);
+        $user->setToken(null);
+        $this->getEntityManager()->beginTransaction();
+
+        try {
+            $this->save($user, true, static::INTENT_RESET);
+            $this->dispatch(UserEvents::USER_RESET_DONE, new UserEvent($user, UserManager::INTENT_RESET));
+
+            $this->getEntityManager()->commit();
+
+        } catch(\Exception $e) {
+            $this->getEntityManager()->rollback();
+            throw new ResetAccountException('Could reset account.', 0, $e);
+        }
     }
 
     /**
@@ -151,4 +257,12 @@ class UserManager extends ResourceManager implements UserProviderInterface, Cont
         return $this->container;
     }
 
+    /**
+     * @param $eventName
+     * @param $event
+     */
+    protected function dispatch($eventName, $event)
+    {
+        $this->getContainer()->get('event_dispatcher')->dispatch($eventName, $event);
+    }
 }
