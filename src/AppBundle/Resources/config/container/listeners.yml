@@ -1,0 +1,5 @@
+services:
+    app.kernel.controller.subscriber:
+        class: AppBundle\EventListener\KernelControllerSubscriber
+        tags:
+            - { name: kernel.event_subscriber }

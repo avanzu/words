@@ -1,0 +1,5 @@
+app_registration_index:
+    path: /
+    defaults:
+        _controller: app.controller.registration:registerAction
+        _template: "@App/Registration/register.html.twig"

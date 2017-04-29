@@ -18,6 +18,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ResourceManager
 {
+    const INTENT_CREATE = 'create';
+    const INTENT_UPDATE = 'update';
+    const INTENT_REMOVE = 'delete';
+
     /**
      * @var string
      */
@@ -74,9 +78,10 @@ class ResourceManager
 
     /**
      * @param array|object $models
-     * @param bool  $flush
+     * @param bool         $flush
+     * @param null         $intent
      */
-    public function save($models = [], $flush = true)
+    public function save($models = [], $flush = true, $intent = null)
     {
 
         if( ! is_array($models) ) {
@@ -85,7 +90,9 @@ class ResourceManager
 
         $em = $this->getEntityManager();
         foreach($models as $model) {
+            $this->preProcess($model, $intent);
             $em->persist($model);
+            $this->postProcess($model, $intent);
         }
 
         if( $flush ) $em->flush();
@@ -94,9 +101,10 @@ class ResourceManager
 
     /**
      * @param array|object $models
-     * @param bool  $flush
+     * @param bool         $flush
+     * @param null         $intent
      */
-    public function remove($models = [], $flush = true)
+    public function remove($models = [], $flush = true, $intent = null)
     {
         if( ! is_array($models) ) {
             $models = [$models];
@@ -110,6 +118,20 @@ class ResourceManager
         if( $flush ) $em->flush();
     }
 
+
+    /**
+     * @param $model
+     * @param $intent
+     */
+    protected function preProcess($model, $intent)
+    {}
+
+    /**
+     * @param $model
+     * @param $intent
+     */
+    protected function postProcess($model, $intent)
+    {}
 
     /**
      * @param       $model
