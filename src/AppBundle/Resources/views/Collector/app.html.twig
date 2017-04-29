@@ -20,16 +20,19 @@
                     </abbr>
                 </span>
             </div>
+            <div class="sf-toolbar-info-group">
+                <b>Resources</b>
             {% for resource, class in collector.appResources %}
-                <div class="sf-toolbar-info-group">
+
                     <div class="sf-toolbar-info-piece">
                         <b>{{ resource }}</b>
-                        <span class="sf-toolbar-status sf-toolbar-status-green">
+                        <span>
                         {{ class }}
-                </span>
+                        </span>
                     </div>
-                </div>
+
             {% endfor %}
+            </div>
         </div>
     {% endset %}
 

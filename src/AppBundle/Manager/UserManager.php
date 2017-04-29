@@ -24,10 +24,25 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 class UserManager extends ResourceManager implements UserProviderInterface, ContainerAwareInterface
 {
 
+    const INTENT_REGISTER = 'register';
+
+    const INTENT_RESET    = 'reset';
+
     /**
      * @var ContainerInterface
      */
     protected $container;
+
+    /**
+     * { @inheritdoc }
+     */
+    protected function preProcess($model, $intent)
+    {
+        if( static::INTENT_REGISTER === $intent) {
+            $this->encodePassword($model);
+        }
+    }
+
 
     /**
      * Loads the user for the given username.
