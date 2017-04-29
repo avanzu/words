@@ -28,6 +28,14 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
+                ->arrayNode('email')
+                    ->children()
+                        ->scalarNode('address')
+                        ->end()
+                        ->scalarNode('alias')
+                        ->end()
+                    ->end()
+                ->end()
                 ->arrayNode('resources')
                 ->useAttributeAsKey('name')
                 ->prototype('array')
