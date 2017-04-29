@@ -1,0 +1,11 @@
+app_reset_index:
+    path: /
+    defaults:
+        _controller: app.controller.resetting:resetAction
+        _template: "@App/Resetting/index.html.twig"
+
+app_reset_change_password:
+    path: /change-password/{token}
+    defaults:
+        _controller: app.controller.resetting:changePasswordAction
+        _template: "@App/Resetting/change-password.html.twig"

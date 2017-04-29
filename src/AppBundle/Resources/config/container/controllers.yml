@@ -2,3 +2,11 @@ services:
     app.controller.security:
         class: AppBundle\Controller\SecurityController
         arguments: ["@security.authentication_utils", "@templating"]
+
+    app.controller.registration:
+        class: AppBundle\Controller\RegistrationController
+        parent: app.controller.user
+
+    app.controller.resetting:
+        class: AppBundle\Controller\ResetController
+        parent: app.controller.user

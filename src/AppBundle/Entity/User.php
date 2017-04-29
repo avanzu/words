@@ -55,7 +55,7 @@ class User implements AdvancedUserInterface, \Serializable
     /**
      * @ORM\Column(name="is_active", type="boolean")
      */
-    private $isActive;
+    private $isActive = false;
 
     /**
      * @var string
@@ -71,14 +71,17 @@ class User implements AdvancedUserInterface, \Serializable
     private $roles;
 
     /**
+     * @var string
+     * @ORM\Column(name="token", type="string", nullable=true)
+     */
+    private $token;
+
+    /**
      * User constructor.
      */
     public function __construct()
     {
-        $this->isActive = true;
         $this->roles = ['ROLE_USER'];
-        // may not be needed, see section on salt below
-        // $this->salt = md5(uniqid(null, true));
     }
 
     /**
@@ -294,5 +297,26 @@ class User implements AdvancedUserInterface, \Serializable
     {
         return $this->isActive;
     }
+
+    /**
+     * @return string
+     */
+    public function getToken()
+    {
+        return $this->token;
+    }
+
+    /**
+     * @param string $token
+     *
+     * @return $this
+     */
+    public function setToken($token)
+    {
+        $this->token = $token;
+
+        return $this;
+    }
+
 }
 

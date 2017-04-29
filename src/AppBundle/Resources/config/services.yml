@@ -2,16 +2,18 @@ imports:
     - { resource: "container/controllers.yml" }
     - { resource: "container/serializer.yml" }
     - { resource: "container/devtools.yml" }
+    - { resource: "container/listeners.yml" }
+    - { resource: "container/forms.yml" }
 
 parameters:
  #   app.model.user.class: AppBundle\Entity\User
 
 services:
-#    app.manager.user:
-#        class: AppBundle\Manager\ResourceManager
-#        arguments: ["@doctrine.orm.entity_manager", "%app.model.user.class%"]
-
-
-#    app.example:
-#        class: AppBundle\Example
-#        arguments: ["@service_id", "plain_value", "%parameter%"]
+    app.manager.email:
+        class: AppBundle\Manager\EMailManager
+        lazy: true
+        arguments:
+            - "@twig"
+            - "@mailer"
+            - "%app.email.sender%"
+            - "%app_name%"

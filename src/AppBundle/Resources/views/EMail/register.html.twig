@@ -1,0 +1,24 @@
+{% block subject %}
+    {{ '[%appName%] Hi, %username%! Please activate your account. '|trans({"%appName%" : appName, "%username%" : user.username }) }}
+{% endblock %}
+
+{% block body_html %}
+    <strong>{{ 'Welcome Aboard, %username%'|trans({"%username%" : user.username}) }}</strong>
+    <p>{{ 'Your registration process at %appName% is almost complete.'|trans({"%appName%" : appName}) }}</p>
+    <p>{{ 'Please use the following link to activate your account:'|trans }}</p>
+    {% set _url = url('app_registration_activate', {"token" : user.token}) %}
+    <p><a href="{{ _url }}">{{ _url }}</a></p>
+
+{% endblock %}
+
+{% block body_plain %}
+
+    {{ 'Welcome Aboard, %username%'|trans({"%username%" : user.username}) }}
+
+    {{ 'Your registration process at %appName% is almost complete.'|trans({"%appName%" : appName}) }}
+
+    {{ 'Please use the following link to activate your account:'|trans }}
+
+    {{ url('app_registration_activate', {"token" : user.token}) }}
+
+{% endblock %}

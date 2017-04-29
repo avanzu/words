@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\User;
+use Doctrine\ORM\EntityRepository;
 
 /**
  * UserRepository
@@ -12,6 +13,29 @@ use AppBundle\Entity\User;
  *
  * @method User findOneBy(array $criteria, array $orderBy=null)
  */
-class UserRepository extends \Doctrine\ORM\EntityRepository
+class UserRepository extends EntityRepository
 {
+
+    /**
+     * @param $criteria
+     *
+     * @return User|false
+     */
+    public function findUserByUsernameOrEmail($criteria)
+    {
+        $builder = $this->createQueryBuilder('user');
+        $expr    = $builder->expr();
+        $orX     = $expr->orX();
+        $orX->add($expr->eq('user.username', ':criteria'))
+            ->add($expr->eq('user.email', ':criteria'));
+
+        $result = $builder
+            ->where($orX)
+            ->setParameter('criteria', $criteria)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+
+        return current($result);
+    }
 }
