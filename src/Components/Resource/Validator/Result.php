@@ -19,4 +19,9 @@ interface Result
      * @return mixed
      */
     public function getViolations();
+
+    /**
+     * @return array
+     */
+    public function getMessages();
 }

@@ -8,7 +8,7 @@
 namespace AppBundle\Manager;
 
 
-use AppBundle\Entity\User;
+use Components\Model\User;
 use AppBundle\Event\UserEvent;
 use AppBundle\Event\UserEvents;
 use AppBundle\Repository\UserRepository;
@@ -86,7 +86,7 @@ class UserManager extends ResourceManager implements UserProviderInterface, Cont
      */
     public function registerUser(User $user)
     {
-        $this->encodePassword($user);
+        $this->updatePassword($user);
         $user->setToken(uniqid(static::INTENT_ACTIVATE));
         $this->getEntityManager()->beginTransaction();
         try {
@@ -153,7 +153,7 @@ class UserManager extends ResourceManager implements UserProviderInterface, Cont
      */
     public function resetUser(User $user)
     {
-        $this->encodePassword($user);
+        $this->updatePassword($user);
         $user->setToken(null);
         $this->getEntityManager()->beginTransaction();
 
@@ -202,7 +202,7 @@ class UserManager extends ResourceManager implements UserProviderInterface, Cont
     public function createNew($properties = [])
     {
         $model = parent::createNew($properties);
-        return $this->encodePassword($model);
+        return $this->updatePassword($model);
     }
 
     /**
@@ -210,12 +210,23 @@ class UserManager extends ResourceManager implements UserProviderInterface, Cont
      *
      * @return User
      */
-    protected function encodePassword(User $model)
+    protected function updatePassword(User $model)
     {
         if( ! $model->getPlainPassword() ) return $model;
         $encoded = $this->getEncoder()->encodePassword($model, $model->getPlainPassword());
         $model->setPassword($encoded);
         return $model;
+    }
+
+    /**
+     * @param User $model
+     * @param      $plainPassword
+     *
+     * @return string
+     */
+    public function encodePassword(User $model, $plainPassword)
+    {
+        return $this->getEncoder()->encodePassword($model, $plainPassword);
     }
 
     /**

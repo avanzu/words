@@ -20,6 +20,7 @@ class UserLookupType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        /*
         $builder
             ->add(
                 $builder->create('user', TextType::class, [
@@ -30,15 +31,27 @@ class UserLookupType extends AbstractType
                 ])
                 ->addModelTransformer(new UserCriteriaTransformer($options['manager']))
             );
-            ;
+        */
+            $builder->addModelTransformer(new UserCriteriaTransformer($options['manager']));
+
+
+    }
+
+    public function getParent()
+    {
+        return TextType::class;
     }
 
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
+
+               'label'       => 'label.username_or_email',
+               'required'    => true,
+
             // 'data_class' => User::class,
-            'mapped'     => false
+            //'mapped'     => false
         ]);
 
         $resolver->setDefined('manager')->setRequired('manager');

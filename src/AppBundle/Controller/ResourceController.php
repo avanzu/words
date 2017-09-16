@@ -9,6 +9,8 @@ namespace AppBundle\Controller;
 
 
 use AppBundle\Manager\ResourceManager;
+use Components\Infrastructure\CommandRequest;
+use Components\Infrastructure\ContinueCommandResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
@@ -132,6 +134,23 @@ class ResourceController extends Controller
     protected function transChoice($token, $num, $args, $catalog = 'messages')
     {
         return $this->get('translator')->transChoice($token, $num, $args, $catalog);
+    }
+
+    /**
+     * @param Form                   $form
+     * @param CommandRequest|Request $request
+     * @param CommandRequest         $command
+     *
+     * @return \Components\Infrastructure\CommandResponse
+     */
+    protected function getInteractionResponse(Form $form, Request $request, CommandRequest $command)
+    {
+        $form->handleRequest($request);
+        if( $form->isSubmitted() ) {
+            return $this->get('app.command_bus')->execute($form->getData());
+        }
+
+        return new ContinueCommandResponse();
     }
 
 }

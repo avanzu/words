@@ -1,0 +1,13 @@
+Components\Interaction\Users\CreateUser\CreateUserRequest:
+    properties:
+        dao:
+            - Collection:
+                username:
+                    - NotBlank: ~
+                plainPassword:
+                    - NotBlank: ~
+                email:
+                    - Email: ~
+                    - NotBlank: ~
+                roles:
+                    - NotBlank: ~

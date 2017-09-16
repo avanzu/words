@@ -1,10 +1,44 @@
 services:
+    app.notifier.default:
+        class: AppBundle\Infrastructure\Events\EventDispatcherNotifier
+        arguments:
+            - "@event_dispatcher"
+
     app.validator:
         class: AppBundle\Validator\Validator
         arguments:
             - "@validator"
+            - "@translator"
 
     app.repository.factory:
         class: AppBundle\Repository\DoctrineFactory
         arguments:
             - "@doctrine.orm.entity_manager"
+
+    app.command.resolver:
+        class: AppBundle\Infrastructure\ResourceHandlerResolver
+        arguments:
+            - "@service_container"
+
+    app.command_bus.simple:
+        class: Components\Infrastructure\SimpleCommandBus
+        arguments:
+            - "@app.command.resolver"
+
+    app.command_bus.validating:
+        class: Components\Infrastructure\ValidatingCommandBus
+        arguments:
+            - "@app.command_bus.simple"
+            - "@app.validator"
+
+    app.command_bus.logging:
+        class: AppBundle\Infrastructure\LoggingCommandBus
+        arguments:
+            - "@app.command_bus.validating"
+            - "@logger"
+
+    app.command_bus:
+        alias: app.command_bus.logging
+
+    app.notifier:
+        alias: app.notifier.default
