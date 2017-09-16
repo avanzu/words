@@ -7,6 +7,7 @@
 
 namespace AppBundle\Validator;
 use Components\Resource\Validator as Component;
+use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class Validator implements Component\Validator
@@ -18,12 +19,19 @@ class Validator implements Component\Validator
     protected $validator;
 
     /**
+     * @var TranslatorInterface
+     */
+    protected $translator;
+
+    /**
      * Validator constructor.
      *
-     * @param ValidatorInterface $validator
+     * @param ValidatorInterface  $validator
+     * @param TranslatorInterface $translator
      */
-    public function __construct(ValidatorInterface $validator) {
-        $this->validator = $validator;
+    public function __construct(ValidatorInterface $validator, TranslatorInterface $translator) {
+        $this->validator  = $validator;
+        $this->translator = $translator;
     }
 
     /**
@@ -35,8 +43,7 @@ class Validator implements Component\Validator
      */
     public function validate($subject, $constraints= null, $groups = null)
     {
-        return new Result(
-            $this->validator->validate($subject, $constraints, $groups)
-        );
+        $violations = $this->validator->validate($subject, $constraints, $groups);
+        return new Result($violations, $this->translator);
     }
 }

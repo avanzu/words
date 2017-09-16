@@ -197,4 +197,27 @@ class ResourceManager implements Manager
         return $this->entityManager;
     }
 
+    /**
+     *
+     */
+    public function startTransaction()
+    {
+        $this->getEntityManager()->beginTransaction();
+    }
+
+    /**
+     *
+     */
+    public function cancelTransaction()
+    {
+        $this->getEntityManager()->rollback();
+    }
+
+    /**
+     *
+     */
+    public function commitTransaction()
+    {
+        $this->getEntityManager()->commit();
+    }
 }

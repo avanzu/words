@@ -1,0 +1,8 @@
+user:
+    entity:
+        not_found: Unable to find a user with the given criteria.
+    username:
+        too_short: The username {{ value }} is too short. It should be at least {{ limit }} characters long.
+        taken: The username {{ value }} is already taken.
+    email:
+        taken: The email adress {{ value }} is already taken.

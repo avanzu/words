@@ -3,6 +3,10 @@
 namespace AppBundle\Command;
 
 use AppBundle\Manager\UserManager;
+use Components\Infrastructure\ErrorCommandResponse;
+use Components\Infrastructure\ValidationFailedResponse;
+use Components\Interaction\Resource\CreateResource\CreateResourceRequest;
+use Components\Interaction\Users\CreateUser\CreateUserRequest;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -43,6 +47,33 @@ class AppUserCreateCommand extends ContainerAwareCommand
         $email    = $input->getArgument('email');
         $password = $input->getArgument('password');
         $roles    = array_map('trim', explode(',', $input->getArgument('roles')));
+
+
+        $request = new CreateUserRequest([
+            'username'      => $username,
+            'email'         => $email,
+            'plainPassword' => $password,
+            'roles'         => $roles,
+        ]);
+
+        try {
+            $response = $this->getContainer()->get('app.command_bus')->execute($request);
+            $io->success(sprintf('A new User [%s] was created.', $response->getResource()));
+        }
+        catch(ValidationFailedResponse $reason){
+            $io->error(sprintf('[%d] The user could not be saved due to validation errors.', $reason->getCode()));
+            foreach($reason->getViolationMessages() as $property => $messages) {
+                $io->section($property);
+                array_map(function($message) use ($io){ $io->writeln($message); }, $messages);
+            }
+        }
+        catch(ErrorCommandResponse $reason) {
+            $io->error(sprintf('[%d] %s.', $reason->getCode(), $reason->getResponseText()));
+        }
+
+
+
+        /*
         $manager  = $this->getUserManager();
         $user     = $manager
             ->createNew(
@@ -67,7 +98,9 @@ class AppUserCreateCommand extends ContainerAwareCommand
             return -1;
         }
 
-        $io->success(sprintf("A new user [%s] was created.", $user->getUsername()));
+        */
+
+        // $io->success(sprintf("A new user [%s] was created.", $user->getUsername()));
     }
 
     /**
