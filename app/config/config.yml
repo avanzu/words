@@ -16,7 +16,11 @@ framework:
         strict_requirements: ~
     form: ~
     csrf_protection: ~
-    validation: { enable_annotations: true }
+    validation:
+        enable_annotations: true
+#        mapping:
+#            paths:
+#                - "@AppBundle/Resources/config/validation"
     #serializer: { enable_annotations: true }
     templating:
         engines: ['twig']
@@ -37,6 +41,8 @@ framework:
 twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
+    form_themes:
+        - "bootstrap_3_layout.html.twig"
 
 # Doctrine Configuration
 doctrine:
@@ -59,6 +65,10 @@ doctrine:
         auto_generate_proxy_classes: '%kernel.debug%'
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
+        default_repository_class: AppBundle\Repository\ResourceRepository
+        mappings:
+            AppBundle:
+                type: yml
 
 
 # Swiftmailer Configuration

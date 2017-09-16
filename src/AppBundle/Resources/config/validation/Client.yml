@@ -1,0 +1,11 @@
+AppBundle\Entity\Api\Client:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: { fields: name, message: client.name.taken }
+    properties:
+        name:
+            - NotBlank: { message: client.name.taken }
+        allowedGrantTypes:
+            - All:
+                - Regex:
+                    pattern: "#^(authorization_code|token|password|client_credentials|refresh_token|https?://.+|urn:.+)$#"
+                    message: client.grant_type.invalid

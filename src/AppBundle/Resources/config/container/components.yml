@@ -1,0 +1,10 @@
+services:
+    app.validator:
+        class: AppBundle\Validator\Validator
+        arguments:
+            - "@validator"
+
+    app.repository.factory:
+        class: AppBundle\Repository\DoctrineFactory
+        arguments:
+            - "@doctrine.orm.entity_manager"

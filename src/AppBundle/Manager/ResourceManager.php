@@ -8,6 +8,12 @@
 namespace AppBundle\Manager;
 
 
+use AppBundle\Repository\ResourceRepository;
+use Components\Resource\Manager;
+use Components\Resource\Repository\Factory as RepositoryFactory;
+use Components\Resource\Repository\Repository;
+use Components\Resource\Validator\Result;
+use Components\Resource\Validator\Validator;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -16,7 +22,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 /**
  * Class ResourceManager
  */
-class ResourceManager
+class ResourceManager implements Manager
 {
     const INTENT_CREATE = 'create';
     const INTENT_UPDATE = 'update';
@@ -33,6 +39,11 @@ class ResourceManager
     protected $entityManager;
 
     /**
+     * @var RepositoryFactory
+     */
+    protected $repositoryFactory;
+
+    /**
      * @var ValidatorInterface
      */
     protected $validator;
@@ -41,14 +52,16 @@ class ResourceManager
      * ResourceManager constructor.
      *
      * @param string             $className
+     * @param RepositoryFactory  $factory
      * @param EntityManager      $entityManager
-     * @param ValidatorInterface $validator
+     * @param Validator $validator
      */
-    public function __construct($className, EntityManager $entityManager, ValidatorInterface $validator)
+    public function __construct($className, RepositoryFactory $factory, Validator $validator, EntityManager $entityManager)
     {
-        $this->className     = $className;
-        $this->entityManager = $entityManager;
-        $this->validator     = $validator;
+        $this->className         = $className;
+        $this->entityManager     = $entityManager;
+        $this->validator         = $validator;
+        $this->repositoryFactory = $factory;
     }
 
     /**
@@ -56,7 +69,7 @@ class ResourceManager
      * @param null $groups
      * @param null $constraints
      *
-     * @return \Symfony\Component\Validator\ConstraintViolationListInterface
+     * @return Result
      */
     public function validate($model, $groups=null, $constraints = null)
     {
@@ -70,7 +83,7 @@ class ResourceManager
      */
     public function createNew($properties = [])
     {
-        $class = $this->getRepository()->getClassName();
+        $class = $this->getClassName();
         $model = new $class;
 
         return $this->initialize($model, $properties);
@@ -153,15 +166,15 @@ class ResourceManager
 
 
     /**
-     * @return EntityRepository
+     * @return ResourceRepository|Repository
      */
     public function getRepository()
     {
-        return $this->getEntityManager()->getRepository($this->className);
+        return $this->repositoryFactory->getRepository($this->className);
     }
 
     /**
-     * @return ValidatorInterface
+     * @return Validator
      */
     public function getValidator()
     {
