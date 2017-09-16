@@ -42,7 +42,10 @@ class AppExtension extends Extension
 
         $this->initializeClasses($config, $container);
 
+
     }
+
+
 
     /**
      * @param                  $config
@@ -93,8 +96,9 @@ class AppExtension extends Extension
     {
         $definition          = new Definition($settings['manager'], [
             $settings['model'],
+            new Reference('app.repository.factory'),
+            new Reference('app.validator'),
             new Reference('doctrine.orm.entity_manager'),
-            new Reference('validator')
         ]);
 
         if( is_a($settings['manager'], ContainerAwareInterface::class, true) ) {

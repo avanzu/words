@@ -12,6 +12,11 @@ use AppBundle\Manager\UserManager;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
+/**
+ * Class UserCriteriaTransformer
+ *
+ * Transforms the given username or email value to the corresponding user
+ */
 class UserCriteriaTransformer implements DataTransformerInterface
 {
 
@@ -25,7 +30,9 @@ class UserCriteriaTransformer implements DataTransformerInterface
      *
      * @param UserManager $userManager
      */
-    public function __construct(UserManager $userManager) { $this->userManager = $userManager; }
+    public function __construct(UserManager $userManager) {
+        $this->userManager = $userManager;
+    }
 
 
     /**

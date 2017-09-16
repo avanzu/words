@@ -1,0 +1,13 @@
+AppBundle\Entity\User:
+    constraints:
+         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: { fields: email, message: user.email.taken }
+         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: { fields: username, message: user.username.taken }
+    properties:
+        username:
+            - Length: { min: 5, minMessage: user.username.too_short }
+            - NotBlank: { message: user.usename.not_blank }
+        email:
+            - NotBlank: { message: user.email.not_blank }
+            - Email: { message: user.email.invalid }
+        plainPassword:
+            - NotBlank: { message: user.password.not_blank, groups: ["registration"] }
