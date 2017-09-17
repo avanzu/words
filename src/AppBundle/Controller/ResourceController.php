@@ -17,6 +17,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * Class ResourceController
+ */
 class ResourceController extends Controller
 {
 
@@ -151,12 +154,23 @@ class ResourceController extends Controller
         if( ! $form->isSubmitted() ) {
             return new ContinueCommandResponse();
         }
+
+        return $this->executeCommand($form->getData());
+
+    }
+
+    /**
+     * @param CommandRequest $request
+     *
+     * @return CommandResponse|ErrorCommandResponse|\Exception
+     */
+    protected function executeCommand(CommandRequest $request)
+    {
         try {
-            return $this->get('app.command_bus')->execute($form->getData());
+            return $this->get('app.command_bus')->execute($request);
         }  catch(ErrorCommandResponse $error) {
             return $error;
         }
-
     }
 
 }
