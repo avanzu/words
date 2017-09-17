@@ -12,7 +12,7 @@ use AppBundle\Manager\UserManager;
 use AppBundle\Traits\AutoLogin;
 use AppBundle\Traits\TemplateAware as TemplateTrait;
 use Components\Infrastructure\Response\ContinueCommandResponse;
-use Components\Interaction\Users\ResetPassword\ChangePasswordRequest;
+use Components\Interaction\Users\ChangePassword\ChangePasswordRequest;
 use Components\Interaction\Users\ResetPassword\ResetPasswordRequest;
 use Components\Interaction\Users\ResetPassword\ResetPasswordResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
