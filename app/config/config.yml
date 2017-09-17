@@ -113,6 +113,16 @@ fos_rest:
         decoders:
             json: fos_rest.decoder.jsontoform
 
+jms_serializer:
+    metadata:
+        directories:
+            data-access:
+                namespace_prefix: "Components\\DataAccess"
+                path: "@AppBundle/Resources/config/serializer/components/data-access"
+            interactions:
+                namespace_prefix: "Components\\Interaction"
+                path: "@AppBundle/Resources/config/serializer/components/interaction"
+
 app:
     email:
         address: noreply@restfully.org

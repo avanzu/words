@@ -15,6 +15,7 @@ use JMS\Serializer\EventDispatcher\ObjectEvent;
 use JMS\Serializer\EventDispatcher\PreSerializeEvent;
 use JMS\Serializer\GenericSerializationVisitor;
 use JMS\Serializer\SerializationContext;
+use JMS\Serializer\XmlSerializationVisitor;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -84,7 +85,7 @@ class HateoasSerializationSubscriber implements EventSubscriberInterface, Contai
         /** @var SerializationContext $context */
         $context = $event->getContext();
         $object  = $event->getObject();
-        /** @var GenericSerializationVisitor $visitor */
+        /** @var GenericSerializationVisitor|XmlSerializationVisitor $visitor */
         $visitor = $event->getVisitor();
         $links   = [];
         foreach ($this->getProvidersFor($object) as $provider) {
