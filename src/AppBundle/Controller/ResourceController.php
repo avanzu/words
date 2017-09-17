@@ -12,6 +12,7 @@ use AppBundle\Manager\ResourceManager;
 use Components\Infrastructure\Request\CommandRequest;
 use Components\Infrastructure\Response\CommandResponse;
 use Components\Infrastructure\Response\ContinueCommandResponse;
+use Components\Infrastructure\Response\ErrorCommandResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
@@ -147,11 +148,15 @@ class ResourceController extends Controller
     protected function getInteractionResponse(Form $form, Request $request, CommandRequest $command)
     {
         $form->handleRequest($request);
-        if( $form->isSubmitted() ) {
+        if( ! $form->isSubmitted() ) {
+            return new ContinueCommandResponse();
+        }
+        try {
             return $this->get('app.command_bus')->execute($form->getData());
+        }  catch(ErrorCommandResponse $error) {
+            return $error;
         }
 
-        return new ContinueCommandResponse();
     }
 
 }
