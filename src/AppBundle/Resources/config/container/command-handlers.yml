@@ -21,3 +21,10 @@ services:
             - "@app.notifier"
         tags:
             - { name: app.command.handler }
+
+    app.handler.users.register:
+        class: Components\Interaction\Users\Register\RegisterHandler
+        arguments:
+            - "@app.notifier"
+        tags:
+            - { name: app.command.handler }

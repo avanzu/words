@@ -69,4 +69,18 @@ interface Manager
      */
     public function getClassName();
 
+    /**
+     * @return void
+     */
+    public function startTransaction();
+
+    /**
+     * @return void
+     */
+    public function cancelTransaction();
+
+    /**
+     * @return void
+     */
+    public function commitTransaction();
 }

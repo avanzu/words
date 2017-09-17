@@ -37,7 +37,7 @@ class NotificationSubscriber implements EventSubscriberInterface
      */
     public function onUserRegisterDone(MessageEvent $event)
     {
-        $this->mailManager->sendRegistrationMail($event->getMessage());
+        $this->mailManager->sendRegistrationMail($event->getResponse());
     }
 
     public function onUserActivateDone(MessageEvent $event)

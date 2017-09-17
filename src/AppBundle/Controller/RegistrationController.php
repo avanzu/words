@@ -8,15 +8,12 @@
 namespace AppBundle\Controller;
 
 
-use AppBundle\Entity\User;
-use AppBundle\Event\UserEvent;
-use AppBundle\Form\RegisterType;
+use AppBundle\Form\RegisterRequestType;
 use AppBundle\Manager\UserManager;
 use AppBundle\Traits\AutoLogin;
 use AppBundle\Traits\TemplateAware as TemplateTrait;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Components\Interaction\Users\Register\RegisterRequest;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
  * Class RegistrationController
@@ -34,6 +31,17 @@ class RegistrationController extends ResourceController implements TemplateAware
      */
     public function registerAction(Request $request)
     {
+
+        $command = new RegisterRequest();
+        $form    = $this->createForm(RegisterRequestType::class);
+        $result  = $this->getInteractionResponse($form, $request, $command);
+        if( $result->isSuccessful() ) {
+            $this->addFlash('success', $this->trans($result->getMessage()));
+            return $this->redirectToRoute('app_homepage');
+        }
+
+        /*
+
         $user = $this->getManager()->createNew();
         $form = $this->createForm(RegisterType::class, $user);
 
@@ -51,10 +59,12 @@ class RegistrationController extends ResourceController implements TemplateAware
             return $this->redirectToRoute('app_homepage');
 
         }
+        */
 
         return $this->render($this->getTemplate(), [
-            'form'  => $form->createView(),
-            'model' => $user,
+            'form'    => $form->createView(),
+            'command' => $command,
+            'result'  => $result,
         ]);
     }
 
