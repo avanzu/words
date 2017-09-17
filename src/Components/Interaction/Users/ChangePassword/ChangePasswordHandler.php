@@ -5,10 +5,12 @@
  * Date: 16.09.17
  */
 
-namespace Components\Interaction\Users\ResetPassword;
+namespace Components\Interaction\Users\ChangePassword;
 
 
 use AppBundle\Manager\UserManager;
+use Components\Infrastructure\Events\Notifier;
+use Components\Infrastructure\Events\ResourceMessage;
 use Components\Infrastructure\Request\CommandRequest;
 use Components\Infrastructure\Response\CommandResponse;
 use Components\Infrastructure\Response\ErrorCommandResponse;
@@ -20,6 +22,21 @@ use Components\Model\User;
  */
 class ChangePasswordHandler extends ResourceHandler
 {
+
+    /**
+     * @var Notifier
+     */
+    protected $notifier;
+
+    /**
+     * ChangePasswordHandler constructor.
+     *
+     * @param Notifier $notifier
+     */
+    public function __construct(Notifier $notifier) {
+        $this->notifier = $notifier;
+    }
+
 
     /**
      * @param CommandRequest|ChangePasswordRequest $request
@@ -36,13 +53,17 @@ class ChangePasswordHandler extends ResourceHandler
             $user          = $request->getDao();
             $plainPassword = $request->getPlainPassword();
             $encoded       = $this->getManager()->encodePassword($user, $plainPassword);
+            $response      = new ChangePasswordResponse($user, $request, CommandResponse::STATUS_ACCEPTED);
 
             $user->setPassword($encoded)->setToken(null);
             $manager->save($user);
 
+            $this->notifier->notify(new ResourceMessage($request, $response));
+
             $manager->commitTransaction();
 
-            return new ChangePasswordResponse($user, $request, CommandResponse::STATUS_ACCEPTED);
+            return $response;
+
 
         } catch(\Exception $exception) {
 

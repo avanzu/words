@@ -16,6 +16,8 @@ services:
             - { name: app.command.handler }
 
     app.handler.users.change_password:
-        class: Components\Interaction\Users\ResetPassword\ChangePasswordHandler
+        class: Components\Interaction\Users\ChangePassword\ChangePasswordHandler
+        arguments:
+            - "@app.notifier"
         tags:
             - { name: app.command.handler }

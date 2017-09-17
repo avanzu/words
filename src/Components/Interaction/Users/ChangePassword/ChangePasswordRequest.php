@@ -5,7 +5,7 @@
  * Date: 16.09.17
  */
 
-namespace Components\Interaction\Users\ResetPassword;
+namespace Components\Interaction\Users\ChangePassword;
 
 
 use Components\Interaction\Resource\ResourceCommandRequest;
