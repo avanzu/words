@@ -7,6 +7,7 @@
 
 namespace Components\Resource;
 
+use Components\DataAccess\Criteria;
 use Components\Resource\Repository\Repository;
 use Components\Resource\Validator\Result;
 use Components\Resource\Validator\Validator;
@@ -53,6 +54,15 @@ interface Manager
      * @return mixed
      */
     public function initialize($model, $properties = []);
+
+    /**
+     * @param  int     $limit
+     * @param  int     $offset
+     * @param Criteria[] $criteria
+     *
+     * @return mixed
+     */
+    public function getCollection($limit, $offset = 0, $criteria = null);
 
     /**
      * @return Repository

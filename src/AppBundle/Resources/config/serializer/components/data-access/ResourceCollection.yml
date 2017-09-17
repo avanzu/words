@@ -1,0 +1,13 @@
+Components\DataAccess\ResourceCollection:
+    read_only: true
+    virtual_properties:
+        getItemCount:
+            serialized_name: item_count
+    properties:
+        items:
+            access_type: public_method
+        total:
+            access_type: public_method
+            accessor:
+                getter: getTotalCount
+

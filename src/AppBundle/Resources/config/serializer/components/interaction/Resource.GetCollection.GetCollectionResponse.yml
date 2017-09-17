@@ -1,0 +1,4 @@
+Components\Interaction\Resource\GetCollection\GetCollectionResponse:
+    exclusion_policy: ALL
+    read_only: true
+

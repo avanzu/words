@@ -6,6 +6,12 @@ app_account:
     prefix: /account
     resource: "routing/account.yml"
 
+app_users:
+    prefix: /users
+    resource: "routing/users.yml"
+    defaults:
+        resource: user
+
 app_security:
     resource: "routing/security.yml"
 

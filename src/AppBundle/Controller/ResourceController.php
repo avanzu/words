@@ -13,9 +13,12 @@ use Components\Infrastructure\Request\CommandRequest;
 use Components\Infrastructure\Response\CommandResponse;
 use Components\Infrastructure\Response\ContinueCommandResponse;
 use Components\Infrastructure\Response\ErrorCommandResponse;
+use Components\Interaction\Resource\GetCollection\GetCollectionRequest;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class ResourceController
@@ -35,6 +38,21 @@ class ResourceController extends Controller
      */
     public function __construct(ResourceManager $manager) {
         $this->manager = $manager;
+    }
+
+
+    public function getCollectionAction($resource, Request $request)
+    {
+        $command = new GetCollectionRequest(
+            null,
+            $resource,
+            $request->get('limit', 10),
+            $request->get('offset')
+        );
+
+        $result = $this->executeCommand($command);
+        return new Response($this->get('serializer')->serialize($result, 'json'));
+
     }
 
     /**

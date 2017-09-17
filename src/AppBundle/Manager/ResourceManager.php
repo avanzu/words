@@ -9,13 +9,16 @@ namespace AppBundle\Manager;
 
 
 use AppBundle\Repository\ResourceRepository;
+use Components\DataAccess\Criteria;
+use Components\DataAccess\ResourceCollection;
 use Components\Resource\Manager;
 use Components\Resource\Repository\Factory as RepositoryFactory;
 use Components\Resource\Repository\Repository;
 use Components\Resource\Validator\Result;
 use Components\Resource\Validator\Validator;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -162,6 +165,51 @@ class ResourceManager implements Manager
             $accessor->setValue($model, $propertyName, $property);
         }
         return $model;
+    }
+
+    /**
+     * @param int  $limit
+     * @param int  $offset
+     * @param Criteria[]|null $criteriaList
+     *
+     * @return ResourceCollection
+     */
+    public function getCollection($limit, $offset = 0, $criteriaList = null)
+    {
+        $builder = $this->getRepository()->createQueryBuilder('collection');
+        $this->applyCriteria($criteriaList, $builder);
+        $builder->setMaxResults($limit)->setFirstResult($offset);
+        $pager = new Paginator($builder);
+
+        return new ResourceCollection($pager->getIterator(), count($pager), $limit, $offset);
+    }
+
+    /**
+     * @param Criteria[] $criteriaList
+     * @param QueryBuilder $builder
+     *
+     * @return QueryBuilder
+     */
+    protected function applyCriteria($criteriaList, QueryBuilder $builder)
+    {
+        if( is_null($criteriaList) ) return $builder;
+        $prefix = current($builder->getRootAliases());
+        $expr   = $builder->expr();
+        $params = [];
+        foreach($criteriaList as $outerIndex => $criteria) {
+            $items = [];
+            $methodName = sprintf('%sX', strtolower($criteria->getCombination()));
+            foreach($criteria->getCriteria() as $innerIndex => $criterion) {
+                $property       = sprintf('%s.%s', $prefix, $criterion->getProperty());
+                $param          = sprintf(':%d_%d_%s', $outerIndex, $innerIndex, $criterion->getProperty());
+                $params[$param] = $criterion->getValue();
+                $items[]        = call_user_func([$expr, $criterion->getComparison()], $property, $param);
+            }
+            $combination = call_user_func([$expr, $methodName], $items);
+            $builder->andWhere($combination);
+        }
+
+        return $builder->setParameters($params);
     }
 
 
