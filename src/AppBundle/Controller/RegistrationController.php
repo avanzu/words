@@ -12,8 +12,11 @@ use AppBundle\Form\RegisterRequestType;
 use AppBundle\Manager\UserManager;
 use AppBundle\Traits\AutoLogin;
 use AppBundle\Traits\TemplateAware as TemplateTrait;
+use Components\Interaction\Users\Activate\ActivateRequest;
 use Components\Interaction\Users\Register\RegisterRequest;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class RegistrationController
@@ -27,7 +30,7 @@ class RegistrationController extends ResourceController implements TemplateAware
     /**
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      */
     public function registerAction(Request $request)
     {
@@ -40,27 +43,6 @@ class RegistrationController extends ResourceController implements TemplateAware
             return $this->redirectToRoute('app_homepage');
         }
 
-        /*
-
-        $user = $this->getManager()->createNew();
-        $form = $this->createForm(RegisterType::class, $user);
-
-        if( $this->handleForm( $request, $form, $user ) ) {
-
-            $this->getManager()->registerUser($user);
-
-            $message = $this->trans(
-                'user.registration.success', [
-                    '%username%' => $user->getUsername(),
-                    '%email%'    => $user->getEmail()
-            ]);
-
-            $this->addFlash('success', $message);
-            return $this->redirectToRoute('app_homepage');
-
-        }
-        */
-
         return $this->render($this->getTemplate(), [
             'form'    => $form->createView(),
             'command' => $command,
@@ -72,24 +54,22 @@ class RegistrationController extends ResourceController implements TemplateAware
      * @param         $token
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse|Response
      */
     public function activateAction($token, Request $request) {
 
         $user = $this->getManager()->loadUserByToken($token);
         $this->throw404Unless($user);
-        $this->getManager()->activateUser($user);
 
-        $this->executeAutoLogin($user);
+        $command = new ActivateRequest($user);
+        $result  = $this->executeCommand($command);
+        if( $result->isSuccessful() ) {
+            $this->executeAutoLogin($user);
+            $this->addFlash('success', $result->getMessage());
+            return $this->redirectToRoute('app_homepage');
+        }
 
-        $message = $this->trans('user.activation.success', [
-            '%username%' => $user->getUsername(),
-        ]);
-
-        $this->addFlash('success', $message);
-
-        return $this->redirectToRoute('app_homepage');
-
+        return new Response($result->getMessage(), $result->getStatus());
     }
 
 }
