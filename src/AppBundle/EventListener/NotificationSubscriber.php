@@ -10,6 +10,7 @@ namespace AppBundle\EventListener;
 
 use AppBundle\Event\UserEvent;
 use AppBundle\Event\UserEvents;
+use AppBundle\Infrastructure\Events\MessageEvent;
 use AppBundle\Manager\EMailManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -34,27 +35,27 @@ class NotificationSubscriber implements EventSubscriberInterface
     /**
      * @param UserEvent $event
      */
-    public function onUserRegisterDone(UserEvent $event)
+    public function onUserRegisterDone(MessageEvent $event)
     {
-        $this->mailManager->sendRegistrationMail($event->getModel());
+        $this->mailManager->sendRegistrationMail($event->getMessage());
     }
 
-    public function onUserActivateDone(UserEvent $event)
+    public function onUserActivateDone(MessageEvent $event)
     {
 
     }
 
-    public function onUserResetDone(UserEvent $event)
+    public function onUserResetDone(MessageEvent $event)
     {
-
+        $this->mailManager->sendResetMail($event->getResponse());
     }
 
     /**
-     * @param UserEvent $event
+     * @param MessageEvent $event
      */
-    public function onUserReset(UserEvent $event)
+    public function onUserReset(MessageEvent $event)
     {
-        $this->mailManager->sendResetMail($event->getModel());
+
     }
 
     /**
@@ -80,7 +81,6 @@ class NotificationSubscriber implements EventSubscriberInterface
         return array(
             UserEvents::USER_REGISTER_DONE => 'onUserRegisterDone',
             UserEvents::USER_ACTIVATE_DONE => 'onUserActivateDone',
-            UserEvents::USER_RESET         => 'onUserReset',
             UserEvents::USER_RESET_DONE    => 'onUserResetDone',
         );
     }

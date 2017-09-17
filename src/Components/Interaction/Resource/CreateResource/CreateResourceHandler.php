@@ -12,6 +12,9 @@ use Components\Infrastructure\Request\CommandRequest;
 use Components\Infrastructure\Response\ValidationFailedResponse;
 use Components\Interaction\Resource\ResourceHandler;
 
+/**
+ * Class CreateResourceHandler
+ */
 class CreateResourceHandler extends ResourceHandler
 {
 
@@ -38,6 +41,12 @@ class CreateResourceHandler extends ResourceHandler
         return $this->createResponse($request, $resource);
     }
 
+    /**
+     * @param CommandRequest $request
+     * @param                $resource
+     *
+     * @return CreateResourceResponse
+     */
     protected function createResponse(CommandRequest $request, $resource)
     {
         $responseClass = str_replace('Request', 'Response', get_class($request));

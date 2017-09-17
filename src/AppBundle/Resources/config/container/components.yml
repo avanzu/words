@@ -1,4 +1,12 @@
+imports:
+    - { resource: "command-handlers.yml" }
+
 services:
+    app.container.simple:
+        class: AppBundle\Infrastructure\ServiceContainer
+        arguments:
+            - "@service_container"
+
     app.notifier.default:
         class: AppBundle\Infrastructure\Events\EventDispatcherNotifier
         arguments:
@@ -16,9 +24,9 @@ services:
             - "@doctrine.orm.entity_manager"
 
     app.command.resolver:
-        class: AppBundle\Infrastructure\ResourceHandlerResolver
+        class: Components\Infrastructure\Command\Resolver\ResourceHandlerResolver
         arguments:
-            - "@service_container"
+            - "@app.container"
 
     app.command_bus.simple:
         class: Components\Infrastructure\SimpleCommandBus
@@ -42,3 +50,6 @@ services:
 
     app.notifier:
         alias: app.notifier.default
+
+    app.container:
+        alias: app.container.simple

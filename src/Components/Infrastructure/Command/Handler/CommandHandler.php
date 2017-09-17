@@ -5,7 +5,7 @@
  * Date: 16.09.17
  */
 
-namespace Components\Infrastructure;
+namespace Components\Infrastructure\Command\Handler;
 
 
 use Components\Infrastructure\Request\CommandRequest;

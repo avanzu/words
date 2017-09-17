@@ -1,0 +1,21 @@
+services:
+    app.handler.resource:
+        class: Components\Interaction\Resource\ResourceHandler
+
+    app.handler.create_resource:
+        class: Components\Interaction\Resource\CreateResource\CreateResourceHandler
+        parent: app.handler.resource
+        tags:
+            - { name: app.command.handler }
+
+    app.handler.users.reset_password:
+        class: Components\Interaction\Users\ResetPassword\ResetPasswordHandler
+        arguments:
+            - "@app.notifier"
+        tags:
+            - { name: app.command.handler }
+
+    app.handler.users.change_password:
+        class: Components\Interaction\Users\ResetPassword\ChangePasswordHandler
+        tags:
+            - { name: app.command.handler }

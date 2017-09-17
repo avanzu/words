@@ -9,8 +9,9 @@ namespace AppBundle\Controller;
 
 
 use AppBundle\Manager\ResourceManager;
-use Components\Infrastructure\CommandRequest;
-use Components\Infrastructure\ContinueCommandResponse;
+use Components\Infrastructure\Request\CommandRequest;
+use Components\Infrastructure\Response\CommandResponse;
+use Components\Infrastructure\Response\ContinueCommandResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
@@ -141,7 +142,7 @@ class ResourceController extends Controller
      * @param CommandRequest|Request $request
      * @param CommandRequest         $command
      *
-     * @return \Components\Infrastructure\CommandResponse
+     * @return CommandResponse
      */
     protected function getInteractionResponse(Form $form, Request $request, CommandRequest $command)
     {

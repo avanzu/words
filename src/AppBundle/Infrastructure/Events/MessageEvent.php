@@ -20,7 +20,8 @@ class MessageEvent extends Event
      *
      * @param $message
      */
-    public function __construct(Message $message) {
+    public function __construct(Message $message)
+    {
         $this->message = $message;
     }
 
@@ -32,4 +33,13 @@ class MessageEvent extends Event
         return $this->message;
     }
 
+    public function getRequest()
+    {
+        return $this->message->getRequest();
+    }
+
+    public function getResponse()
+    {
+        return $this->message->getResponse();
+    }
 }

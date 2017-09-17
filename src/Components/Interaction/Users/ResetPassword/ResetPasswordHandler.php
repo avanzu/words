@@ -9,8 +9,8 @@ namespace Components\Interaction\Users\ResetPassword;
 
 
 use AppBundle\Manager\UserManager;
-use Components\Infrastructure\Events\MessageSender;
 use Components\Infrastructure\Events\Notifier;
+use Components\Infrastructure\Events\ResourceMessage;
 use Components\Infrastructure\Request\CommandRequest;
 use Components\Infrastructure\Response\CommandResponse;
 use Components\Infrastructure\Response\ErrorCommandResponse;
@@ -20,12 +20,23 @@ use Components\Interaction\Resource\ResourceHandler;
  * Class ResetPasswordHandler
  * @method UserManager getManager()
  */
-class ResetPasswordHandler extends ResourceHandler implements MessageSender
+class ResetPasswordHandler extends ResourceHandler
 {
+
     /**
      * @var Notifier
      */
     protected $notifier;
+
+    /**
+     * ResetPasswordHandler constructor.
+     *
+     * @param Notifier $notifier
+     */
+    public function __construct(Notifier $notifier) {
+        $this->notifier = $notifier;
+    }
+
 
     /**
      * @param CommandRequest|ResetPasswordRequest $request
@@ -34,16 +45,19 @@ class ResetPasswordHandler extends ResourceHandler implements MessageSender
      */
     public function handle(CommandRequest $request)
     {
-        $manager = $this->getManager();
+        $manager  = $this->getManager();
         $manager->startTransaction();
         try {
-            $user = $request->getUser();
+            $user     = $request->getUser();
+            $response = new ResetPasswordResponse($user, $request);
             $user->setToken(uniqid($request->getIntention()));
             $this->getManager()->save($user);
 
+            $this->notifier->notify(new ResourceMessage($request, $response));
+
             $manager->commitTransaction();
 
-            return new ResetPasswordResponse($user, $request);
+            return $response;
 
         }
         catch (\Exception $exception) {
@@ -59,8 +73,4 @@ class ResetPasswordHandler extends ResourceHandler implements MessageSender
 
     }
 
-    public function setNotifier(Notifier $notifier)
-    {
-        $this->notifier = $notifier;
-    }
 }

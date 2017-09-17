@@ -3,9 +3,8 @@
 namespace AppBundle\Command;
 
 use AppBundle\Manager\UserManager;
-use Components\Infrastructure\ErrorCommandResponse;
-use Components\Infrastructure\ValidationFailedResponse;
-use Components\Interaction\Resource\CreateResource\CreateResourceRequest;
+use Components\Infrastructure\Response\ErrorCommandResponse;
+use Components\Infrastructure\Response\ValidationFailedResponse;
 use Components\Interaction\Users\CreateUser\CreateUserRequest;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -59,6 +58,7 @@ class AppUserCreateCommand extends ContainerAwareCommand
         try {
             $response = $this->getContainer()->get('app.command_bus')->execute($request);
             $io->success(sprintf('A new User [%s] was created.', $response->getResource()));
+            return 0;
         }
         catch(ValidationFailedResponse $reason){
             $io->error(sprintf('[%d] The user could not be saved due to validation errors.', $reason->getCode()));
@@ -71,83 +71,8 @@ class AppUserCreateCommand extends ContainerAwareCommand
             $io->error(sprintf('[%d] %s.', $reason->getCode(), $reason->getResponseText()));
         }
 
-
-
-        /*
-        $manager  = $this->getUserManager();
-        $user     = $manager
-            ->createNew(
-                [
-                    'username'      => $username,
-                    'email'         => $email,
-                    'plainPassword' => $password,
-                    'roles'         => $roles,
-                ]
-            );
-
-        if (false == $this->validate($user, $manager, $io)) {
-            return -1;
-        }
-
-        try {
-            $manager->save([$user]);
-
-        } catch (\Exception $e) {
-            $io->error($e->getMessage());
-
-            return -1;
-        }
-
-        */
-
-        // $io->success(sprintf("A new user [%s] was created.", $user->getUsername()));
+        return -1;
     }
 
-    /**
-     * @return \AppBundle\Manager\UserManager|object
-     */
-    protected function getUserManager()
-    {
-        return $this->getContainer()->get('app.manager.user');
-    }
-
-    /**
-     * @param                   $user
-     * @param UserManager       $manager
-     * @param      SymfonyStyle $io
-     *
-     * @return bool
-     */
-    protected function validate($user, UserManager $manager, $io)
-    {
-        $violations = $manager->validate($user, ['Default', 'registration']);
-
-        if (count($violations) === 0) {
-            return true;
-        }
-
-        $errors = [];
-
-        /** @var ConstraintViolation $violation */
-        foreach ($violations as $violation) {
-            $errors[] = ($this->trans($violation->getMessageTemplate(), $violation->getParameters(), 'validation'));
-        }
-
-        $io->error($errors);
-
-        return false;
-    }
-
-    /**
-     * @param        $token
-     * @param array  $args
-     * @param string $catalog
-     *
-     * @return string
-     */
-    protected function trans($token, $args = [], $catalog = 'messages')
-    {
-        return $this->getContainer()->get('translator')->trans($token, $args, $catalog);
-    }
 
 }
