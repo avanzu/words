@@ -8,7 +8,7 @@
 namespace AppBundle\Traits;
 
 
-use AppBundle\Entity\User;
+use Components\Model\User;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 trait AutoLogin

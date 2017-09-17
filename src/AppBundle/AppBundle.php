@@ -2,6 +2,7 @@
 
 namespace AppBundle;
 
+use AppBundle\DependencyInjection\Compiler\CommandHandlersPass;
 use AppBundle\DependencyInjection\Compiler\RelationProviderPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -17,6 +18,7 @@ class AppBundle extends Bundle
     public function build(ContainerBuilder $container)
     {
         $container->addCompilerPass(new RelationProviderPass());
+        $container->addCompilerPass(new CommandHandlersPass());
     }
 
 }

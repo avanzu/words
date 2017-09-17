@@ -8,25 +8,32 @@
 namespace Components\Infrastructure;
 
 
+use Components\Infrastructure\Command\Resolver\CommandHandlerResolver;
 use Components\Infrastructure\Request\CommandRequest;
 use Components\Infrastructure\Response\CommandResponse;
 use Components\Infrastructure\Response\ErrorCommandResponse;
 
+/**
+ * Class SimpleCommandBus
+ */
 class SimpleCommandBus implements CommandBus
 {
     /**
-     * @var CommandResolver
+     * @var CommandHandlerResolver
      */
     protected $resolver;
 
+    /**
+     * @var bool
+     */
     protected $throwErrors = true;
 
     /**
      * SimpleCommandBus constructor.
      *
-     * @param CommandResolver $resolver
+     * @param CommandHandlerResolver $resolver
      */
-    public function __construct(CommandResolver $resolver) {
+    public function __construct(CommandHandlerResolver $resolver) {
         $this->resolver = $resolver;
 
     }

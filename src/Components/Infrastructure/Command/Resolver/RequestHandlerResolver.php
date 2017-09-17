@@ -5,23 +5,21 @@
  * Date: 16.09.17
  */
 
-namespace AppBundle\Infrastructure;
-use Components\Infrastructure as Component;
-use Components\Infrastructure\CommandHandler;
-use Components\Infrastructure\Events\MessageSender;
+namespace Components\Infrastructure\Command\Resolver;
+
+use Components\Infrastructure\Command\Handler\CommandHandler;
+use Components\Infrastructure\Container;
 use Components\Infrastructure\Exception\HandlerNotFoundException;
 use Components\Infrastructure\Request\CommandRequest;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class CommandResolver
  */
-class CommandResolver implements Component\CommandResolver
+class RequestHandlerResolver implements CommandHandlerResolver
 {
 
     /**
-     * @var ContainerInterface
+     * @var Container
      */
     protected $container;
 
@@ -33,10 +31,18 @@ class CommandResolver implements Component\CommandResolver
     /**
      * CommandResolver constructor.
      *
-     * @param ContainerInterface $container
+     * @param Container $container
      */
-    public function __construct(ContainerInterface $container) { $this->container = $container; }
+    public function __construct(Container $container) {
+        $this->container = $container;
+    }
 
+    /**
+     * @param array $handlers
+     */
+    public function setHandlers(array $handlers = []) {
+        foreach($handlers as $className => $serviceID) $this->setHandler($className, $serviceID);
+    }
 
     /**
      * @param $className
@@ -94,13 +100,7 @@ class CommandResolver implements Component\CommandResolver
 
         /** @var CommandHandler $handler */
         $handler =  new $handlerName();
-        if( $handler instanceof ContainerAwareInterface ) {
-            $handler->setContainer($this->container);
-        }
 
-        if( $handler instanceof MessageSender) {
-            $handler->setNotifier($this->container->get('app.notifier'));
-        }
 
         return $handler;
     }
@@ -116,8 +116,8 @@ class CommandResolver implements Component\CommandResolver
             $handlerName = $this->handlers[$handlerName];
         }
 
-        if( $this->container->has($handlerName) ) {
-            return $this->container->get($handlerName);
+        if( $this->container->exists($handlerName) ) {
+            return $this->container->acquire($handlerName);
         }
 
         return false;

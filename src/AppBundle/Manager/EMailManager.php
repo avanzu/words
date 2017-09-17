@@ -9,6 +9,7 @@ namespace AppBundle\Manager;
 
 
 use AppBundle\Entity\User;
+use Components\Interaction\Users\ResetPassword\ResetPasswordResponse;
 
 class EMailManager
 {
@@ -77,10 +78,13 @@ class EMailManager
     }
 
     /**
-     * @param User $user
+     * @param ResetPasswordResponse $response
+     *
+     * @internal param ResetPasswordResponse $user
      */
-    public function sendResetMail(User $user)
+    public function sendResetMail(ResetPasswordResponse $response)
     {
+        $user    = $response->getResource();
         $message = $this->buildMessage('@App/EMail/reset.html.twig', ['user' => $user, 'appName' => $this->appName]);
         $message->setTo($user->getEMail());
         $this->mailer->send($message);

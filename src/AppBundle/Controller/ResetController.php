@@ -8,17 +8,16 @@
 namespace AppBundle\Controller;
 use AppBundle\Form\ChangePasswordRequestType;
 use AppBundle\Form\ResetPasswordRequestType;
-use AppBundle\Form\ResetPasswordType;
-use AppBundle\Form\ResetType;
-use AppBundle\Form\UserLookupType;
 use AppBundle\Manager\UserManager;
 use AppBundle\Traits\AutoLogin;
 use AppBundle\Traits\TemplateAware as TemplateTrait;
-use Components\Infrastructure\ContinueCommandResponse;
+use Components\Infrastructure\Response\ContinueCommandResponse;
 use Components\Interaction\Users\ResetPassword\ChangePasswordRequest;
 use Components\Interaction\Users\ResetPassword\ResetPasswordRequest;
 use Components\Interaction\Users\ResetPassword\ResetPasswordResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class ResetController
@@ -30,6 +29,11 @@ class ResetController extends ResourceController implements TemplateAware
         AutoLogin;
 
 
+    /**
+     * @param Request $request
+     *
+     * @return RedirectResponse|Response
+     */
     public function resetAction(Request $request)
     {
 
@@ -51,6 +55,12 @@ class ResetController extends ResourceController implements TemplateAware
         return $this->redirectToRoute('app_homepage');
     }
 
+    /**
+     * @param         $token
+     * @param Request $request
+     *
+     * @return RedirectResponse|Response
+     */
     public function changePasswordAction($token, Request $request) {
 
         $user = $this->getManager()->loadUserByToken($token);
@@ -60,6 +70,7 @@ class ResetController extends ResourceController implements TemplateAware
         $form    = $this->createForm(ChangePasswordRequestType::class, $command);
 
         $result = $this->getInteractionResponse($form, $request, $command);
+
         if( ! $result->isSuccessful() ) {
             return $this->render($this->getTemplate(), [
                 'form'    => $form->createView(),
@@ -68,32 +79,11 @@ class ResetController extends ResourceController implements TemplateAware
             ]);
         }
 
+        $this->executeAutoLogin($user);
+
         $this->addFlash('success', $this->trans($result->getMessage()));
         return $this->redirectToRoute('app_homepage');
     }
 
-    public function __changePasswordAction($token, Request $request)
-    {
-
-        $user = $this->getManager()->loadUserByToken($token);
-        $this->throw404Unless($user);
-        $form = $this->createForm(ResetPasswordType::class, $user);
-        if( $this->handleForm( $request, $form) ) {
-            $this->getManager()->resetUser($user);
-
-            $this->executeAutoLogin($user);
-
-            $message = $this->trans('user.reset.done');
-            $this->addFlash('success', $message);
-
-            return $this->redirectToRoute('app_homepage');
-
-        }
-
-        return $this->render($this->getTemplate(), [
-            'form' => $form->createView(),
-            'user' => $user
-        ]);
-    }
 
 }

@@ -8,9 +8,24 @@
 namespace Components\Infrastructure\Events;
 
 
+use Components\Infrastructure\Request\CommandRequest;
+use Components\Infrastructure\Response\CommandResponse;
+
 interface Message
 {
-    public function getType();
+    /**
+     * @return string
+     */
+    public function getName();
 
+    /**
+     * @return CommandRequest
+     */
+    public function getRequest();
+
+    /**
+     * @return CommandResponse
+     */
+    public function getResponse();
 
 }

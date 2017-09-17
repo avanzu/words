@@ -5,12 +5,13 @@
  * Date: 16.09.17
  */
 
-namespace Components\Infrastructure;
+namespace Components\Infrastructure\Command\Resolver;
 
 
+use Components\Infrastructure\Command\Handler\CommandHandler;
 use Components\Infrastructure\Request\CommandRequest;
 
-interface CommandResolver
+interface CommandHandlerResolver
 {
     /**
      * @param CommandRequest $request

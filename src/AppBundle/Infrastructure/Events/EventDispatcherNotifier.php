@@ -32,6 +32,7 @@ class EventDispatcherNotifier implements Notifier
 
     public function notify(Message $message)
     {
-        $this->eventDispatcher->dispatch($message->getType(), new MessageEvent($message));
+        $this->eventDispatcher->dispatch($message->getName(), new MessageEvent($message));
     }
+
 }

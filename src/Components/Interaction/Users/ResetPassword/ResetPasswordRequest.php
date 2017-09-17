@@ -14,6 +14,9 @@ use Components\Model\User;
 class ResetPasswordRequest extends ResourceCommandRequest
 {
 
+
+
+
     /**
      * @return User
      */
@@ -35,7 +38,7 @@ class ResetPasswordRequest extends ResourceCommandRequest
      */
     public function getIntention()
     {
-        return 'reset_password';
+        return 'reset';
     }
 
 

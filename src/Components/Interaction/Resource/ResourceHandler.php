@@ -8,7 +8,7 @@
 namespace Components\Interaction\Resource;
 
 
-use Components\Infrastructure\CommandHandler;
+use Components\Infrastructure\Command\Handler\CommandHandler;
 use Components\Resource\Manager;
 
 abstract class ResourceHandler implements CommandHandler

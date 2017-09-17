@@ -5,16 +5,16 @@
  * Date: 16.09.17
  */
 
-namespace AppBundle\Infrastructure;
+namespace Components\Infrastructure\Command\Resolver;
 
 
-use Components\Infrastructure\CommandHandler;
+use Components\Infrastructure\Command\Handler\CommandHandler;
 use Components\Infrastructure\Request\CommandRequest;
 use Components\Interaction\Resource\ResourceHandler;
 use Components\Interaction\Resource\ResourceCommandRequest;
 use Components\Resource\Manager;
 
-class ResourceHandlerResolver extends CommandResolver
+class ResourceHandlerResolver extends RequestHandlerResolver
 {
     protected function getHandlerName(CommandRequest $request)
     {
@@ -70,7 +70,7 @@ class ResourceHandlerResolver extends CommandResolver
     protected function getResourceManager(ResourceCommandRequest $request)
     {
         /** @var Manager $manager */
-        $manager = $this->container->get(sprintf('app.manager.%s', $request->getResourceName()));
+        $manager = $this->container->acquire(sprintf('app.manager.%s', $request->getResourceName()));
         return $manager;
     }
 

@@ -9,28 +9,28 @@ namespace AppBundle\Infrastructure;
 
 
 use Components\Infrastructure\CommandHandler;
-use Components\Infrastructure\CommandResolver;
+use Components\Infrastructure\Command;
 use Components\Infrastructure\Exception\HandlerNotFoundException;
 use Components\Infrastructure\Request\CommandRequest;
 
-class ChainResolver implements CommandResolver
+class ChainResolver implements RequestHandlerResolver
 {
 
-    /** @var CommandResolver[] */
+    /** @var RequestHandlerResolver[] */
     protected $resolvers = [];
 
     /**
      * ChainResolver constructor.
      *
-     * @param CommandResolver[] $resolvers
+     * @param RequestHandlerResolver[] $resolvers
      */
     public function __construct(array $resolvers = []) {
         $this->resolvers = $resolvers;
     }
 
     /**
-     * @param CommandResolver $resolver
-     * @param bool            $prepend
+     * @param RequestHandlerResolver $resolver
+     * @param bool                   $prepend
      */
     public function addResolver($resolver, $prepend = false)
     {
