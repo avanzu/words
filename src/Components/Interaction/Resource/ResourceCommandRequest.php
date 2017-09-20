@@ -14,6 +14,7 @@ abstract class ResourceCommandRequest implements CommandRequest
 {
     protected $dao;
 
+
     /**
      * ResourceRequest constructor.
      *
@@ -21,7 +22,7 @@ abstract class ResourceCommandRequest implements CommandRequest
      */
     public function __construct($dao = null)
     {
-        $this->dao = $dao;
+        $this->dao       = $dao;
     }
 
     /**

@@ -14,11 +14,12 @@ use JMS\Serializer\EventDispatcher\EventSubscriberInterface;
 use JMS\Serializer\EventDispatcher\ObjectEvent;
 use JMS\Serializer\GenericSerializationVisitor;
 use JMS\Serializer\SerializationContext;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 
 
-class HateoasSerializationSubscriberTest extends \PHPUnit_Framework_TestCase
+class HateoasSerializationSubscriberTest extends TestCase
 {
 
 

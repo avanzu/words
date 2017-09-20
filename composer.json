@@ -39,9 +39,9 @@
         "twig/twig": "^1.0||^2.0"
     },
     "require-dev": {
+        "phpspec/prophecy": "^1.7",
         "sensio/generator-bundle": "^3.0",
         "symfony/phpunit-bridge": "^3.0"
-
     },
     "scripts": {
         "symfony-scripts": [

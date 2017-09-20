@@ -9,6 +9,7 @@ namespace AppBundle\EventListener;
 
 
 use AppBundle\Controller\TemplateAware;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\Tests\Debug\EventSubscriber;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,7 +18,7 @@ use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-class KernelControllerSubscriberTest extends \PHPUnit_Framework_TestCase
+class KernelControllerSubscriberTest extends TestCase
 {
 
     /**
