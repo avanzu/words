@@ -11,6 +11,7 @@ namespace AppBundle\Tests\Command;
 use AppBundle\Command\AppUserCreateCommand;
 use AppBundle\Entity\User;
 use AppBundle\Manager\UserManager;
+use AppBundle\Validator\Result;
 use Prophecy\Prophecy\ObjectProphecy;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Application;
@@ -37,11 +38,11 @@ class AppUserCreateCommandTest extends KernelTestCase
                 'username' => 'testuser',
                 'email'    => 'testuser@example.com',
                 'password' => '1234',
-                'roles'    => ['ROLE_ADMIN']
+                'roles'    => 'ROLE_ADMIN'
             )
         );
 
-        $this->assertStringMatchesFormat('[OK] A new user [%s] was created.', trim($tester->getDisplay()));
+        $this->assertStringMatchesFormat('[OK] A new User [%s] was created.', trim($tester->getDisplay()));
     }
 
     /**
@@ -84,11 +85,16 @@ class AppUserCreateCommandTest extends KernelTestCase
         ;
 
 
-        $manager->validate($user, ['Default', 'registration'])->shouldBeCalled()->willReturn([]);
-        $manager->save([$user])->shouldBeCalled();
+        /** @var ObjectProphecy|Result $validatorResult */
+        $validatorResult = $this->prophesize(Result::class);
+        $validatorResult->isValid()->willReturn(true);
+        $manager->validate($user, ['Default', 'create'])->shouldBeCalled()->willReturn($validatorResult->reveal());
+        $manager->save($user)->shouldBeCalled();
 
         return $manager->reveal();
     }
+
+
 
     protected function setUp()
     {

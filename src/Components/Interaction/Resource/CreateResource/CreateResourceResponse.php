@@ -8,7 +8,7 @@
 namespace Components\Interaction\Resource\CreateResource;
 
 
-use Components\Infrastructure\CommandResponse;
+use Components\Infrastructure\Response\CommandResponse;
 use Components\Interaction\Resource\ResourceCommandRequest;
 use Components\Interaction\Resource\ResourceResponse;
 

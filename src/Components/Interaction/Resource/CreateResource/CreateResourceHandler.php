@@ -26,7 +26,7 @@ class CreateResourceHandler extends ResourceHandler
     public function handle(CommandRequest $request)
     {
         $resource = $this->manager->createNew($request->getDao());
-        $result   = $this->manager->validate($resource);
+        $result   = $this->manager->validate($resource, ["Default", $request->getIntention()]);
 
         if( ! $result->isValid() ) {
             return new ValidationFailedResponse($result);
