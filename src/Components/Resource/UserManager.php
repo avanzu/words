@@ -34,33 +34,6 @@ interface UserManager extends Manager
      */
     public function loadUserByToken($token);
 
-    /**
-     * @param User $user
-     *
-     * @throws RegistrationFailedException
-     */
-    public function registerUser(User $user);
-
-    /**
-     * @param User $user
-     *
-     * @throws ActivationFailedException
-     */
-    public function activateUser(User $user);
-
-    /**
-     * @param User $user
-     *
-     * @throws ResetAccountException
-     */
-    public function enableReset(User $user);
-
-    /**
-     * @param User $user
-     *
-     * @throws ResetAccountException
-     */
-    public function resetUser(User $user);
 
     /**
      * @param User $model
