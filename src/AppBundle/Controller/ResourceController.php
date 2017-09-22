@@ -9,6 +9,7 @@ namespace AppBundle\Controller;
 
 
 use Components\Infrastructure\Presentation\IPresenter;
+use Components\Infrastructure\Presentation\TemplateView;
 use Components\Resource\IManager;
 use Components\Infrastructure\Request\IRequest;
 use Components\Infrastructure\Response\IResponse;
@@ -53,6 +54,17 @@ class ResourceController extends Controller
     {
         return $this->presenter;
     }
+
+    /**
+     * @param TemplateView $view
+     *
+     * @return Response
+     */
+    protected function createResponse(TemplateView $view)
+    {
+        return new Response($this->getPresenter()->show($view));
+    }
+
 
     /**
      * @param         $resource

@@ -56,7 +56,7 @@ class ResetController extends ResourceController implements ITemplateAware
                 'result'  => $result,
             ]);
 
-            return new Response($this->getPresenter()->show($view));
+            return $this->createResponse($view);
         }
 
         $this->addFlash('success', $this->trans($result->getMessage()));
@@ -88,7 +88,7 @@ class ResetController extends ResourceController implements ITemplateAware
                 'result'  => $result,
             ]);
 
-            return new Response($this->getPresenter()->show($view));
+            return $this->createResponse($view);
         }
 
         $this->executeAutoLogin($user);

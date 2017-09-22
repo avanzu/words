@@ -50,7 +50,7 @@ class RegistrationController extends ResourceController implements ITemplateAwar
             'command' => $command,
             'result'  => $result,
         ]);
-        return new Response($this->getPresenter()->show($view));
+        return $this->createResponse($view);
     }
 
     /**
