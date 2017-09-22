@@ -8,7 +8,7 @@
 namespace AppBundle\Controller;
 use AppBundle\Form\ChangePasswordRequestType;
 use AppBundle\Form\ResetPasswordRequestType;
-use AppBundle\Manager\UserManager;
+use Components\Resource\UserManager;
 use AppBundle\Traits\AutoLogin;
 use AppBundle\Traits\TemplateAware as TemplateTrait;
 use Components\Infrastructure\Response\ContinueCommandResponse;

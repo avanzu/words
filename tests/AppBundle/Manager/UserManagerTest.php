@@ -21,7 +21,7 @@ class UserManagerTest extends KernelTestCase
 
 
     /**
-     * @return \AppBundle\Manager\UserManager|object
+     * @return \Components\Resource\UserManager|object
      */
     private function getManager()
     {

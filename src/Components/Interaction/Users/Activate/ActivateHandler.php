@@ -8,7 +8,7 @@
 namespace Components\Interaction\Users\Activate;
 
 
-use AppBundle\Manager\UserManager;
+use Components\Resource\UserManager;
 use Components\Infrastructure\Request\CommandRequest;
 use Components\Infrastructure\Response\CommandResponse;
 use Components\Infrastructure\Response\ErrorCommandResponse;

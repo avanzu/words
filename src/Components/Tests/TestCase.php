@@ -7,8 +7,9 @@
 
 namespace Components\Tests;
 
+use PHPUnit\Framework\TestCase as UnitTestCase;
 
-class TestCase
+class TestCase extends UnitTestCase
 {
 
 }

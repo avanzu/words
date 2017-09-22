@@ -12,7 +12,7 @@ use Components\Infrastructure\Command\Resolver\CommandHandlerResolver;
 use Components\Infrastructure\Request\CommandRequest;
 use Components\Infrastructure\Response\CommandResponse;
 use Components\Infrastructure\SimpleCommandBus;
-use PHPUnit\Framework\TestCase;
+use Components\Tests\TestCase;
 
 class SimpleCommandBusTest extends TestCase
 {

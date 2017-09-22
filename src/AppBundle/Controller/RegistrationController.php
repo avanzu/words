@@ -9,7 +9,7 @@ namespace AppBundle\Controller;
 
 
 use AppBundle\Form\RegisterRequestType;
-use AppBundle\Manager\UserManager;
+use Components\Resource\UserManager;
 use AppBundle\Traits\AutoLogin;
 use AppBundle\Traits\TemplateAware as TemplateTrait;
 use Components\Interaction\Users\Activate\ActivateRequest;

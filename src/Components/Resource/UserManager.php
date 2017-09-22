@@ -7,12 +7,18 @@
 
 namespace Components\Resource;
 
+use AppBundle\Repository\UserRepository;
+use Components\Exception\ActivationFailedException;
+use Components\Exception\RegistrationFailedException;
+use Components\Exception\ResetAccountException;
+use Components\Model\User;
+
 
 /**
  * Class UserManager
  * @method UserRepository getRepository
  */
-interface UserManager
+interface UserManager extends Manager
 {
     /**
      * @param $criteria

@@ -8,7 +8,7 @@
 namespace Components\Interaction\Users\Register;
 
 
-use AppBundle\Manager\UserManager;
+use Components\Resource\UserManager;
 use Components\Infrastructure\Events\Notifier;
 use Components\Infrastructure\Events\ResourceMessage;
 use Components\Infrastructure\Request\CommandRequest;

@@ -59,8 +59,12 @@ class ResourceManager implements Manager
      * @param EntityManager      $entityManager
      * @param Validator $validator
      */
-    public function __construct($className, RepositoryFactory $factory, Validator $validator, EntityManager $entityManager)
-    {
+    public function __construct(
+        $className,
+        RepositoryFactory $factory,
+        Validator $validator,
+        EntityManager $entityManager
+    ) {
         $this->className         = $className;
         $this->entityManager     = $entityManager;
         $this->validator         = $validator;

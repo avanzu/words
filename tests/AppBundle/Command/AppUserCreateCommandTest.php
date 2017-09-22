@@ -62,7 +62,7 @@ class AppUserCreateCommandTest extends KernelTestCase
 
     private function getUserManager()
     {
-        /** @var ObjectProphecy|UserManager $manager */
+        /** @var ObjectProphecy|\Components\Resource\UserManager $manager */
         $manager = $this->prophesize(UserManager::class);
         $user    = new User();
         $user->setUsername('testuser')
