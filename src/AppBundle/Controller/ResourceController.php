@@ -8,6 +8,7 @@
 namespace AppBundle\Controller;
 
 
+use Components\Infrastructure\Controller\ICommandRunner;
 use Components\Infrastructure\Presentation\IPresenter;
 use Components\Infrastructure\Presentation\TemplateView;
 use Components\Resource\IManager;
@@ -24,7 +25,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Class ResourceController
  */
-class ResourceController extends Controller
+class ResourceController extends Controller implements ICommandRunner, IPresenter
 {
 
     /**
@@ -40,7 +41,8 @@ class ResourceController extends Controller
     /**
      * ResourceController constructor.
      *
-     * @param IManager $manager
+     * @param IManager   $manager
+     * @param IPresenter $presenter
      */
     public function __construct(IManager $manager, IPresenter $presenter) {
         $this->manager   = $manager;
@@ -215,7 +217,7 @@ class ResourceController extends Controller
      *
      * @return IResponse|ErrorResponse|\Exception
      */
-    protected function executeCommand(IRequest $request)
+    public function executeCommand(IRequest $request)
     {
         try {
             return $this->get('app.command_bus')->execute($request);
@@ -224,4 +226,13 @@ class ResourceController extends Controller
         }
     }
 
+    /**
+     * @param TemplateView $view
+     *
+     * @return string
+     */
+    public function show(TemplateView $view)
+    {
+        return $this->getPresenter()->show($view);
+    }
 }
