@@ -8,7 +8,7 @@
 namespace Components\Infrastructure\Events;
 
 
-interface Notifier
+interface INotifier
 {
-    public function notify(Message $message);
+    public function notify(IMessage $message);
 }

@@ -8,12 +8,12 @@
 namespace AppBundle\Repository;
 
 
-use Components\Resource\Repository\Factory;
-use Components\Resource\Repository\Repository;
+use Components\Resource\Repository\IFactory;
+use Components\Resource\Repository\IRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 
-class DoctrineFactory implements Factory
+class DoctrineFactory implements IFactory
 {
 
     /**
@@ -33,7 +33,7 @@ class DoctrineFactory implements Factory
     /**
      * @param $className
      *
-     * @return Repository|EntityRepository|ResourceRepository
+     * @return IRepository|EntityRepository|ResourceRepository
      */
     public function getRepository($className)
     {

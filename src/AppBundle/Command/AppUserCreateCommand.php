@@ -3,7 +3,7 @@
 namespace AppBundle\Command;
 
 use AppBundle\Manager\UserManager;
-use Components\Infrastructure\Response\ErrorCommandResponse;
+use Components\Infrastructure\Response\ErrorResponse;
 use Components\Infrastructure\Response\ValidationFailedResponse;
 use Components\Interaction\Users\CreateUser\CreateUserRequest;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -67,7 +67,7 @@ class AppUserCreateCommand extends ContainerAwareCommand
                 array_map(function($message) use ($io){ $io->writeln($message); }, $messages);
             }
         }
-        catch(ErrorCommandResponse $reason) {
+        catch(ErrorResponse $reason) {
             $io->error(sprintf('[%d] %s.', $reason->getCode(), $reason->getResponseText()));
         }
 

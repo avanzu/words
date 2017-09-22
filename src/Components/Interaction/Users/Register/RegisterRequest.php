@@ -8,9 +8,9 @@
 namespace Components\Interaction\Users\Register;
 
 
-use Components\Interaction\Resource\ResourceCommandRequest;
+use Components\Interaction\Resource\ResourceRequest;
 
-class RegisterRequest extends ResourceCommandRequest
+class RegisterRequest extends ResourceRequest
 {
 
     /**

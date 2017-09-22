@@ -1,6 +1,6 @@
 <?php
 /**
- * UserManager.php
+ * IUserManager.php
  * restfully
  * Date: 22.09.17
  */
@@ -15,10 +15,10 @@ use Components\Model\User;
 
 
 /**
- * Class UserManager
+ * Class IUserManager
  * @method UserRepository getRepository
  */
-interface UserManager extends Manager
+interface IUserManager extends IManager
 {
     /**
      * @param $criteria

@@ -11,11 +11,11 @@ namespace AppBundle\Manager;
 use AppBundle\Repository\ResourceRepository;
 use Components\DataAccess\Criteria;
 use Components\DataAccess\ResourceCollection;
-use Components\Resource\Manager;
-use Components\Resource\Repository\Factory as RepositoryFactory;
-use Components\Resource\Repository\Repository;
-use Components\Resource\Validator\Result;
-use Components\Resource\Validator\Validator;
+use Components\Resource\IManager;
+use Components\Resource\Repository\IFactory as RepositoryFactory;
+use Components\Resource\Repository\IRepository;
+use Components\Resource\Validator\IResult;
+use Components\Resource\Validator\IValidator;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -23,9 +23,9 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * Class ResourceManager
+ * Class ResourceIManager
  */
-class ResourceManager implements Manager
+class ResourceManager implements IManager
 {
     const INTENT_CREATE = 'create';
     const INTENT_UPDATE = 'update';
@@ -52,17 +52,17 @@ class ResourceManager implements Manager
     protected $validator;
 
     /**
-     * ResourceManager constructor.
+     * ResourceIManager constructor.
      *
-     * @param string             $className
-     * @param RepositoryFactory  $factory
-     * @param EntityManager      $entityManager
-     * @param Validator $validator
+     * @param string            $className
+     * @param RepositoryFactory $factory
+     * @param EntityManager     $entityManager
+     * @param IValidator        $validator
      */
     public function __construct(
         $className,
         RepositoryFactory $factory,
-        Validator $validator,
+        IValidator $validator,
         EntityManager $entityManager
     ) {
         $this->className         = $className;
@@ -76,7 +76,7 @@ class ResourceManager implements Manager
      * @param null $groups
      * @param null $constraints
      *
-     * @return Result
+     * @return IResult
      */
     public function validate($model, $groups=null, $constraints = null)
     {
@@ -218,7 +218,7 @@ class ResourceManager implements Manager
 
 
     /**
-     * @return ResourceRepository|Repository
+     * @return ResourceRepository|IRepository
      */
     public function getRepository()
     {
@@ -226,7 +226,7 @@ class ResourceManager implements Manager
     }
 
     /**
-     * @return Validator
+     * @return IValidator
      */
     public function getValidator()
     {

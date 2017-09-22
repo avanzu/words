@@ -8,9 +8,9 @@
 namespace Components\Interaction\Users\Activate;
 
 
-use Components\Interaction\Resource\ResourceCommandRequest;
+use Components\Interaction\Resource\ResourceRequest;
 
-class ActivateRequest extends ResourceCommandRequest
+class ActivateRequest extends ResourceRequest
 {
 
     /**

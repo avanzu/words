@@ -8,15 +8,15 @@
 namespace Components\Infrastructure\Command\Resolver;
 
 
-use Components\Infrastructure\Command\Handler\CommandHandler;
-use Components\Infrastructure\Request\CommandRequest;
+use Components\Infrastructure\Command\Handler\ICommandHandler;
+use Components\Infrastructure\Request\IRequest;
 use Components\Interaction\Resource\ResourceHandler;
-use Components\Interaction\Resource\ResourceCommandRequest;
-use Components\Resource\Manager;
+use Components\Interaction\Resource\ResourceRequest;
+use Components\Resource\IManager;
 
 class ResourceHandlerResolver extends RequestHandlerResolver
 {
-    protected function getHandlerName(CommandRequest $request)
+    protected function getHandlerName(IRequest $request)
     {
         $className = parent::getHandlerName($request);
         if( class_exists($className) ) return $className;
@@ -30,25 +30,25 @@ class ResourceHandlerResolver extends RequestHandlerResolver
     }
 
     /**
-     * @param CommandRequest $request
+     * @param IRequest $request
      *
-     * @return CommandHandler
+     * @return ICommandHandler
      */
-    public function getHandler(CommandRequest $request)
+    public function getHandler(IRequest $request)
     {
         return $this->configure(parent::getHandler($request), $request);
     }
 
 
     /**
-     * @param CommandHandler|ResourceHandler        $handler
-     * @param CommandRequest|ResourceCommandRequest $request
+     * @param ICommandHandler|ResourceHandler $handler
+     * @param IRequest|ResourceRequest         $request
      *
-     * @return CommandHandler
+     * @return ICommandHandler
      */
-    protected function configure(CommandHandler $handler, CommandRequest $request)
+    protected function configure(ICommandHandler $handler, IRequest $request)
     {
-        if( !($request instanceof ResourceCommandRequest) ) {
+        if( !($request instanceof ResourceRequest) ) {
             return $handler;
         }
 
@@ -63,13 +63,13 @@ class ResourceHandlerResolver extends RequestHandlerResolver
     }
 
     /**
-     * @param ResourceCommandRequest $request
+     * @param ResourceRequest $request
      *
-     * @return Manager
+     * @return IManager
      */
-    protected function getResourceManager(ResourceCommandRequest $request)
+    protected function getResourceManager(ResourceRequest $request)
     {
-        /** @var Manager $manager */
+        /** @var IManager $manager */
         $manager = $this->container->acquire(sprintf('app.manager.%s', $request->getResourceName()));
         return $manager;
     }

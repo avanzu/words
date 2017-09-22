@@ -1,6 +1,6 @@
 <?php
 /**
- * Manager.php
+ * IManager.phpp
  * restfully
  * Date: 16.09.17
  */
@@ -8,21 +8,21 @@
 namespace Components\Resource;
 
 use Components\DataAccess\Criteria;
-use Components\Resource\Repository\Repository;
-use Components\Resource\Validator\Result;
-use Components\Resource\Validator\Validator;
+use Components\Resource\Repository\IRepository;
+use Components\Resource\Validator\IResult;
+use Components\Resource\Validator\IValidator;
 
 /**
- * Class ResourceManager
+ * Class ResourceIManager
  */
-interface Manager
+interface IManager
 {
     /**
      * @param      $model
      * @param null $groups
      * @param null $constraints
      *
-     * @return Result
+     * @return IResult
      */
     public function validate($model, $groups = null, $constraints = null);
 
@@ -65,12 +65,12 @@ interface Manager
     public function getCollection($limit, $offset = 0, $criteria = null);
 
     /**
-     * @return Repository
+     * @return IRepository
      */
     public function getRepository();
 
     /**
-     * @return Validator
+     * @return IValidator
      */
     public function getValidator();
 

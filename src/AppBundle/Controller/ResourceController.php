@@ -8,15 +8,14 @@
 namespace AppBundle\Controller;
 
 
-use AppBundle\Manager\ResourceManager;
-use Components\Infrastructure\Request\CommandRequest;
-use Components\Infrastructure\Response\CommandResponse;
+use Components\Resource\IManager;
+use Components\Infrastructure\Request\IRequest;
+use Components\Infrastructure\Response\IResponse;
 use Components\Infrastructure\Response\ContinueCommandResponse;
-use Components\Infrastructure\Response\ErrorCommandResponse;
+use Components\Infrastructure\Response\ErrorResponse;
 use Components\Interaction\Resource\GetCollection\GetCollectionRequest;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -27,16 +26,16 @@ class ResourceController extends Controller
 {
 
     /**
-     * @var ResourceManager
+     * @var IManager
      */
     protected $manager;
 
     /**
      * ResourceController constructor.
      *
-     * @param ResourceManager $manager
+     * @param IManager $manager
      */
-    public function __construct(ResourceManager $manager) {
+    public function __construct(IManager $manager) {
         $this->manager = $manager;
     }
 
@@ -56,7 +55,7 @@ class ResourceController extends Controller
     }
 
     /**
-     * @return ResourceManager
+     * @return IManager
      */
     protected function getManager()
     {
@@ -160,13 +159,13 @@ class ResourceController extends Controller
     }
 
     /**
-     * @param Form                   $form
-     * @param CommandRequest|Request $request
-     * @param CommandRequest         $command
+     * @param Form             $form
+     * @param IRequest|Request $request
+     * @param IRequest         $command
      *
-     * @return CommandResponse
+     * @return IResponse
      */
-    protected function getInteractionResponse(Form $form, Request $request, CommandRequest $command)
+    protected function getInteractionResponse(Form $form, Request $request, IRequest $command)
     {
         $form->handleRequest($request);
         if( ! $form->isSubmitted() ) {
@@ -178,15 +177,15 @@ class ResourceController extends Controller
     }
 
     /**
-     * @param CommandRequest $request
+     * @param IRequest $request
      *
-     * @return CommandResponse|ErrorCommandResponse|\Exception
+     * @return IResponse|ErrorResponse|\Exception
      */
-    protected function executeCommand(CommandRequest $request)
+    protected function executeCommand(IRequest $request)
     {
         try {
             return $this->get('app.command_bus')->execute($request);
-        }  catch(ErrorCommandResponse $error) {
+        }  catch(ErrorResponse $error) {
             return $error;
         }
     }

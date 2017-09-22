@@ -8,7 +8,7 @@
 namespace Components\Infrastructure\Response;
 
 
-abstract class Response implements CommandResponse
+abstract class Response implements IResponse
 {
 
     protected $status;

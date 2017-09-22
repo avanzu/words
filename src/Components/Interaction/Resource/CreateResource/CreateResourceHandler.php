@@ -7,8 +7,8 @@
 
 namespace Components\Interaction\Resource\CreateResource;
 
-use Components\Infrastructure\Response\ErrorCommandResponse;
-use Components\Infrastructure\Request\CommandRequest;
+use Components\Infrastructure\Response\ErrorResponse;
+use Components\Infrastructure\Request\IRequest;
 use Components\Infrastructure\Response\ValidationFailedResponse;
 use Components\Interaction\Resource\ResourceHandler;
 
@@ -19,11 +19,11 @@ class CreateResourceHandler extends ResourceHandler
 {
 
     /**
-     * @param CreateResourceRequest|CommandRequest $request
+     * @param CreateResourceRequest|IRequest $request
      *
-     * @return CreateResourceResponse|ErrorCommandResponse
+     * @return CreateResourceResponse|ErrorResponse
      */
-    public function handle(CommandRequest $request)
+    public function handle(IRequest $request)
     {
         $resource = $this->manager->createNew($request->getDao());
         $result   = $this->manager->validate($resource, ["Default", $request->getIntention()]);
@@ -35,19 +35,19 @@ class CreateResourceHandler extends ResourceHandler
         try {
             $this->manager->save($resource);
         } catch(\Exception $reason) {
-            return new ErrorCommandResponse('Unable to store resource', 1, $reason);
+            return new ErrorResponse('Unable to store resource', 1, $reason);
         }
 
         return $this->createResponse($request, $resource);
     }
 
     /**
-     * @param CommandRequest $request
+     * @param IRequest       $request
      * @param                $resource
      *
      * @return CreateResourceResponse
      */
-    protected function createResponse(CommandRequest $request, $resource)
+    protected function createResponse(IRequest $request, $resource)
     {
         $responseClass = str_replace('Request', 'Response', get_class($request));
         if( class_exists($responseClass) ) return new $responseClass($resource, $request);

@@ -8,10 +8,10 @@
 namespace AppBundle\Infrastructure;
 
 
-use Components\Infrastructure\Container;
+use Components\Infrastructure\IContainer;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class ServiceContainer implements Container
+class ServiceContainer implements IContainer
 {
 
     /**

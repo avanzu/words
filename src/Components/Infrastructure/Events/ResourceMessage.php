@@ -8,13 +8,13 @@
 namespace Components\Infrastructure\Events;
 
 
-use Components\Interaction\Resource\ResourceCommandRequest;
+use Components\Interaction\Resource\ResourceRequest;
 use Components\Interaction\Resource\ResourceResponse;
 
-class ResourceMessage implements Message
+class ResourceMessage implements IMessage
 {
     /**
-     * @var ResourceCommandRequest
+     * @var ResourceRequest
      */
     protected $request;
 
@@ -23,7 +23,7 @@ class ResourceMessage implements Message
      */
     protected $response;
 
-    public function __construct(ResourceCommandRequest $request, ResourceResponse $response)
+    public function __construct(ResourceRequest $request, ResourceResponse $response)
     {
         $this->request  = $request;
         $this->response = $response;
@@ -56,7 +56,7 @@ class ResourceMessage implements Message
     }
 
     /**
-     * @return ResourceCommandRequest
+     * @return ResourceRequest
      */
     public function getRequest()
     {

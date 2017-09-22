@@ -8,20 +8,20 @@
 namespace Components\Infrastructure\Events;
 
 
-use Components\Infrastructure\Request\CommandRequest;
-use Components\Infrastructure\Response\CommandResponse;
+use Components\Infrastructure\Request\IRequest;
+use Components\Infrastructure\Response\IResponse;
 
 /**
  * Class InteractionMessage
  */
-class InteractionMessage implements Message
+class InteractionMessage implements IMessage
 {
     /**
-     * @var CommandRequest
+     * @var IRequest
      */
     protected $request;
     /**
-     * @var CommandResponse
+     * @var IResponse
      */
     protected $response;
     /**
@@ -33,10 +33,10 @@ class InteractionMessage implements Message
      * InteractionMessage constructor.
      *
      * @param                 $name
-     * @param CommandRequest  $request
-     * @param CommandResponse $response
+     * @param IRequest        $request
+     * @param IResponse       $response
      */
-    public function __construct($name, CommandRequest $request, CommandResponse $response = null)
+    public function __construct($name, IRequest $request, IResponse $response = null)
     {
         $this->request  = $request;
         $this->response = $response;
@@ -52,7 +52,7 @@ class InteractionMessage implements Message
     }
 
     /**
-     * @return CommandRequest
+     * @return IRequest
      */
     public function getRequest()
     {
@@ -60,7 +60,7 @@ class InteractionMessage implements Message
     }
 
     /**
-     * @return CommandResponse
+     * @return IResponse
      */
     public function getResponse()
     {

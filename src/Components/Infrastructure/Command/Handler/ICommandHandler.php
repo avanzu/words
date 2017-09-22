@@ -8,14 +8,14 @@
 namespace Components\Infrastructure\Command\Handler;
 
 
-use Components\Infrastructure\Request\CommandRequest;
+use Components\Infrastructure\Request\IRequest;
 
-interface CommandHandler
+interface ICommandHandler
 {
     /**
-     * @param CommandRequest $request
+     * @param IRequest $request
      *
      * @return mixed
      */
-    public function handle(CommandRequest $request);
+    public function handle(IRequest $request);
 }

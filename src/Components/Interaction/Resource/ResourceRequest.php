@@ -8,9 +8,9 @@
 namespace Components\Interaction\Resource;
 
 
-use Components\Infrastructure\Request\CommandRequest;
+use Components\Infrastructure\Request\IRequest;
 
-abstract class ResourceCommandRequest implements CommandRequest
+abstract class ResourceRequest implements IRequest
 {
     protected $dao;
 

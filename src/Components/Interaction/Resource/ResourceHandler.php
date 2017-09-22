@@ -8,18 +8,18 @@
 namespace Components\Interaction\Resource;
 
 
-use Components\Infrastructure\Command\Handler\CommandHandler;
-use Components\Resource\Manager;
+use Components\Infrastructure\Command\Handler\ICommandHandler;
+use Components\Resource\IManager;
 
-abstract class ResourceHandler implements CommandHandler
+abstract class ResourceHandler implements ICommandHandler
 {
     /**
-     * @var Manager
+     * @var IManager
      */
     protected $manager;
 
     /**
-     * @return Manager
+     * @return IManager
      */
     public function getManager()
     {
@@ -27,7 +27,7 @@ abstract class ResourceHandler implements CommandHandler
     }
 
     /**
-     * @param Manager $manager
+     * @param IManager $manager
      *
      * @return $this
      */

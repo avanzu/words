@@ -8,9 +8,9 @@
 namespace Components\Interaction\Users\ChangePassword;
 
 
-use Components\Interaction\Resource\ResourceCommandRequest;
+use Components\Interaction\Resource\ResourceRequest;
 
-class ChangePasswordRequest extends ResourceCommandRequest
+class ChangePasswordRequest extends ResourceRequest
 {
 
     protected $plainPassword;

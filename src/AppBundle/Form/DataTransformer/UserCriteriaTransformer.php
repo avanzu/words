@@ -21,16 +21,16 @@ class UserCriteriaTransformer implements DataTransformerInterface
 {
 
     /**
-     * @var \Components\Resource\UserManager
+     * @var \Components\Resource\IUserManager
      */
     protected $userManager;
 
     /**
      * UserCriteriaTransformer constructor.
      *
-     * @param \Components\Resource\UserManager $userManager
+     * @param \Components\Resource\IUserManager $userManager
      */
-    public function __construct(\Components\Resource\UserManager $userManager) {
+    public function __construct(\Components\Resource\IUserManager $userManager) {
         $this->userManager = $userManager;
     }
 

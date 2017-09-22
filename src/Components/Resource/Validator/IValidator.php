@@ -8,14 +8,14 @@
 namespace Components\Resource\Validator;
 
 
-interface Validator
+interface IValidator
 {
     /**
      * @param mixed $subject
      * @param null  $constraints
      * @param null  $groups
      *
-     * @return Result
+     * @return IResult
      */
     public function validate($subject, $constraints= null, $groups = null);
 }

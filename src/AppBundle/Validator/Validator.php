@@ -10,7 +10,7 @@ use Components\Resource\Validator as Component;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class Validator implements Component\Validator
+class Validator implements Component\IValidator
 {
 
     /**

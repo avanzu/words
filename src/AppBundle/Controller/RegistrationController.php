@@ -9,7 +9,7 @@ namespace AppBundle\Controller;
 
 
 use AppBundle\Form\RegisterRequestType;
-use Components\Resource\UserManager;
+use Components\Resource\IUserManager;
 use AppBundle\Traits\AutoLogin;
 use AppBundle\Traits\TemplateAware as TemplateTrait;
 use Components\Interaction\Users\Activate\ActivateRequest;
@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class RegistrationController
- * @method UserManager getManager
+ * @method IUserManager getManager
  */
 class RegistrationController extends ResourceController implements TemplateAware
 {

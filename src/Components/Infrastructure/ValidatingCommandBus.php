@@ -8,42 +8,42 @@
 namespace Components\Infrastructure;
 
 
-use Components\Infrastructure\Request\CommandRequest;
-use Components\Infrastructure\Response\CommandResponse;
+use Components\Infrastructure\Request\IRequest;
+use Components\Infrastructure\Response\IResponse;
 use Components\Infrastructure\Response\ValidationFailedResponse;
-use Components\Resource\Validator\Validator;
+use Components\Resource\Validator\IValidator;
 
-class ValidatingCommandBus implements CommandBus
+class ValidatingCommandBus implements ICommandBus
 {
     /**
-     * @var CommandBus
+     * @var ICommandBus
      */
     protected $bus;
 
     /**
-     * @var Validator
+     * @var IValidator
      */
     protected $validator;
 
     /**
      * ValidatingCommandBus constructor.
      *
-     * @param CommandBus $bus
-     * @param Validator  $validator
+     * @param ICommandBus $bus
+     * @param IValidator  $validator
      */
-    public function __construct(CommandBus $bus, Validator $validator)
+    public function __construct(ICommandBus $bus, IValidator $validator)
     {
         $this->bus       = $bus;
         $this->validator = $validator;
     }
 
     /**
-     * @param CommandRequest $request
+     * @param IRequest $request
      *
-     * @return CommandResponse
+     * @return IResponse
      * @throws ValidationFailedResponse
      */
-    public function execute(CommandRequest $request)
+    public function execute(IRequest $request)
     {
         $result = $this->validator->validate($request);
         if( ! $result->isValid() ) {

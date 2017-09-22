@@ -8,10 +8,10 @@
 namespace Components\Interaction\Users\ResetPassword;
 
 
-use Components\Interaction\Resource\ResourceCommandRequest;
+use Components\Interaction\Resource\ResourceRequest;
 use Components\Model\User;
 
-class ResetPasswordRequest extends ResourceCommandRequest
+class ResetPasswordRequest extends ResourceRequest
 {
 
 

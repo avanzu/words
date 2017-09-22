@@ -8,10 +8,10 @@
 namespace Components\Infrastructure\Events;
 
 
-use Components\Infrastructure\Request\CommandRequest;
-use Components\Infrastructure\Response\CommandResponse;
+use Components\Infrastructure\Request\IRequest;
+use Components\Infrastructure\Response\IResponse;
 
-interface Message
+interface IMessage
 {
     /**
      * @return string
@@ -19,12 +19,12 @@ interface Message
     public function getName();
 
     /**
-     * @return CommandRequest
+     * @return IRequest
      */
     public function getRequest();
 
     /**
-     * @return CommandResponse
+     * @return IResponse
      */
     public function getResponse();
 

@@ -8,20 +8,20 @@
 namespace Components\Interaction\Resource\GetCollection;
 
 
-use Components\Infrastructure\Request\CommandRequest;
-use Components\Infrastructure\Response\CommandResponse;
-use Components\Infrastructure\Response\ErrorCommandResponse;
+use Components\Infrastructure\Request\IRequest;
+use Components\Infrastructure\Response\IResponse;
+use Components\Infrastructure\Response\ErrorResponse;
 use Components\Interaction\Resource\ResourceHandler;
 
 class GetCollectionHandler extends ResourceHandler
 {
 
     /**
-     * @param CommandRequest|GetCollectionRequest $request
+     * @param IRequest|GetCollectionRequest $request
      *
      * @return mixed
      */
-    public function handle(CommandRequest $request)
+    public function handle(IRequest $request)
     {
         $manager    = $this->getManager();
         try {
@@ -29,9 +29,9 @@ class GetCollectionHandler extends ResourceHandler
 
             return new GetCollectionResponse($collection, $request);
         } catch ( \Exception $e ) {
-            return new ErrorCommandResponse(
+            return new ErrorResponse(
                 sprintf('%s.%s.error', $request->getResourceName(), $request->getIntention()),
-                CommandResponse::STATUS_INTERNAL_SERVER_ERROR,
+                IResponse::STATUS_INTERNAL_SERVER_ERROR,
                 $e
             );
         }

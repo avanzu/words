@@ -8,11 +8,11 @@
 namespace AppBundle\Infrastructure\Events;
 
 
-use Components\Infrastructure\Events\Message;
-use Components\Infrastructure\Events\Notifier;
+use Components\Infrastructure\Events\IMessage;
+use Components\Infrastructure\Events\INotifier;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class EventDispatcherNotifier implements Notifier
+class EventDispatcherNotifier implements INotifier
 {
 
     /**
@@ -30,7 +30,7 @@ class EventDispatcherNotifier implements Notifier
     }
 
 
-    public function notify(Message $message)
+    public function notify(IMessage $message)
     {
         $this->eventDispatcher->dispatch($message->getName(), new MessageEvent($message));
     }

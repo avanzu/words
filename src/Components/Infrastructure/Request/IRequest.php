@@ -8,7 +8,7 @@
 namespace Components\Infrastructure\Request;
 
 
-interface CommandRequest
+interface IRequest
 {
 
 }

@@ -8,7 +8,7 @@
 namespace Components\Resource\Validator;
 
 
-interface Result
+interface IResult
 {
     /**
      * @return bool

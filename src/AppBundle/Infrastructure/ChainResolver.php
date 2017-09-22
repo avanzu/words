@@ -11,7 +11,7 @@ namespace AppBundle\Infrastructure;
 use Components\Infrastructure\CommandHandler;
 use Components\Infrastructure\Command;
 use Components\Infrastructure\Exception\HandlerNotFoundException;
-use Components\Infrastructure\Request\CommandRequest;
+use Components\Infrastructure\Request\IRequest;
 
 class ChainResolver implements RequestHandlerResolver
 {
@@ -40,12 +40,12 @@ class ChainResolver implements RequestHandlerResolver
     }
 
     /**
-     * @param CommandRequest $request
+     * @param IRequest $request
      *
      * @return CommandHandler
      * @throws HandlerNotFoundException
      */
-    public function getHandler(CommandRequest $request)
+    public function getHandler(IRequest $request)
     {
         foreach($this->resolvers as $resolver) {
             if ($resolver = $resolver->getHandler($request)) {

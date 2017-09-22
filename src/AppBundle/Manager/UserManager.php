@@ -1,6 +1,6 @@
 <?php
 /**
- * UserManager.php
+ * IUserManager.php
  * restfully
  * Date: 08.04.17
  */
@@ -10,7 +10,7 @@ namespace AppBundle\Manager;
 
 use AppBundle\Repository\UserRepository;
 use Components\Model\User;
-use Components\Resource\UserManager as Manager;
+use Components\Resource\IUserManager as Manager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
@@ -19,7 +19,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 /**
- * Class UserManager
+ * Class IUserManager
  * @method UserRepository getRepository
  */
 class UserManager extends ResourceManager implements UserProviderInterface, ContainerAwareInterface, Manager

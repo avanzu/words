@@ -8,12 +8,12 @@
 namespace Components\Resource\Repository;
 
 
-interface Factory
+interface IFactory
 {
     /**
      * @param $className
      *
-     * @return Repository
+     * @return IRepository
      */
     public function getRepository($className);
 }

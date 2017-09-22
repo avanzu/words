@@ -10,7 +10,7 @@ namespace Components\Infrastructure\Response;
 
 use Throwable;
 
-class ErrorCommandResponse extends \Exception implements CommandResponse
+class ErrorResponse extends \Exception implements IResponse
 {
     const COMPONENT_KEY   = 100;
     const INTERACTION_KEY = 000;
@@ -19,7 +19,7 @@ class ErrorCommandResponse extends \Exception implements CommandResponse
      */
     protected $status;
 
-    public function __construct($message = "", $code = CommandResponse::STATUS_BAD_REQUEST, Throwable $previous = null)
+    public function __construct($message = "", $code = IResponse::STATUS_BAD_REQUEST, Throwable $previous = null)
     {
         parent::__construct( $message, $this->getErrorCode($code), $previous );
         $this->status = $code;

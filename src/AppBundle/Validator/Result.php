@@ -11,7 +11,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
-class Result implements Component\Result
+class Result implements Component\IResult
 {
 
     /**

@@ -8,42 +8,42 @@
 namespace Components\Interaction\Users\ResetPassword;
 
 
-use Components\Resource\UserManager;
-use Components\Infrastructure\Events\Notifier;
+use Components\Resource\IUserManager;
+use Components\Infrastructure\Events\INotifier;
 use Components\Infrastructure\Events\ResourceMessage;
-use Components\Infrastructure\Request\CommandRequest;
-use Components\Infrastructure\Response\CommandResponse;
-use Components\Infrastructure\Response\ErrorCommandResponse;
+use Components\Infrastructure\Request\IRequest;
+use Components\Infrastructure\Response\IResponse;
+use Components\Infrastructure\Response\ErrorResponse;
 use Components\Interaction\Resource\ResourceHandler;
 
 /**
  * Class ResetPasswordHandler
- * @method UserManager getManager()
+ * @method IUserManager getManager()
  */
 class ResetPasswordHandler extends ResourceHandler
 {
 
     /**
-     * @var Notifier
+     * @var INotifier
      */
     protected $notifier;
 
     /**
      * ResetPasswordHandler constructor.
      *
-     * @param Notifier $notifier
+     * @param INotifier $notifier
      */
-    public function __construct(Notifier $notifier) {
+    public function __construct(INotifier $notifier) {
         $this->notifier = $notifier;
     }
 
 
     /**
-     * @param CommandRequest|ResetPasswordRequest $request
+     * @param IRequest|ResetPasswordRequest $request
      *
      * @return mixed
      */
-    public function handle(CommandRequest $request)
+    public function handle(IRequest $request)
     {
         $manager  = $this->getManager();
         $manager->startTransaction();
@@ -64,9 +64,9 @@ class ResetPasswordHandler extends ResourceHandler
 
             $manager->cancelTransaction();
 
-            return new ErrorCommandResponse(
+            return new ErrorResponse(
                 'Reset token assignment failed.',
-                CommandResponse::STATUS_INTERNAL_SERVER_ERROR,
+                IResponse::STATUS_INTERNAL_SERVER_ERROR,
                 $exception
             );
         }

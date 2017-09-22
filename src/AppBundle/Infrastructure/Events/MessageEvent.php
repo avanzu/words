@@ -8,7 +8,7 @@
 namespace AppBundle\Infrastructure\Events;
 
 
-use Components\Infrastructure\Events\Message;
+use Components\Infrastructure\Events\IMessage;
 use Symfony\Component\EventDispatcher\Event;
 
 class MessageEvent extends Event
@@ -20,13 +20,13 @@ class MessageEvent extends Event
      *
      * @param $message
      */
-    public function __construct(Message $message)
+    public function __construct(IMessage $message)
     {
         $this->message = $message;
     }
 
     /**
-     * @return Message
+     * @return IMessage
      */
     public function getMessage()
     {

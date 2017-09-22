@@ -8,7 +8,7 @@
 namespace Components\Infrastructure\Response;
 
 
-interface CommandResponse
+interface IResponse
 {
     // region ------------------------------------------------------------------------------------------------ CONSTANTS
 

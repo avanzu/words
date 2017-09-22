@@ -8,9 +8,9 @@
 namespace AppBundle\Manager;
 
 
-use Components\Resource\Repository\Factory;
-use Components\Resource\Repository\Repository;
-use Components\Resource\Validator\Validator;
+use Components\Resource\Repository\IFactory;
+use Components\Resource\Repository\IRepository;
+use Components\Resource\Validator\IValidator;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use PHPUnit\Framework\TestCase;
@@ -207,7 +207,7 @@ class ResourceManagerTest extends TestCase
     }
 
     /**
-     * @return ObjectProphecy|Repository
+     * @return ObjectProphecy|IRepository
      */
     private function getRepository()
     {
@@ -217,12 +217,12 @@ class ResourceManagerTest extends TestCase
     }
 
     /**
-     * @return Factory
+     * @return IFactory
      */
     private function getFactory($repository)
     {
-        /** @var Factory|ObjectProphecy $factory */
-        $factory = $this->prophesize(Factory::class);
+        /** @var IFactory|ObjectProphecy $factory */
+        $factory = $this->prophesize(IFactory::class);
         $factory->getRepository(ManagedTestObject::class)->willReturn($repository);
         return $factory->reveal();
     }
@@ -246,11 +246,11 @@ class ResourceManagerTest extends TestCase
     /**
      * @param bool $reveal
      *
-     * @return object|ObjectProphecy|Validator
+     * @return object|ObjectProphecy|IValidator
      */
     private function getValidator($reveal = true)
     {
-        $validator = $this->prophesize(Validator::class);
+        $validator = $this->prophesize(IValidator::class);
 
         return $reveal ? $validator->reveal() : $validator;
     }

@@ -28,7 +28,7 @@ class ContinueCommandResponse extends Response
      */
     public function getStatus()
     {
-        return CommandResponse::STATUS_CONTINUE;
+        return IResponse::STATUS_CONTINUE;
     }
 
     /**

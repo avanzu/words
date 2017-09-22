@@ -8,7 +8,7 @@
 namespace Components\Interaction\Resource;
 
 
-use Components\Infrastructure\Response\CommandResponse;
+use Components\Infrastructure\Response\IResponse;
 use Components\Infrastructure\Response\Response;
 
 class ResourceResponse extends Response
@@ -19,7 +19,7 @@ class ResourceResponse extends Response
     protected $resource;
 
     /**
-     * @var ResourceCommandRequest
+     * @var ResourceRequest
      */
     private $request;
 
@@ -29,11 +29,11 @@ class ResourceResponse extends Response
      *
      * @param                        $resource
      * @param int                    $status
-     * @param ResourceCommandRequest $request
+     * @param ResourceRequest        $request
      *
      * @internal param null $resourceName
      */
-    public function __construct($resource, ResourceCommandRequest $request, $status = CommandResponse::STATUS_OK) {
+    public function __construct($resource, ResourceRequest $request, $status = IResponse::STATUS_OK) {
         $this->resource     = $resource;
         $this->status       = $status;
         $this->request      = $request;

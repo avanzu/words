@@ -8,42 +8,42 @@
 namespace Components\Interaction\Users\ChangePassword;
 
 
-use Components\Resource\UserManager;
-use Components\Infrastructure\Events\Notifier;
+use Components\Resource\IUserManager;
+use Components\Infrastructure\Events\INotifier;
 use Components\Infrastructure\Events\ResourceMessage;
-use Components\Infrastructure\Request\CommandRequest;
-use Components\Infrastructure\Response\CommandResponse;
-use Components\Infrastructure\Response\ErrorCommandResponse;
+use Components\Infrastructure\Request\IRequest;
+use Components\Infrastructure\Response\IResponse;
+use Components\Infrastructure\Response\ErrorResponse;
 use Components\Interaction\Resource\ResourceHandler;
 use Components\Model\User;
 
 /**
- * @method UserManager getManager()
+ * @method IUserManager getManager()
  */
 class ChangePasswordHandler extends ResourceHandler
 {
 
     /**
-     * @var Notifier
+     * @var INotifier
      */
     protected $notifier;
 
     /**
      * ChangePasswordHandler constructor.
      *
-     * @param Notifier $notifier
+     * @param INotifier $notifier
      */
-    public function __construct(Notifier $notifier) {
+    public function __construct(INotifier $notifier) {
         $this->notifier = $notifier;
     }
 
 
     /**
-     * @param CommandRequest|ChangePasswordRequest $request
+     * @param IRequest|ChangePasswordRequest $request
      *
      * @return mixed
      */
-    public function handle(CommandRequest $request)
+    public function handle(IRequest $request)
     {
         $manager = $this->getManager();
         $manager->startTransaction();
@@ -53,7 +53,7 @@ class ChangePasswordHandler extends ResourceHandler
             $user          = $request->getDao();
             $plainPassword = $request->getPlainPassword();
             $encoded       = $this->getManager()->encodePassword($user, $plainPassword);
-            $response      = new ChangePasswordResponse($user, $request, CommandResponse::STATUS_ACCEPTED);
+            $response      = new ChangePasswordResponse($user, $request, IResponse::STATUS_ACCEPTED);
 
             $user->setPassword($encoded)->setToken(null);
             $manager->save($user);
@@ -69,9 +69,9 @@ class ChangePasswordHandler extends ResourceHandler
 
             $manager->cancelTransaction();
 
-            return new ErrorCommandResponse(
+            return new ErrorResponse(
                 'Password change failed.',
-                CommandResponse::STATUS_INTERNAL_SERVER_ERROR,
+                IResponse::STATUS_INTERNAL_SERVER_ERROR,
                 $exception
             );
         }

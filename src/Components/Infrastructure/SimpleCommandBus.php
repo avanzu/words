@@ -8,18 +8,18 @@
 namespace Components\Infrastructure;
 
 
-use Components\Infrastructure\Command\Resolver\CommandHandlerResolver;
-use Components\Infrastructure\Request\CommandRequest;
-use Components\Infrastructure\Response\CommandResponse;
-use Components\Infrastructure\Response\ErrorCommandResponse;
+use Components\Infrastructure\Command\Resolver\IHandlerResolver;
+use Components\Infrastructure\Request\IRequest;
+use Components\Infrastructure\Response\IResponse;
+use Components\Infrastructure\Response\ErrorResponse;
 
 /**
  * Class SimpleCommandBus
  */
-class SimpleCommandBus implements CommandBus
+class SimpleCommandBus implements ICommandBus
 {
     /**
-     * @var CommandHandlerResolver
+     * @var IHandlerResolver
      */
     protected $resolver;
 
@@ -31,24 +31,24 @@ class SimpleCommandBus implements CommandBus
     /**
      * SimpleCommandBus constructor.
      *
-     * @param CommandHandlerResolver $resolver
+     * @param IHandlerResolver $resolver
      */
-    public function __construct(CommandHandlerResolver $resolver) {
+    public function __construct(IHandlerResolver $resolver) {
         $this->resolver = $resolver;
 
     }
 
 
     /**
-     * @param CommandRequest $request
+     * @param IRequest $request
      *
-     * @return CommandResponse
-     * @throws ErrorCommandResponse
+     * @return IResponse
+     * @throws ErrorResponse
      */
-    public function execute(CommandRequest $request)
+    public function execute(IRequest $request)
     {
         $response = $this->resolver->getHandler($request)->handle($request);
-        if($response instanceof ErrorCommandResponse ) {
+        if($response instanceof ErrorResponse ) {
             throw $response;
         }
 

@@ -9,9 +9,9 @@ namespace Components\Interaction\Resource\GetCollection;
 
 
 use Components\DataAccess\Criteria;
-use Components\Interaction\Resource\ResourceCommandRequest;
+use Components\Interaction\Resource\ResourceRequest;
 
-class GetCollectionRequest extends ResourceCommandRequest
+class GetCollectionRequest extends ResourceRequest
 {
 
     protected $limit    = 10;

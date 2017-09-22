@@ -8,9 +8,9 @@
 namespace Components\Interaction\Resource\CreateResource;
 
 
-use Components\Interaction\Resource\ResourceCommandRequest;
+use Components\Interaction\Resource\ResourceRequest;
 
-abstract class CreateResourceRequest extends ResourceCommandRequest
+abstract class CreateResourceRequest extends ResourceRequest
 {
     public function getIntention()
     {

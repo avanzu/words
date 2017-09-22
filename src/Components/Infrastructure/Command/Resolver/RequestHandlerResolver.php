@@ -7,19 +7,19 @@
 
 namespace Components\Infrastructure\Command\Resolver;
 
-use Components\Infrastructure\Command\Handler\CommandHandler;
-use Components\Infrastructure\Container;
+use Components\Infrastructure\Command\Handler\ICommandHandler;
+use Components\Infrastructure\IContainer;
 use Components\Infrastructure\Exception\HandlerNotFoundException;
-use Components\Infrastructure\Request\CommandRequest;
+use Components\Infrastructure\Request\IRequest;
 
 /**
  * Class CommandResolver
  */
-class RequestHandlerResolver implements CommandHandlerResolver
+class RequestHandlerResolver implements IHandlerResolver
 {
 
     /**
-     * @var Container
+     * @var IContainer
      */
     protected $container;
 
@@ -31,9 +31,9 @@ class RequestHandlerResolver implements CommandHandlerResolver
     /**
      * CommandResolver constructor.
      *
-     * @param Container $container
+     * @param IContainer $container
      */
-    public function __construct(Container $container) {
+    public function __construct(IContainer $container) {
         $this->container = $container;
     }
 
@@ -54,15 +54,15 @@ class RequestHandlerResolver implements CommandHandlerResolver
     }
 
     /**
-     * @param CommandRequest $request
+     * @param IRequest $request
      *
-     * @return CommandHandler
+     * @return ICommandHandler
      * @throws HandlerNotFoundException
      */
-    public function getHandler(CommandRequest $request)
+    public function getHandler(IRequest $request)
     {
         $handlerName = $this->getHandlerName($request);
-        /** @var CommandHandler $handler */
+        /** @var ICommandHandler $handler */
         $handler     = $this->loadHandler($handlerName);
 
         if( ! $handler ) {
@@ -78,11 +78,11 @@ class RequestHandlerResolver implements CommandHandlerResolver
     }
 
     /**
-     * @param CommandRequest $request
+     * @param IRequest $request
      *
      * @return mixed
      */
-    protected function getHandlerName(CommandRequest $request)
+    protected function getHandlerName(IRequest $request)
     {
         return str_replace('Request', 'Handler', get_class($request));
     }
@@ -90,7 +90,7 @@ class RequestHandlerResolver implements CommandHandlerResolver
     /**
      * @param $handlerName
      *
-     * @return CommandHandler|bool
+     * @return ICommandHandler|bool
      */
     protected function createHandler($handlerName)
     {
@@ -98,7 +98,7 @@ class RequestHandlerResolver implements CommandHandlerResolver
             return false;
         }
 
-        /** @var CommandHandler $handler */
+        /** @var ICommandHandler $handler */
         $handler =  new $handlerName();
 
 

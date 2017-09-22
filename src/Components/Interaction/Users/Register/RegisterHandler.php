@@ -8,42 +8,42 @@
 namespace Components\Interaction\Users\Register;
 
 
-use Components\Resource\UserManager;
-use Components\Infrastructure\Events\Notifier;
+use Components\Resource\IUserManager;
+use Components\Infrastructure\Events\INotifier;
 use Components\Infrastructure\Events\ResourceMessage;
-use Components\Infrastructure\Request\CommandRequest;
-use Components\Infrastructure\Response\ErrorCommandResponse;
+use Components\Infrastructure\Request\IRequest;
+use Components\Infrastructure\Response\ErrorResponse;
 use Components\Infrastructure\Response\Response;
 use Components\Infrastructure\Response\ValidationFailedResponse;
 use Components\Interaction\Resource\ResourceHandler;
 
 /**
  * Class RegisterHandler
- * @method UserManager getManager()
+ * @method IUserManager getManager()
  */
 class RegisterHandler extends ResourceHandler
 {
 
     /**
-     * @var Notifier
+     * @var INotifier
      */
     protected $notifier;
 
     /**
      * RegisterHandler constructor.
      *
-     * @param Notifier $notifier
+     * @param INotifier $notifier
      */
-    public function __construct(Notifier $notifier) {
+    public function __construct(INotifier $notifier) {
         $this->notifier = $notifier;
     }
 
     /**
-     * @param CommandRequest|RegisterRequest $request
+     * @param IRequest|RegisterRequest $request
      *
      * @return mixed
      */
-    public function handle(CommandRequest $request)
+    public function handle(IRequest $request)
     {
         $manager  = $this->getManager();
         $resource = $request->getDao();
@@ -67,7 +67,7 @@ class RegisterHandler extends ResourceHandler
 
         } catch(\Exception $e) {
             $manager->cancelTransaction();
-            return new ErrorCommandResponse('Registration failed.', Response::STATUS_INTERNAL_SERVER_ERROR, $e);
+            return new ErrorResponse('Registration failed.', Response::STATUS_INTERNAL_SERVER_ERROR, $e);
         }
 
         return $response;

@@ -8,26 +8,26 @@
 namespace Components\Interaction\Users\Activate;
 
 
-use Components\Resource\UserManager;
-use Components\Infrastructure\Request\CommandRequest;
-use Components\Infrastructure\Response\CommandResponse;
-use Components\Infrastructure\Response\ErrorCommandResponse;
+use Components\Resource\IUserManager;
+use Components\Infrastructure\Request\IRequest;
+use Components\Infrastructure\Response\IResponse;
+use Components\Infrastructure\Response\ErrorResponse;
 use Components\Interaction\Resource\ResourceHandler;
 use Components\Model\User;
 
 /**
  * Class ActivateHandler
- * @method UserManager getManager()
+ * @method IUserManager getManager()
  */
 class ActivateHandler extends ResourceHandler
 {
 
     /**
-     * @param CommandRequest|ActivateRequest $request
+     * @param IRequest|ActivateRequest $request
      *
      * @return mixed
      */
-    public function handle(CommandRequest $request)
+    public function handle(IRequest $request)
     {
         /** @var User $user */
         $user     = $request->getDao();
@@ -42,7 +42,7 @@ class ActivateHandler extends ResourceHandler
 
         } catch(\Exception $e) {
             $manager->cancelTransaction();
-            return new ErrorCommandResponse('Activation failed.', CommandResponse::STATUS_INTERNAL_SERVER_ERROR, $e);
+            return new ErrorResponse('Activation failed.', IResponse::STATUS_INTERNAL_SERVER_ERROR, $e);
         }
 
     }

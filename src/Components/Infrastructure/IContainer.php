@@ -13,7 +13,7 @@ namespace Components\Infrastructure;
  *
  * @package Components\Infrastructure
  */
-interface Container
+interface IContainer
 {
     /**
      * @param $id

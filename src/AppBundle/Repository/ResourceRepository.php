@@ -8,10 +8,10 @@
 namespace AppBundle\Repository;
 
 
-use Components\Resource\Repository\Repository;
+use Components\Resource\Repository\IRepository;
 use Doctrine\ORM\EntityRepository;
 
-class ResourceRepository extends EntityRepository implements Repository
+class ResourceRepository extends EntityRepository implements IRepository
 {
 
 }

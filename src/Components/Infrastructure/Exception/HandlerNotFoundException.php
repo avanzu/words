@@ -8,9 +8,9 @@
 namespace Components\Infrastructure\Exception;
 
 
-use Components\Infrastructure\Response\ErrorCommandResponse;
+use Components\Infrastructure\Response\ErrorResponse;
 
-class HandlerNotFoundException extends ErrorCommandResponse
+class HandlerNotFoundException extends ErrorResponse
 {
 
 }

@@ -8,7 +8,7 @@
 namespace Components\Resource\Repository;
 
 
-interface Repository
+interface IRepository
 {
 
 }
