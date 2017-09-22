@@ -8,6 +8,7 @@
 namespace AppBundle\Controller;
 
 
+use Components\Infrastructure\Presentation\IPresenter;
 use Components\Resource\IManager;
 use Components\Infrastructure\Request\IRequest;
 use Components\Infrastructure\Response\IResponse;
@@ -31,15 +32,34 @@ class ResourceController extends Controller
     protected $manager;
 
     /**
+     * @var IPresenter
+     */
+    protected $presenter;
+
+    /**
      * ResourceController constructor.
      *
      * @param IManager $manager
      */
-    public function __construct(IManager $manager) {
-        $this->manager = $manager;
+    public function __construct(IManager $manager, IPresenter $presenter) {
+        $this->manager   = $manager;
+        $this->presenter = $presenter;
     }
 
+    /**
+     * @return IPresenter
+     */
+    public function getPresenter()
+    {
+        return $this->presenter;
+    }
 
+    /**
+     * @param         $resource
+     * @param Request $request
+     *
+     * @return Response
+     */
     public function getCollectionAction($resource, Request $request)
     {
         $command = new GetCollectionRequest(
@@ -61,6 +81,8 @@ class ResourceController extends Controller
     {
         return $this->manager;
     }
+
+
 
     /**
      * @param        $condition

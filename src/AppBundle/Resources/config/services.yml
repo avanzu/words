@@ -5,6 +5,7 @@ imports:
     - { resource: "container/devtools.yml" }
     - { resource: "container/listeners.yml" }
     - { resource: "container/forms.yml" }
+    - { resource: "container/presentation.yml" }
 
 services:
     app.manager.email:

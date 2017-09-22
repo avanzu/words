@@ -11,6 +11,7 @@ use AppBundle\Form\ChangePasswordRequestType;
 use AppBundle\Form\ResetPasswordRequestType;
 use AppBundle\Traits\AutoLogin;
 use AppBundle\Traits\TemplateAware as TemplateTrait;
+use Components\Infrastructure\Presentation\TemplateView;
 use Components\Infrastructure\Response\ContinueCommandResponse;
 use Components\Interaction\Users\ChangePassword\ChangePasswordRequest;
 use Components\Interaction\Users\ResetPassword\ResetPasswordRequest;
@@ -24,7 +25,7 @@ use Symfony\Component\HttpFoundation\Response;
  * Class ResetController
  * @method IUserManager getManager
  */
-class ResetController extends ResourceController implements TemplateAware
+class ResetController extends ResourceController implements ITemplateAware
 {
     use TemplateTrait,
         AutoLogin;
@@ -49,14 +50,13 @@ class ResetController extends ResourceController implements TemplateAware
         $result = $this->getInteractionResponse($form, $request, $command);
 
         if (!$result->isSuccessful()) {
-            return $this->render(
-                $this->getTemplate(),
-                [
-                    'form'    => $form->createView(),
-                    'command' => $command,
-                    'result'  => $result,
-                ]
-            );
+            $view = new TemplateView($this->getTemplate(), [
+                'form'    => $form->createView(),
+                'command' => $command,
+                'result'  => $result,
+            ]);
+
+            return new Response($this->getPresenter()->show($view));
         }
 
         $this->addFlash('success', $this->trans($result->getMessage()));
@@ -82,14 +82,13 @@ class ResetController extends ResourceController implements TemplateAware
         $result = $this->getInteractionResponse($form, $request, $command);
 
         if (!$result->isSuccessful()) {
-            return $this->render(
-                $this->getTemplate(),
-                [
-                    'form'    => $form->createView(),
-                    'command' => $command,
-                    'result'  => $result,
-                ]
-            );
+            $view = new TemplateView($this->getTemplate(), [
+                'form'    => $form->createView(),
+                'command' => $command,
+                'result'  => $result,
+            ]);
+
+            return new Response($this->getPresenter()->show($view));
         }
 
         $this->executeAutoLogin($user);

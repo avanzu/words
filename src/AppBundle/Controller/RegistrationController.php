@@ -9,11 +9,12 @@ namespace AppBundle\Controller;
 
 
 use AppBundle\Form\RegisterRequestType;
-use Components\Resource\IUserManager;
 use AppBundle\Traits\AutoLogin;
 use AppBundle\Traits\TemplateAware as TemplateTrait;
+use Components\Infrastructure\Presentation\TemplateView;
 use Components\Interaction\Users\Activate\ActivateRequest;
 use Components\Interaction\Users\Register\RegisterRequest;
+use Components\Resource\IUserManager;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,7 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
  * Class RegistrationController
  * @method IUserManager getManager
  */
-class RegistrationController extends ResourceController implements TemplateAware
+class RegistrationController extends ResourceController implements ITemplateAware
 {
     use TemplateTrait,
         AutoLogin;
@@ -38,16 +39,18 @@ class RegistrationController extends ResourceController implements TemplateAware
         $command = new RegisterRequest();
         $form    = $this->createForm(RegisterRequestType::class);
         $result  = $this->getInteractionResponse($form, $request, $command);
-        if( $result->isSuccessful() ) {
+        if ($result->isSuccessful()) {
             $this->addFlash('success', $this->trans($result->getMessage()));
+
             return $this->redirectToRoute('app_homepage');
         }
 
-        return $this->render($this->getTemplate(), [
+        $view = new TemplateView($this->getTemplate(), [
             'form'    => $form->createView(),
             'command' => $command,
             'result'  => $result,
         ]);
+        return new Response($this->getPresenter()->show($view));
     }
 
     /**
@@ -56,16 +59,19 @@ class RegistrationController extends ResourceController implements TemplateAware
      *
      * @return RedirectResponse|Response
      */
-    public function activateAction($token, Request $request) {
+    public function activateAction($token, Request $request)
+    {
 
         $user = $this->getManager()->loadUserByToken($token);
+
         $this->throw404Unless($user);
 
         $command = new ActivateRequest($user);
         $result  = $this->executeCommand($command);
-        if( $result->isSuccessful() ) {
+        if ($result->isSuccessful()) {
             $this->executeAutoLogin($user);
             $this->addFlash('success', $result->getMessage());
+
             return $this->redirectToRoute('app_homepage');
         }
 

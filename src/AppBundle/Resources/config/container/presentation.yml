@@ -1,0 +1,5 @@
+services:
+    app.presenter:
+        class: AppBundle\Presentation\TwigPresenter
+        arguments:
+            - "@twig"
