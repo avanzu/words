@@ -22,7 +22,7 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
  * Class IUserManager
  * @method UserRepository getRepository
  */
-class UserManager extends ResourceManager implements UserProviderInterface, ContainerAwareInterface, Manager
+class UserManager extends ResourceManager implements UserProviderInterface, ContainerAwareInterface
 {
 
     const INTENT_REGISTER = 'register';

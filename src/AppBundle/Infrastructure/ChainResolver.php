@@ -8,28 +8,29 @@
 namespace AppBundle\Infrastructure;
 
 
-use Components\Infrastructure\CommandHandler;
+use Components\Infrastructure\Command\Handler\ICommandHandler;
 use Components\Infrastructure\Command;
+use Components\Infrastructure\Command\Resolver\IHandlerResolver;
 use Components\Infrastructure\Exception\HandlerNotFoundException;
 use Components\Infrastructure\Request\IRequest;
 
-class ChainResolver implements RequestHandlerResolver
+class ChainResolver implements IHandlerResolver
 {
 
-    /** @var RequestHandlerResolver[] */
+    /** @var IHandlerResolver[] */
     protected $resolvers = [];
 
     /**
      * ChainResolver constructor.
      *
-     * @param RequestHandlerResolver[] $resolvers
+     * @param IHandlerResolver[] $resolvers
      */
     public function __construct(array $resolvers = []) {
         $this->resolvers = $resolvers;
     }
 
     /**
-     * @param RequestHandlerResolver $resolver
+     * @param IHandlerResolver $resolver
      * @param bool                   $prepend
      */
     public function addResolver($resolver, $prepend = false)
@@ -42,7 +43,7 @@ class ChainResolver implements RequestHandlerResolver
     /**
      * @param IRequest $request
      *
-     * @return CommandHandler
+     * @return ICommandHandler
      * @throws HandlerNotFoundException
      */
     public function getHandler(IRequest $request)
