@@ -8,6 +8,7 @@
 namespace Components\Interaction\Users\ChangePassword;
 
 
+use Components\Infrastructure\Exception\ResourceNotFoundException;
 use Components\Resource\IUserManager;
 use Components\Infrastructure\Events\INotifier;
 use Components\Infrastructure\Events\ResourceMessage;
@@ -49,7 +50,6 @@ class ChangePasswordHandler extends ResourceHandler
         $manager->startTransaction();
 
         try {
-            /** @var User $user */
             $user          = $request->getDao();
             $plainPassword = $request->getPlainPassword();
             $encoded       = $this->getManager()->encodePassword($user, $plainPassword);

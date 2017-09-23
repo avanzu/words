@@ -17,6 +17,7 @@ use Components\Infrastructure\Response\IResponse;
 use Components\Infrastructure\Response\ContinueCommandResponse;
 use Components\Infrastructure\Response\ErrorResponse;
 use Components\Interaction\Resource\GetCollection\GetCollectionRequest;
+use Components\Resource\Validator\IResult;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
@@ -58,6 +59,15 @@ class ResourceController extends Controller implements ICommandRunner, IPresente
     }
 
     /**
+     * @return IManager
+     */
+    protected function getManager()
+    {
+        return $this->manager;
+    }
+
+
+    /**
      * @param TemplateView $view
      *
      * @return Response
@@ -66,6 +76,8 @@ class ResourceController extends Controller implements ICommandRunner, IPresente
     {
         return new Response($this->getPresenter()->show($view));
     }
+
+
 
 
     /**
@@ -88,13 +100,6 @@ class ResourceController extends Controller implements ICommandRunner, IPresente
 
     }
 
-    /**
-     * @return IManager
-     */
-    protected function getManager()
-    {
-        return $this->manager;
-    }
 
 
 

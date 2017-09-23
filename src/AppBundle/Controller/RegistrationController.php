@@ -10,6 +10,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Form\RegisterRequestType;
 use AppBundle\Traits\AutoLogin;
+use AppBundle\Traits\Flasher;
 use AppBundle\Traits\TemplateAware as TemplateTrait;
 use Components\Infrastructure\Presentation\TemplateView;
 use Components\Interaction\Users\Activate\ActivateRequest;
@@ -23,9 +24,10 @@ use Symfony\Component\HttpFoundation\Response;
  * Class RegistrationController
  * @method IUserManager getManager
  */
-class RegistrationController extends ResourceController implements ITemplateAware
+class RegistrationController extends ResourceController implements ITemplateAware, IFlashing
 {
     use TemplateTrait,
+        Flasher,
         AutoLogin;
 
     /**
@@ -40,8 +42,7 @@ class RegistrationController extends ResourceController implements ITemplateAwar
         $form    = $this->createForm(RegisterRequestType::class);
         $result  = $this->getInteractionResponse($form, $request, $command);
         if ($result->isSuccessful()) {
-            $this->addFlash('success', $this->trans($result->getMessage()));
-
+            $this->flash($result);
             return $this->redirectToRoute('app_homepage');
         }
 
@@ -69,10 +70,11 @@ class RegistrationController extends ResourceController implements ITemplateAwar
         $command = new ActivateRequest($user);
         $result  = $this->executeCommand($command);
         if ($result->isSuccessful()) {
-            $this->executeAutoLogin($user);
-            $this->addFlash('success', $result->getMessage());
 
+            $this->executeAutoLogin($user);
+            $this->flash($result);
             return $this->redirectToRoute('app_homepage');
+
         }
 
         return new Response($result->getMessage(), $result->getStatus());

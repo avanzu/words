@@ -3,3 +3,9 @@ services:
         class: AppBundle\Presentation\TwigPresenter
         arguments:
             - "@twig"
+
+    app.flash:
+        class: AppBundle\Presentation\ResultFlashBuilder
+        arguments:
+            - "@session.flash_bag"
+            - "@translator"

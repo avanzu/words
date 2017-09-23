@@ -9,10 +9,10 @@ namespace AppBundle\Controller;
 
 use AppBundle\Form\ChangePasswordRequestType;
 use AppBundle\Form\ResetPasswordRequestType;
+use AppBundle\Presentation\ResultFlashBuilder;
 use AppBundle\Traits\AutoLogin;
+use AppBundle\Traits\Flasher;
 use AppBundle\Traits\TemplateAware as TemplateTrait;
-use Components\Infrastructure\Controller\ICommandRunner;
-use Components\Infrastructure\Presentation\IPresenter;
 use Components\Infrastructure\Presentation\TemplateView;
 use Components\Infrastructure\Response\ContinueCommandResponse;
 use Components\Interaction\Users\ChangePassword\ChangePasswordRequest;
@@ -27,10 +27,12 @@ use Symfony\Component\HttpFoundation\Response;
  * Class ResetController
  * @method IUserManager getManager
  */
-class ResetController extends ResourceController implements ITemplateAware, ICommandRunner, IPresenter
+class ResetController extends ResourceController implements ITemplateAware, IFlashing
 {
     use TemplateTrait,
+        Flasher,
         AutoLogin;
+
 
 
     /**
@@ -51,19 +53,22 @@ class ResetController extends ResourceController implements ITemplateAware, ICom
         /** @var ResetPasswordResponse|ContinueCommandResponse $result */
         $result = $this->getInteractionResponse($form, $request, $command);
 
-        if (!$result->isSuccessful()) {
-            $view = new TemplateView($this->getTemplate(), [
-                'form'    => $form->createView(),
-                'command' => $command,
-                'result'  => $result,
-            ]);
+        if ($result->isSuccessful()) {
 
-            return $this->createResponse($view);
+            $this->flash($result);
+            return $this->redirectToRoute('app_homepage');
+
         }
 
-        $this->addFlash('success', $this->trans($result->getMessage()));
+        $view = new TemplateView($this->getTemplate(), [
+            'form'    => $form->createView(),
+            'command' => $command,
+            'result'  => $result,
+        ]);
 
-        return $this->redirectToRoute('app_homepage');
+        return $this->createResponse($view);
+
+
     }
 
     /**
@@ -83,21 +88,21 @@ class ResetController extends ResourceController implements ITemplateAware, ICom
 
         $result = $this->getInteractionResponse($form, $request, $command);
 
-        if (!$result->isSuccessful()) {
-            $view = new TemplateView($this->getTemplate(), [
-                'form'    => $form->createView(),
-                'command' => $command,
-                'result'  => $result,
-            ]);
+        if ($result->isSuccessful()) {
+            $this->executeAutoLogin($user);
+            $this->flash($result);
 
-            return $this->createResponse($view);
+            return $this->redirectToRoute('app_homepage');
         }
+        $view = new TemplateView($this->getTemplate(), [
+            'form'    => $form->createView(),
+            'command' => $command,
+            'result'  => $result,
+        ]);
 
-        $this->executeAutoLogin($user);
+        return $this->createResponse($view);
 
-        $this->addFlash('success', $this->trans($result->getMessage()));
 
-        return $this->redirectToRoute('app_homepage');
     }
 
 

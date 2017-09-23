@@ -9,10 +9,17 @@ namespace Components\Interaction\Users\ChangePassword;
 
 
 use Components\Interaction\Resource\ResourceRequest;
+use Components\Model\User;
 
+/**
+ * Class ChangePasswordRequest
+ */
 class ChangePasswordRequest extends ResourceRequest
 {
 
+    /**
+     * @var string
+     */
     protected $plainPassword;
 
     /**
@@ -39,7 +46,7 @@ class ChangePasswordRequest extends ResourceRequest
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getPlainPassword()
     {
@@ -47,7 +54,7 @@ class ChangePasswordRequest extends ResourceRequest
     }
 
     /**
-     * @return null
+     * @return User|null
      */
     public function getDao()
     {
