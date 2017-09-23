@@ -11,6 +11,8 @@ use AppBundle\Form\ChangePasswordRequestType;
 use AppBundle\Form\ResetPasswordRequestType;
 use AppBundle\Traits\AutoLogin;
 use AppBundle\Traits\TemplateAware as TemplateTrait;
+use Components\Infrastructure\Controller\ICommandRunner;
+use Components\Infrastructure\Presentation\IPresenter;
 use Components\Infrastructure\Presentation\TemplateView;
 use Components\Infrastructure\Response\ContinueCommandResponse;
 use Components\Interaction\Users\ChangePassword\ChangePasswordRequest;
@@ -25,7 +27,7 @@ use Symfony\Component\HttpFoundation\Response;
  * Class ResetController
  * @method IUserManager getManager
  */
-class ResetController extends ResourceController implements ITemplateAware
+class ResetController extends ResourceController implements ITemplateAware, ICommandRunner, IPresenter
 {
     use TemplateTrait,
         AutoLogin;
