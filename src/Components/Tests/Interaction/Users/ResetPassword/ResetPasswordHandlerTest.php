@@ -22,26 +22,6 @@ use Prophecy\Argument;
 class ResetPasswordHandlerTest extends TestCase
 {
 
-
-    public function testItShouldValidate()
-    {
-        $this->markTestSkipped();
-        $manager = $this->prophesize(IUserManager::class);
-        $result  = $this->prophesize(Result::class);
-        $result->isValid()->shouldBeCalled()->willReturn(false);
-        $manager->validate(Argument::type(User::class), ['Default', 'register'])->shouldBeCalled()->willReturn( $result );
-
-        $notifier = $this->prophesize(INotifier::class);
-        $notifier->notify(Argument::type(ResourceMessage::class))->shouldNotBeCalled();
-
-
-        $subject = new ResetPasswordHandler($notifier->reveal());
-        $subject->setManager($manager->reveal());
-
-        $response = $subject->handle(new ResetPasswordRequest(new User()));
-        $this->assertInstanceOf(ValidationFailedResponse::class, $response);
-    }
-
     /**
      *
      */
