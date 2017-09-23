@@ -8,6 +8,7 @@
 namespace Components\Infrastructure\Command\Resolver;
 
 use Components\Infrastructure\Command\Handler\ICommandHandler;
+use Components\Infrastructure\Exception\InvalidHandlerClassException;
 use Components\Infrastructure\IContainer;
 use Components\Infrastructure\Exception\HandlerNotFoundException;
 use Components\Infrastructure\Request\IRequest;
@@ -95,6 +96,10 @@ class RequestHandlerResolver implements IHandlerResolver
     protected function createHandler($handlerName)
     {
         if( ! class_exists($handlerName) ) {
+            return false;
+        }
+
+        if( ! is_a($handlerName, ICommandHandler::class, true)) {
             return false;
         }
 

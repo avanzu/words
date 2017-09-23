@@ -9,13 +9,22 @@ namespace Components\Infrastructure\Command\Resolver;
 
 
 use Components\Infrastructure\Command\Handler\ICommandHandler;
+use Components\Infrastructure\Exception\InvalidHandlerClassException;
 use Components\Infrastructure\Request\IRequest;
 use Components\Interaction\Resource\ResourceHandler;
 use Components\Interaction\Resource\ResourceRequest;
 use Components\Resource\IManager;
 
+/**
+ * Class ResourceHandlerResolver
+ */
 class ResourceHandlerResolver extends RequestHandlerResolver
 {
+    /**
+     * @param IRequest $request
+     *
+     * @return bool|mixed
+     */
     protected function getHandlerName(IRequest $request)
     {
         $className = parent::getHandlerName($request);
@@ -36,7 +45,9 @@ class ResourceHandlerResolver extends RequestHandlerResolver
      */
     public function getHandler(IRequest $request)
     {
-        return $this->configure(parent::getHandler($request), $request);
+            $handler = parent::getHandler($request);
+            return $this->configure($handler, $request);
+
     }
 
 

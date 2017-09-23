@@ -37,13 +37,14 @@ class ActivateHandler extends ResourceHandler
         try {
             $user->setToken(null)->setIsActive(true);
             $manager->save($user);
-
-            return $response;
+            $manager->commitTransaction();
 
         } catch(\Exception $e) {
             $manager->cancelTransaction();
             return new ErrorResponse('Activation failed.', IResponse::STATUS_INTERNAL_SERVER_ERROR, $e);
         }
+
+        return $response;
 
     }
 }
