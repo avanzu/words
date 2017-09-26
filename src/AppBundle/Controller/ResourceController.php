@@ -11,13 +11,13 @@ namespace AppBundle\Controller;
 use Components\Infrastructure\Controller\ICommandRunner;
 use Components\Infrastructure\Presentation\IPresenter;
 use Components\Infrastructure\Presentation\TemplateView;
+use Components\Localization\ILocalizer;
 use Components\Resource\IManager;
 use Components\Infrastructure\Request\IRequest;
 use Components\Infrastructure\Response\IResponse;
 use Components\Infrastructure\Response\ContinueCommandResponse;
 use Components\Infrastructure\Response\ErrorResponse;
 use Components\Interaction\Resource\GetCollection\GetCollectionRequest;
-use Components\Resource\Validator\IResult;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,16 +38,22 @@ class ResourceController extends Controller implements ICommandRunner, IPresente
      * @var IPresenter
      */
     protected $presenter;
+    /**
+     * @var ILocalizer
+     */
+    private $localizer;
 
     /**
      * ResourceController constructor.
      *
      * @param IManager   $manager
      * @param IPresenter $presenter
+     * @param ILocalizer $localizer
      */
-    public function __construct(IManager $manager, IPresenter $presenter) {
+    public function __construct(IManager $manager, IPresenter $presenter, ILocalizer $localizer) {
         $this->manager   = $manager;
         $this->presenter = $presenter;
+        $this->localizer = $localizer;
     }
 
     /**
@@ -120,18 +126,6 @@ class ResourceController extends Controller implements ICommandRunner, IPresente
 
 
     /**
-     * @param         $model
-     * @param Request $request
-     * @param         $intent
-     */
-    protected function saveModel($model, Request $request, $intent)
-    {
-        $this->preSaveModel($model, $request, $intent);
-        $this->getManager()->save($model, true, $intent);
-        $this->postSaveModel($model, $request, $intent);
-    }
-
-    /**
      * @param Request $request
      * @param Form    $form
      * @param         $model
@@ -170,34 +164,6 @@ class ResourceController extends Controller implements ICommandRunner, IPresente
     protected function postSaveModel($model, Request $request, $intent = null)
     {}
 
-    /**
-     * Translator shorthand method
-     *
-     * @param        $token
-     * @param array  $args
-     * @param string $catalog
-     *
-     * @return string
-     */
-    protected function trans($token, $args = [], $catalog = 'messages')
-    {
-        return $this->get('translator')->trans($token, $args, $catalog);
-    }
-
-    /**
-     * Translator shorthand method
-     *
-     * @param        $token
-     * @param        $num
-     * @param        $args
-     * @param string $catalog
-     *
-     * @return string
-     */
-    protected function transChoice($token, $num, $args, $catalog = 'messages')
-    {
-        return $this->get('translator')->transChoice($token, $num, $args, $catalog);
-    }
 
     /**
      * @param Form             $form
@@ -209,6 +175,7 @@ class ResourceController extends Controller implements ICommandRunner, IPresente
     protected function getInteractionResponse(Form $form, Request $request, IRequest $command)
     {
         $form->handleRequest($request);
+
         if( ! $form->isSubmitted() ) {
             return new ContinueCommandResponse();
         }

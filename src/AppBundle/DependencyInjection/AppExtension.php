@@ -9,6 +9,7 @@ namespace AppBundle\DependencyInjection;
 
 
 use AppBundle\Controller\IFlashing;
+use Symfony\Component\BrowserKit\Response;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -79,7 +80,8 @@ class AppExtension extends Extension
     {
         $definition = new Definition($settings['controller'], [
            new Reference(sprintf('app.manager.%s', $key)),
-           new Reference('app.presenter')
+           new Reference('app.presenter'),
+           new Reference('app.translator')
         ]);
 
         if( is_a($settings['controller'], ContainerAwareInterface::class, true) ) {

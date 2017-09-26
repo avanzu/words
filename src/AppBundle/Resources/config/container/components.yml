@@ -45,6 +45,16 @@ services:
             - "@app.command_bus.validating"
             - "@logger"
 
+    app.translator:
+        class: AppBundle\Localization\Translator
+        arguments:
+            - "@service_container"
+
+    app.localizer:
+        class: Components\Localization\Localizer
+        arguments:
+            - "@app.translator"
+
     app.command_bus:
         alias: app.command_bus.logging
 
