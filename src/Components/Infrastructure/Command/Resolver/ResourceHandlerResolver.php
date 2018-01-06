@@ -10,6 +10,7 @@ namespace Components\Infrastructure\Command\Resolver;
 
 use Components\Infrastructure\Command\Handler\ICommandHandler;
 use Components\Infrastructure\Exception\InvalidHandlerClassException;
+use Components\Infrastructure\IContainer;
 use Components\Infrastructure\Request\IRequest;
 use Components\Interaction\Resource\ResourceHandler;
 use Components\Interaction\Resource\ResourceRequest;
@@ -20,6 +21,17 @@ use Components\Resource\IManager;
  */
 class ResourceHandlerResolver extends RequestHandlerResolver
 {
+    /**
+     * @var IContainer
+     */
+    private $managers;
+
+    public function __construct(IContainer $container, IContainer $managers) {
+        parent::__construct($container);
+        $this->managers = $managers;
+    }
+
+
     /**
      * @param IRequest $request
      *
@@ -81,7 +93,7 @@ class ResourceHandlerResolver extends RequestHandlerResolver
     protected function getResourceManager(ResourceRequest $request)
     {
         /** @var IManager $manager */
-        $manager = $this->container->acquire(sprintf('app.manager.%s', $request->getResourceName()));
+        $manager = $this->managers->acquire(sprintf('app.manager.%s', $request->getResourceName()));
         return $manager;
     }
 

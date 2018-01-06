@@ -9,7 +9,8 @@ namespace AppBundle\Infrastructure;
 
 
 use Components\Infrastructure\IContainer;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Psr\Container\ContainerInterface;
+
 
 class ServiceContainer implements IContainer
 {
@@ -32,7 +33,7 @@ class ServiceContainer implements IContainer
     /**
      * @param $id
      *
-     * @return object
+     * @return mixed
      */
     public function acquire($id)
     {

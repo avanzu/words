@@ -2,10 +2,26 @@ imports:
     - { resource: "command-handlers.yml" }
 
 services:
+    app.handler.locator:
+        class: Symfony\Component\DependencyInjection\ServiceLocator
+        tags: ["container.service_locator"]
+        arguments:
+            - []
+    app.manager.locator:
+        class: Symfony\Component\DependencyInjection\ServiceLocator
+        tags: ["container.service_locator"]
+        arguments:
+            - []
+
     app.container.simple:
         class: AppBundle\Infrastructure\ServiceContainer
         arguments:
-            - "@service_container"
+            - "@app.handler.locator"
+
+    app.container.managers:
+        class: AppBundle\Infrastructure\ServiceContainer
+        arguments:
+            - "@app.manager.locator"
 
     app.notifier.default:
         class: AppBundle\Infrastructure\Events\EventDispatcherNotifier
@@ -27,6 +43,7 @@ services:
         class: Components\Infrastructure\Command\Resolver\ResourceHandlerResolver
         arguments:
             - "@app.container"
+            - "@app.container.managers"
 
     app.command_bus.simple:
         class: Components\Infrastructure\SimpleCommandBus

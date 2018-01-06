@@ -11,15 +11,16 @@ namespace AppBundle\Controller;
 use Components\Infrastructure\Controller\ICommandRunner;
 use Components\Infrastructure\Presentation\IPresenter;
 use Components\Infrastructure\Presentation\TemplateView;
-use Components\Localization\ILocalizer;
-use Components\Resource\IManager;
 use Components\Infrastructure\Request\IRequest;
-use Components\Infrastructure\Response\IResponse;
 use Components\Infrastructure\Response\ContinueCommandResponse;
 use Components\Infrastructure\Response\ErrorResponse;
+use Components\Infrastructure\Response\IResponse;
 use Components\Interaction\Resource\GetCollection\GetCollectionRequest;
+use Components\Localization\ILocalizer;
+use Components\Resource\IManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -166,9 +167,9 @@ class ResourceController extends Controller implements ICommandRunner, IPresente
 
 
     /**
-     * @param Form             $form
-     * @param IRequest|Request $request
-     * @param IRequest         $command
+     * @param Form|FormInterface $form
+     * @param IRequest|Request   $request
+     * @param IRequest           $command
      *
      * @return IResponse
      */

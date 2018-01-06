@@ -9,6 +9,7 @@ namespace AppBundle\DependencyInjection;
 
 
 use AppBundle\Controller\IFlashing;
+use AppBundle\Entity\Api\RefreshToken;
 use Symfony\Component\BrowserKit\Response;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -56,18 +57,23 @@ class AppExtension extends Extension
     protected function initializeClasses($config, ContainerBuilder $container)
     {
         $resourceNames = $container->hasParameter('app.resources') ? $container->getParameter('app.resources') : [];
+        $locator       = $container->getDefinition('app.manager.locator');
+        $managers      = [];
+
 
         foreach($config['resources'] as $key => $settings) {
 
             $container->setParameter(sprintf('app.resource.%s.class', $key), $settings['model']);
 
-            $this->addManagerDefinition($key, $settings, $container);
+            $managerKey = $this->addManagerDefinition($key, $settings, $container);
             $this->addControllerDefinition($key, $settings, $container);
 
-            $resourceNames[$key] = $settings['model'];
-        }
+            $resourceNames[$key]   = $settings['model'];
+            $managers[$managerKey] = new Reference($managerKey);
 
+        }
         $container->setParameter('app.resources', $resourceNames);
+        $locator->setArguments([$managers]);
 
     }
 
@@ -99,6 +105,8 @@ class AppExtension extends Extension
      * @param                  $key
      * @param                  $settings
      * @param ContainerBuilder $container
+     *
+     * @return string
      */
     protected function addManagerDefinition($key, $settings, ContainerBuilder $container)
     {
@@ -113,7 +121,9 @@ class AppExtension extends Extension
             $definition->addMethodCall('setContainer', [new Reference('service_container')]);
         }
 
-        $container->setDefinition(sprintf('app.manager.%s', $key), $definition);
+        $key = sprintf('app.manager.%s', $key);
+        $container->setDefinition($key, $definition);
+        return $key;
     }
 
     /**
