@@ -91,6 +91,11 @@ class AppCollector extends DataCollector
         $this->data['request_locale'] = $request->getLocale();
     }
 
+    public function reset()
+    {
+
+    }
+
     /**
      * Returns the name of the collector.
      *

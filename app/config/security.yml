@@ -26,6 +26,8 @@ security:
 
         oauth_authorize:
             pattern:    ^/oauth/v2/auth
+            provider: resource
+            logout_on_user_change: true
             form_login:
                  #provider: fos_userbundle
                  check_path: /oauth/v2/auth/login_check
@@ -38,10 +40,13 @@ security:
             fos_oauth:  true
             stateless:  true
             anonymous:  false # can be omitted as its default value
+            provider: resource
 
         main:
             anonymous: ~
             pattern: ^/
+            provider: resource
+            logout_on_user_change: true
             form_login:
                 check_path: app_security_login
                 login_path: app_security_login
