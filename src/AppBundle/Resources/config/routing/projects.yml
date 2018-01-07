@@ -8,3 +8,8 @@ app_projects_create:
     defaults:
         _controller: app.controller.project:createAction
         _template: "@App/Project/create.html.twig"
+app_projects_update:
+    path: /{slug}/update
+    defaults:
+        _controller: app.controller.project:updateAction
+        _template: "@App/Project/update.html.twig"

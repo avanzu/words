@@ -15,8 +15,8 @@ AppBundle\Entity\Project:
             unique: true
             gedmo:
                 slug:
-                    fields:  ["name"]
-
+                    fields:  [name]
+                    updatable: false
         name:
             type: string
             nullable: false

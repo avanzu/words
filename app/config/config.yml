@@ -134,6 +134,8 @@ app:
         project:
             model: AppBundle\Entity\Project
             controller: AppBundle\Controller\ProjectController
+            manager: AppBundle\Manager\ProjectManager
+
         trans.unit:
             model: AppBundle\Entity\TransUnit
         trans.value:

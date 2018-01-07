@@ -8,7 +8,9 @@
 namespace Components\Interaction\Projects\UpdateProject;
 
 
-class UpdateProjectResponse
+use Components\Interaction\Resource\ResourceResponse;
+
+class UpdateProjectResponse extends ResourceResponse
 {
 
 }
