@@ -93,6 +93,7 @@ class AppExtension extends Extension
         ]);
 
 
+        $definition->addTag('controller.service_arguments');
 
         if( is_a($settings['controller'], ContainerAwareInterface::class, true) ) {
             $definition->addMethodCall('setContainer', [new Reference('service_container')]);
@@ -103,6 +104,7 @@ class AppExtension extends Extension
 
         $id = sprintf('app.controller.%s', $key);
         $container->setDefinition($id, $definition);
+
         $container->setAlias($definition->getClass(), $id);
     }
 
