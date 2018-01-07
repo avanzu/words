@@ -84,11 +84,15 @@ class AppExtension extends Extension
      */
     protected function addControllerDefinition($key, $settings, ContainerBuilder $container)
     {
+
         $definition = new Definition($settings['controller'], [
            new Reference(sprintf('app.manager.%s', $key)),
-           new Reference('app.presenter'),
-           new Reference('app.translator')
+           new Reference('app.presenter.view'),
+           new Reference('app.localizer'),
+           new Reference('app.command_bus')
         ]);
+
+
 
         if( is_a($settings['controller'], ContainerAwareInterface::class, true) ) {
             $definition->addMethodCall('setContainer', [new Reference('service_container')]);

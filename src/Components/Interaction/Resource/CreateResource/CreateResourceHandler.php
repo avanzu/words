@@ -25,7 +25,7 @@ class CreateResourceHandler extends ResourceHandler
      */
     public function handle(IRequest $request)
     {
-        $resource = $this->manager->createNew($request->getDao());
+        $resource = $request->getDao();
         $result   = $this->manager->validate($resource, ["Default", $request->getIntention()]);
 
         if( ! $result->isValid() ) {
@@ -35,7 +35,7 @@ class CreateResourceHandler extends ResourceHandler
         try {
             $this->manager->save($resource);
         } catch(\Exception $reason) {
-            return new ErrorResponse('Unable to store resource', 1, $reason);
+            return new ErrorResponse('Unable to store resource', ErrorResponse::STATUS_INTERNAL_SERVER_ERROR, $reason);
         }
 
         return $this->createResponse($request, $resource);

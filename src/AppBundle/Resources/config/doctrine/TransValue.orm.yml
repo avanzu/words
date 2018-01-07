@@ -1,0 +1,16 @@
+AppBundle\Entity\TransValue:
+    type: entity
+    table: trans_value
+    id:
+        unit:
+            associationKey: true
+        locale:
+            type: string
+    fields:
+        content:
+            type: text
+            nullable: true
+    manyToOne:
+        unit:
+            targetEntity: AppBundle\Entity\TransUnit
+            invertedBy: translations

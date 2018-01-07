@@ -5,6 +5,11 @@ services:
         arguments:
             - "@twig"
 
+    app.presenter.view:
+        class: AppBundle\Presentation\ViewHandlerPresenter
+        arguments:
+            - "@fos_rest.view_handler"
+
 
     app.flash:
         class: AppBundle\Presentation\ResultFlashBuilder

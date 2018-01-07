@@ -27,3 +27,7 @@ services:
     AppBundle\Manager\ResourceManager:
         autowire: false
         autoconfigure: false
+
+    AppBundle\Presentation\ViewHandlerTemplate:
+        autowire: false
+        autoconfigure: false

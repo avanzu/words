@@ -1,0 +1,33 @@
+AppBundle\Entity\TransUnit:
+    type: entity
+    table: trans_unit
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        key:
+            type: string
+            nullable: false
+        catalogue:
+            type: string
+            nullable: false
+        description:
+            type: text
+            nullable: true
+
+    manyToOne:
+        project:
+            targetEntity: AppBundle\Entity\Project
+            cascade: [persist]
+            joinColumns:
+                project_id:
+                    referencedColumnName: id
+    oneToMany:
+        translations:
+            targetEntity: AppBundle\Entity\TransValue
+            indexBy: locale
+            mappedBy: unit
+

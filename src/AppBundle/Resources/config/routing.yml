@@ -12,6 +12,12 @@ app_users:
     defaults:
         resource: user
 
+app_projects:
+    prefix: /projects
+    resource: "routing/projects.yml"
+    defaults:
+        resource: project
+
 app_security:
     resource: "routing/security.yml"
 

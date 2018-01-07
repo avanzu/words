@@ -18,10 +18,11 @@ framework:
     form: ~
     csrf_protection: ~
     validation:
-        enable_annotations: true
+        enabled: true
+        enable_annotations: false
 #        mapping:
 #            paths:
-#                - "@AppBundle/Resources/config/validation"
+#                - "%kernel.root_dir%/../src/AppBundle/Resources/config/validation"
     #serializer: { enable_annotations: true }
     templating:
         engines: ['twig']
@@ -130,6 +131,13 @@ app:
         user:
             model: AppBundle\Entity\User
             manager: AppBundle\Manager\UserManager
+        project:
+            model: AppBundle\Entity\Project
+            controller: AppBundle\Controller\ProjectController
+        trans.unit:
+            model: AppBundle\Entity\TransUnit
+        trans.value:
+            model: AppBundle\Entity\TransValue
         api.client:
             model: AppBundle\Entity\Api\Client
         api.auth_code:
@@ -138,4 +146,5 @@ app:
             model: AppBundle\Entity\Api\AccessToken
         api.refresh_token:
             model: AppBundle\Entity\Api\RefreshToken
+
 

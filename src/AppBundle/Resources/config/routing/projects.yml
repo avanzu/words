@@ -1,0 +1,10 @@
+app_projects_list:
+    path: /
+    defaults:
+        _controller: app.controller.project:getCollectionAction
+
+app_projects_create:
+    path: /create
+    defaults:
+        _controller: app.controller.project:createAction
+        _template: "@App/Project/create.html.twig"

@@ -6,5 +6,5 @@ services:
     AppBundle\Controller\RegistrationController:  '@app.controller.registration'
     AppBundle\Controller\ResetController: '@app.controller.resetting'
     Components\Infrastructure\Presentation\IPresenter: '@AppBundle\Presentation\TwigPresenter'
-    AppBundle\Presentation\TwigPresenter: '@app.presenter'
+    AppBundle\Presentation\TwigPresenter: '@app.presenter.view'
 

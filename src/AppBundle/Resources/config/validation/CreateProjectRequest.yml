@@ -1,0 +1,5 @@
+Components\Interaction\Projects\CreateProject\CreateProjectRequest:
+    properties:
+        dao:
+            - NotBlank: ~
+            - Valid: ~

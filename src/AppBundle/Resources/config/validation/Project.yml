@@ -1,0 +1,6 @@
+AppBundle\Entity\Project:
+#    constraints:
+#         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: { fields: email, message: user.email.taken }
+    properties:
+        name:
+            - NotBlank: ~

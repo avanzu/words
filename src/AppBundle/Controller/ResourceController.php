@@ -9,6 +9,7 @@ namespace AppBundle\Controller;
 
 
 use Components\Infrastructure\Controller\ICommandRunner;
+use Components\Infrastructure\ICommandBus;
 use Components\Infrastructure\Presentation\IPresenter;
 use Components\Infrastructure\Presentation\TemplateView;
 use Components\Infrastructure\Request\IRequest;
@@ -40,6 +41,10 @@ class ResourceController extends Controller implements ICommandRunner, IPresente
      */
     protected $presenter;
     /**
+     * @var ICommandBus
+     */
+    protected $commandBus;
+    /**
      * @var ILocalizer
      */
     private $localizer;
@@ -47,14 +52,16 @@ class ResourceController extends Controller implements ICommandRunner, IPresente
     /**
      * ResourceController constructor.
      *
-     * @param IManager   $manager
-     * @param IPresenter $presenter
-     * @param ILocalizer $localizer
+     * @param IManager    $manager
+     * @param IPresenter  $presenter
+     * @param ILocalizer  $localizer
+     * @param ICommandBus $commandBus
      */
-    public function __construct(IManager $manager, IPresenter $presenter, ILocalizer $localizer) {
-        $this->manager   = $manager;
-        $this->presenter = $presenter;
-        $this->localizer = $localizer;
+    public function __construct(IManager $manager, IPresenter $presenter, ILocalizer $localizer, ICommandBus $commandBus) {
+        $this->manager    = $manager;
+        $this->presenter  = $presenter;
+        $this->localizer  = $localizer;
+        $this->commandBus = $commandBus;
     }
 
     /**
@@ -81,7 +88,8 @@ class ResourceController extends Controller implements ICommandRunner, IPresente
      */
     protected function createResponse(TemplateView $view)
     {
-        return new Response($this->getPresenter()->show($view));
+        $result = $this->getPresenter()->show($view);
+        return  $result instanceof Response ? $result : new Response($result);
     }
 
 
@@ -193,7 +201,7 @@ class ResourceController extends Controller implements ICommandRunner, IPresente
     public function executeCommand(IRequest $request)
     {
         try {
-            return $this->get('app.command_bus')->execute($request);
+            return $this->commandBus->execute($request);
         }  catch(ErrorResponse $error) {
             return $error;
         }

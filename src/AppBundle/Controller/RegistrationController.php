@@ -12,7 +12,7 @@ use AppBundle\Form\RegisterRequestType;
 use AppBundle\Traits\AutoLogin;
 use AppBundle\Traits\Flasher;
 use AppBundle\Traits\TemplateAware as TemplateTrait;
-use Components\Infrastructure\Presentation\TemplateView;
+use AppBundle\Presentation\ViewHandlerTemplate as TemplateView;
 use Components\Interaction\Users\Activate\ActivateRequest;
 use Components\Interaction\Users\Register\RegisterRequest;
 use Components\Resource\IUserManager;
@@ -46,7 +46,7 @@ class RegistrationController extends ResourceController implements ITemplateAwar
             return $this->redirectToRoute('app_homepage');
         }
 
-        $view = new TemplateView($this->getTemplate(), [
+        $view = new TemplateView($this->getTemplate(), $request, [
             'form'    => $form->createView(),
             'command' => $command,
             'result'  => $result,

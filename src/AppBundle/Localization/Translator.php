@@ -9,22 +9,23 @@ namespace AppBundle\Localization;
 
 
 use Components\Localization\ITranslator;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class Translator implements ITranslator
 {
     /**
-     * @var ContainerInterface
+     * @var TranslatorInterface
      */
-    protected $container;
+    private $translator;
 
     /**
      * Translator constructor.
      *
-     * @param ContainerInterface $container
+     * @param TranslatorInterface $translator
      */
-    public function __construct(ContainerInterface $container) { $this->container = $container; }
+    public function __construct(TranslatorInterface $translator) {
+        $this->translator = $translator;
+    }
 
 
     /**
@@ -57,7 +58,7 @@ class Translator implements ITranslator
      */
     protected function getTranslator()
     {
-        return $this->container->get('translator');
+        return $this->translator;
     }
 }
 

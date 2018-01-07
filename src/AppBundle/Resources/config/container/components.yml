@@ -65,7 +65,7 @@ services:
     app.translator:
         class: AppBundle\Localization\Translator
         arguments:
-            - "@service_container"
+            - "@translator"
 
     app.localizer:
         class: Components\Localization\Localizer

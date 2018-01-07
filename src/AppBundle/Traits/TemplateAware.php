@@ -18,7 +18,7 @@ trait TemplateAware
      */
     public function getTemplate()
     {
-        return $this->template;
+        return $this->template ?: null;
     }
 
     /**
