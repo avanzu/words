@@ -138,6 +138,8 @@ app:
 
         trans.unit:
             model: AppBundle\Entity\TransUnit
+            controller: AppBundle\Controller\TransUnitController
+            manager: AppBundle\Manager\TransUnitManager
         trans.value:
             model: AppBundle\Entity\TransValue
         api.client:

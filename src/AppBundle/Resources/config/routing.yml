@@ -18,6 +18,12 @@ app_projects:
     defaults:
         resource: project
 
+app_translations:
+    prefix: /translations
+    resource: "routing/translations.yml"
+    defaults:
+        resource: "trans.unit"
+
 app_security:
     resource: "routing/security.yml"
 

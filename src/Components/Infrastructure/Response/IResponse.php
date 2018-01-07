@@ -102,4 +102,9 @@ interface IResponse
      * @return string
      */
     public function getMessage();
+
+    /**
+     * @return array
+     */
+    public function getArguments();
 }

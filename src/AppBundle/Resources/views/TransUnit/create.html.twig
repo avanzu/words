@@ -1,0 +1,8 @@
+{% extends '@App/Layout/layout.html.twig' %}
+{% block body %}
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button type="submit">Create translation</button>
+    {{ form_end(form )}}
+
+{% endblock %}

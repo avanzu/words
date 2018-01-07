@@ -1,6 +1,7 @@
 AppBundle\Entity\TransUnit:
     type: entity
     table: trans_unit
+    repositoryClass: AppBundle\Repository\TransUnitRepository
     id:
         id:
             type: integer
@@ -11,6 +12,7 @@ AppBundle\Entity\TransUnit:
         key:
             type: string
             nullable: false
+            column: token
         catalogue:
             type: string
             nullable: false
@@ -30,4 +32,5 @@ AppBundle\Entity\TransUnit:
             targetEntity: AppBundle\Entity\TransValue
             indexBy: locale
             mappedBy: unit
+            cascade: [all]
 

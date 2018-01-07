@@ -24,6 +24,7 @@ services:
     AppBundle\Manager\EMailManager: "@app.manager.email"
     AppBundle\Collector\AppCollector: '@app.collector'
     Components\Localization\Localizer: '@app.localizer'
+    AppBundle\Manager\TransUnitManager: "@app.manager.trans.unit"
     AppBundle\Manager\ResourceManager:
         autowire: false
         autoconfigure: false

@@ -164,5 +164,30 @@ class TransUnit
         return $this;
     }
 
+    protected function getTransValueClass()
+    {
+        return TransValue::class;
+    }
+
+    public function getTranslation($locale)
+    {
+        if( ! $this->translations[$locale] ){
+            return null;
+        }
+
+        return $this->translations[$locale];
+    }
+
+    public function createTranslation($locale)
+    {
+        /** @var TransValue $value */
+        $class = $this->getTransValueClass();
+        $value = new $class;
+        $value->setLocale($locale)->setUnit($this);
+        $this->translations[$locale] = $value;
+
+        return $value;
+
+    }
 
 }

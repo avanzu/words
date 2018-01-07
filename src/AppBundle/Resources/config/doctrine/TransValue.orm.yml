@@ -2,15 +2,21 @@ AppBundle\Entity\TransValue:
     type: entity
     table: trans_value
     id:
-        unit:
-            associationKey: true
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
         locale:
             type: string
-    fields:
+            nullable: false
+
         content:
             type: text
             nullable: true
     manyToOne:
         unit:
             targetEntity: AppBundle\Entity\TransUnit
-            invertedBy: translations
+            inversedBy: translations
+            cascade: [all]

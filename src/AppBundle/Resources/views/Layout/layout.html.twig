@@ -15,6 +15,21 @@
 <div class="container">
 {% include '@App/Partials/flash-messages.html.twig' %}
 
+{% if result is defined %}
+    {# @var result \Components\Infrastructure\Response\Response #}
+    {% if result.clientError %}
+        <div class="alert alert-warning">
+            {{ result.message }}
+        </div>
+    {% endif %}
+    
+    {% if result.serverError %}
+        <div class="alert alert-danger">
+            {{ result.message }}
+        </div>
+    {% endif %}
+{% endif %}
+
 {% block body %}
 
 {% endblock %}

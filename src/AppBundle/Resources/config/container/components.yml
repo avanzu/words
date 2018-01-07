@@ -80,3 +80,13 @@ services:
 
     app.container:
         alias: app.container.simple
+
+    app.localization.message_loader:
+        class: AppBundle\Localization\MessageLoader
+        arguments:
+            - "@jms_translation.loader.xliff_loader"
+
+    app.localization.message_writer:
+        class: AppBundle\Localization\MessageWriter
+        arguments:
+            - "@jms_translation.file_writer"

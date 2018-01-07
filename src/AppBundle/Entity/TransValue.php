@@ -12,4 +12,17 @@ use Components\Model\TransValue as TransValueModel;
 class TransValue extends TransValueModel
 {
 
+    /**
+     * @var  int
+     */
+    protected $id;
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
 }

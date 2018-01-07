@@ -13,6 +13,8 @@ abstract class Response implements IResponse
 
     protected $status;
 
+    protected $arguments = [];
+
     /**
      * Is response informative?
      *
@@ -91,6 +93,14 @@ abstract class Response implements IResponse
         $this->status = $status;
 
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getArguments()
+    {
+        return $this->arguments;
     }
 
 }

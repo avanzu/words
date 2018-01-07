@@ -63,7 +63,7 @@ class ResultFlashBuilder
      */
     public function buildFlash(IResponse $response)
     {
-        $message = $this->translator->trans($response->getMessage());
+        $message = $this->translator->trans($response->getMessage(), $response->getArguments());
         $this->flashBag->add($this->getFlashType($response), $message);
     }
 

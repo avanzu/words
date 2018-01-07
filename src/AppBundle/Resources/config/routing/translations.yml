@@ -1,0 +1,28 @@
+app_translations_list:
+    path: /
+    defaults:
+        _controller: app.controller.trans.unit:getCollectionAction
+
+app_translations_create:
+    path: /create
+    defaults:
+        _controller: app.controller.trans.unit:createAction
+        _template: "@App/TransUnit/create.html.twig"
+app_translations_update:
+    path: /{slug}/update
+    defaults:
+        _controller: app.controller.trans.unit:updateAction
+        _template: "@App/TransUnit/update.html.twig"
+
+app_translation_upload:
+    path: /upload-catalog
+    defaults:
+        _controller: app.controller.trans.unit:uploadCatalogAction
+        _template: "@App/TransUnit/update.html.twig"
+
+app_translation_export:
+    path: /export-catalog
+    defaults:
+        _controller: app.controller.trans.unit:exportCatalogAction
+        _template: "@App/TransUnit/update.html.twig"
+

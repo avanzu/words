@@ -28,3 +28,25 @@ services:
             - "@app.notifier"
         tags:
             - { name: app.command.handler }
+
+    app.handler.translation.load_file:
+        class: Components\Interaction\Translations\LoadFile\LoadFileHandler
+        arguments:
+            - "@app.localization.message_loader"
+        tags:
+            - { name: app.command.handler }
+
+    app.handler.translation.import_catalogue:
+        class: Components\Interaction\Translations\ImportCatalogue\ImportCatalogueHandler
+        arguments:
+            - "@app.manager.trans.unit"
+        tags:
+            - { name: app.command.handler }
+
+    app.handler.translation.export_catalogue:
+        class: Components\Interaction\Translations\ExportCatalogue\ExportCatalogueHandler
+        arguments:
+            - "@app.localization.message_writer"
+            - "@app.manager.trans.unit"
+        tags:
+            - { name: app.command.handler }
