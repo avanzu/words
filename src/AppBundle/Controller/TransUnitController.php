@@ -45,7 +45,7 @@ class TransUnitController extends ResourceController implements ITemplateAware, 
         $result  = $this->getInteractionResponse($form, $request, $command);
         if ($result->isSuccessful()) {
             $this->flash($result);
-            return $this->redirectToRoute('app_translationss_list');
+            return $this->redirectToRoute('app_translations_list');
         }
 
         return $this->createResponse(
@@ -129,10 +129,30 @@ class TransUnitController extends ResourceController implements ITemplateAware, 
 
     }
 
-    public function exportCatalogAction(Request $request)
+    protected function generateExportUrl(ExportCatalogueRequest $command)
+    {
+        $params = [
+            'locale'    => $command->getLocale(),
+            'catalogue' => $command->getCatalogue()
+        ];
+        if( $command->getProject()) {
+            return $this->redirectToRoute('app_translation_export_project', array_merge($params, ['project' => $command->getProject()]));
+        }
+        return $this->redirectToRoute('app_translation_export', $params);
+    }
+
+    public function selectCatalogAction(Request $request)
     {
         $command  = new ExportCatalogueRequest();
         $form     = $this->createForm(ExportCatalogueRequestType::class, $command, ['method' => 'GET']);
+
+        $form->handleRequest($request);
+        if( $form->isSubmitted() ) {
+            if( $form->isValid() ) {
+                return $this->generateExportUrl($command);
+            }
+        }
+
         /** @var ExportCatalogueResponse $response */
         $response = $this->getInteractionResponse($form, $request, $command);
 
@@ -149,6 +169,27 @@ class TransUnitController extends ResourceController implements ITemplateAware, 
         );
 
     }
+
+
+    public function exportCatalogAction($locale, $catalogue, $project = null,  Request $request)
+    {
+        $command  = new ExportCatalogueRequest();
+        $command->setCatalogue($catalogue)->setLocale($locale)->setProject($project);
+        $response = $this->commandBus->execute($command);
+        if( $response->isSuccessful() ) {
+            return new StreamedResponse($response->getContent(), 200, ['Content-Type' => 'text/xml']);
+        }
+
+        return $this->createResponse(
+            new ViewHandlerTemplate(
+                $this->getTemplate(),
+                $request,
+                ['command' => $command, 'result' => $response]
+            )
+        );
+    }
+
+
 
     /*
     public function updateAction($slug, Request $request)

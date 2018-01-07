@@ -60,7 +60,10 @@ class TransUnitRepository extends ResourceRepository
 
             ;
         if( $project ) {
-            $builder->andWhere('trans_unit.project = :project')->setParameter('project' , $project);
+            $builder
+                ->join('trans_unit.project', 'project')
+                ->andWhere('project.canonical = :project')
+                ->setParameter('project' , $project);
         }
 
         return $builder->getQuery()->getResult();
