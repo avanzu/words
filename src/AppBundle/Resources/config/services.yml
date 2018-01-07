@@ -6,6 +6,7 @@ imports:
     - { resource: "container/listeners.yml" }
     - { resource: "container/forms.yml" }
     - { resource: "container/presentation.yml" }
+    - { resource: "container/aliases.yml" }
 
 services:
     app.manager.email:
@@ -16,3 +17,4 @@ services:
             - "@mailer"
             - "%app.email.sender%"
             - "%app_name%"
+

@@ -1,11 +1,11 @@
 services:
-    app.kernel.controller.subscriber:
-        class: AppBundle\EventListener\KernelControllerSubscriber
+    AppBundle\EventListener\KernelControllerSubscriber:
+        #class: AppBundle\EventListener\KernelControllerSubscriber
         tags:
             - { name: kernel.event_subscriber }
 
-    app.notification.subscriber:
-        class: AppBundle\EventListener\NotificationSubscriber
+    AppBundle\EventListener\NotificationSubscriber:
+        #class: AppBundle\EventListener\NotificationSubscriber
         arguments:
             - "@app.manager.email"
         tags:

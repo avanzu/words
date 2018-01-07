@@ -97,8 +97,9 @@ class AppExtension extends Extension
             $definition->addMethodCall('setFlasher', [new Reference('app.flash')]);
         }
 
-
-        $container->setDefinition(sprintf('app.controller.%s', $key), $definition);
+        $id = sprintf('app.controller.%s', $key);
+        $container->setDefinition($id, $definition);
+        $container->setAlias($definition->getClass(), $id);
     }
 
     /**
@@ -123,6 +124,7 @@ class AppExtension extends Extension
 
         $key = sprintf('app.manager.%s', $key);
         $container->setDefinition($key, $definition);
+        $container->setAlias($definition->getClass(), $key);
         return $key;
     }
 

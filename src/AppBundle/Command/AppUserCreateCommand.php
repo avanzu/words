@@ -3,10 +3,12 @@
 namespace AppBundle\Command;
 
 use AppBundle\Manager\UserManager;
+use Components\Infrastructure\ICommandBus;
 use Components\Infrastructure\Response\ErrorResponse;
 use Components\Infrastructure\Response\ValidationFailedResponse;
 use Components\Interaction\Users\CreateUser\CreateUserRequest;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -16,8 +18,24 @@ use Symfony\Component\Validator\ConstraintViolation;
 /**
  * Class AppUserCreateCommand
  */
-class AppUserCreateCommand extends ContainerAwareCommand
+class AppUserCreateCommand extends Command
 {
+    /**
+     * @var  ICommandBus
+     */
+    private $bus;
+
+    /**
+     * AppUserCreateCommand constructor.
+     *
+     * @param ICommandBus $bus
+     */
+    public function __construct(ICommandBus $bus) {
+        $this->bus = $bus;
+        parent::__construct();
+    }
+
+
     /**
      *
      */
@@ -56,7 +74,7 @@ class AppUserCreateCommand extends ContainerAwareCommand
         ]);
 
         try {
-            $response = $this->getContainer()->get('app.command_bus')->execute($request);
+            $response = $this->bus->execute($request);
             $io->success(sprintf('A new User [%s] was created.', $response->getResource()));
             return 0;
         }

@@ -1,0 +1,10 @@
+services:
+    Components\Localization\ILocalizer: '@app.localizer'
+    Components\Infrastructure\ICommandBus: '@app.command_bus.logging'
+    Components\Resource\IManager: '@AppBundle\Manager\ResourceManager'
+    AppBundle\Controller\SecurityController: '@app.controller.security'
+    AppBundle\Controller\RegistrationController:  '@app.controller.registration'
+    AppBundle\Controller\ResetController: '@app.controller.resetting'
+    Components\Infrastructure\Presentation\IPresenter: '@AppBundle\Presentation\TwigPresenter'
+    AppBundle\Presentation\TwigPresenter: '@app.presenter'
+

@@ -1,6 +1,6 @@
 services:
-    app.subscriber.serializer.hateoas:
-        class: AppBundle\EventListener\HateoasSerializationSubscriber
+    AppBundle\EventListener\HateoasSerializationSubscriber:
+#        class: AppBundle\EventListener\HateoasSerializationSubscriber
         calls:
             - [setContainer, ["@service_container"]]
         tags:
