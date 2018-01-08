@@ -21,4 +21,10 @@ class ProjectManager extends ResourceManager
     {
         return $this->getRepository()->findOneBy(['canonical' => $slug]);
     }
+
+
+    public function loadProjects()
+    {
+        return $this->getRepository()->findAll();
+    }
 }

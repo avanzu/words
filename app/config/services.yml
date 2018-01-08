@@ -25,13 +25,13 @@ services:
     AppBundle\Collector\AppCollector: '@app.collector'
     Components\Localization\Localizer: '@app.localizer'
     AppBundle\Manager\TransUnitManager: "@app.manager.trans.unit"
+    AppBundle\Manager\ProjectManager: '@app.manager.project'
     AppBundle\Localization\Message:
         autowire: false
         autoconfigure: false
     AppBundle\Manager\ResourceManager:
         autowire: false
         autoconfigure: false
-
     AppBundle\Presentation\ViewHandlerTemplate:
         autowire: false
         autoconfigure: false

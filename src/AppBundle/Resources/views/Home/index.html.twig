@@ -1,0 +1,26 @@
+{% extends '@App/Layout/layout.html.twig' %}
+
+{% block body %}
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Catalogue</th>
+            {% for language in languages %}
+            <th>{{ language }}</th>
+            {% endfor %}
+    </tr>
+    
+    </thead>
+    <tbody>
+    {% for catalogue in catalogues %}
+        <tr>
+            <td>{{ catalogue }}</td>
+            {% for language in languages %}
+                <td>{{ random(100) }}% </td>
+            {% endfor %}
+        </tr>
+    {% endfor %}
+    </tbody>
+
+</table>
+{% endblock %}

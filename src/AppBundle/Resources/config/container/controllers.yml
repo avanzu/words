@@ -26,3 +26,5 @@ services:
         parent: app.controller.trans.unit
         calls:
             - [setFlasher, ["@app.flash"]]
+
+
