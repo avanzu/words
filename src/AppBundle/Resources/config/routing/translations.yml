@@ -27,13 +27,25 @@ app_translation_select:
         _controller: app.controller.trans.unit:selectCatalogAction
         _template: "@App/TransUnit/update.html.twig"
 
+app_translation_translate_catalogue:
+    path: /translate/{locale}/{catalogue}
+    defaults:
+        _controller: app.controller.trans.unit:translateCatalogueAction
+        _template: "@App/TransUnit/translate.html.twig"
+
+app_translation_translate_unit:
+    path: /translate/{locale}/{catalogue}/{id}
+    defaults:
+        _controller: app.controller.trans.unit:translateUnitAction
+        _template: ""
+        _format: json
+
 app_translation_export:
     path: /all/{catalogue}.{locale}.xliff
     defaults:
         _controller: app.controller.trans.unit:exportCatalogAction
         _template: false
         project: null
-
 
 app_translation_export_project:
     path: /{project}/{catalogue}.{locale}.xliff

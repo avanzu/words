@@ -9,8 +9,10 @@ namespace AppBundle\Manager;
 
 use AppBundle\Localization\LazyMessageCatalogue;
 use AppBundle\Repository\TransUnitRepository;
+use Components\DataAccess\ResourceCollection;
 use Components\Model\TransUnit;
 use Components\Resource\ITransUnitManager;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 
 /**
@@ -48,16 +50,29 @@ class TransUnitManager extends ResourceManager implements ITransUnitManager
         return $unit;
     }
 
+    /**
+     * @return array
+     */
     public function loadCatalogues()
     {
         return array_map(function($record){ return $record['catalogue']; }, $this->getRepository()->fetchCatalogues());
     }
 
+    /**
+     * @return array
+     */
     public function loadLanguages()
     {
         return array_map(function($record){ return $record['locale']; }, $this->getRepository()->fetchLanguages());
     }
 
+    /**
+     * @param      $locale
+     * @param      $catalogue
+     * @param null $project
+     *
+     * @return LazyMessageCatalogue|\Components\Localization\IMessageCatalogue
+     */
     public function loadTranslations($locale, $catalogue, $project = null)
     {
         $factory = function() use($locale, $catalogue, $project ){
@@ -68,6 +83,24 @@ class TransUnitManager extends ResourceManager implements ITransUnitManager
         };
 
         return new LazyMessageCatalogue($locale, $catalogue, $factory );
+    }
+
+    /**
+     * @param     $locale
+     * @param     $catalogue
+     * @param int $offset
+     * @param int $limit
+     *
+     * @return ResourceCollection
+     */
+    public function getTranslatables($locale, $catalogue,  $offset = 0, $limit = 10)
+    {
+        $builder = $this->getRepository()->getTranslatableBuilder($locale, $catalogue);
+        $builder->setMaxResults($limit)->setFirstResult($offset);
+        $pager = new Paginator($builder);
+
+        return new ResourceCollection($pager->getIterator(), count($pager), $limit, $offset);
+
     }
 
 }

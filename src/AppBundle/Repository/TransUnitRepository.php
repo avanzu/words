@@ -69,4 +69,20 @@ class TransUnitRepository extends ResourceRepository
         return $builder->getQuery()->getResult();
     }
 
+    /**
+     * @param $locale
+     * @param $catalogue
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getTranslatableBuilder($locale, $catalogue)
+    {
+        return $this
+            ->createQueryBuilder('trans_unit')
+            ->where('trans_unit.catalogue = :catalogue')
+            ->setParameter('catalogue', $catalogue)
+            ;
+
+    }
+
 }

@@ -1,0 +1,79 @@
+{% extends '@App/Layout/layout.html.twig' %}
+{% block body %}
+    <table class="table table-striped ">
+        <thead>
+            <tr>
+                <th>Resname</th>
+                <th>source string</th>
+                <th>locale string</th>
+            </tr>
+        </thead>
+        
+        <tbody>
+        {% for item in result.resource.items %}
+            <tr>
+                <td>{{ item.key }}</td>
+                <td>{{  item.sourceString|default(item.key) }}</td>
+                <td contenteditable="true" data-unit="{{ item.id }}" data-key="{{ item.key }}" data-locale="{{ command.locale }}">
+                    {{ item.translation(command.locale) }}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+        
+    </table>
+    
+    <ul class="pager">
+        <li class="previous">
+            {% if result.resource.previous %}
+                <a href="?offset={{ result.resource.previousOffset }}">previous</a>
+            {% endif %}
+        </li>
+        <li class="next">
+        {% if result.resource.next %}
+            <a href="?offset={{ result.resource.nextOffset }}">Next</a>
+        {% endif %}
+        </li>
+    </ul>
+    
+{% endblock %}
+{% block inline_scripts %}
+<script>
+    (function($){
+        var store = window.localStorage;
+        var makeItem = function($t){
+            return  {
+                'unit'    : $t.attr('data-unit'),
+                'key'     : $t.attr('data-key'),
+                'locale'  : $t.attr('data-locale'),
+                'content' : $t.text().trim()
+            };
+        };
+        
+        var save = function(item) {
+            
+            var url = '{{ path('app_translation_translate_unit', {'locale' : command.locale, 'catalogue': command.catalogue, 'id' : '__ID__'}) }}'.replace(/__ID__/, item.unit);
+            return $.post(url, {'content': item.content});
+        };
+        
+        $('[contenteditable]')
+            .on('focus', function(e){
+                var item = makeItem($(e.currentTarget));
+                store.setItem(item.unit, JSON.stringify(item));
+            })
+            .on('blur', function(e){
+                var $t       = $(e.currentTarget);
+                var item     = makeItem($t);
+                var previous = JSON.parse(store.getItem(item.unit));
+                if( previous.content !== item.content) {
+                    save(item).catch(function(reason){
+                        $t.text(previous.content);
+                        console.log(reason);
+                    });
+                }
+            });
+    
+    
+    })(jQuery);
+</script>
+{% endblock %}

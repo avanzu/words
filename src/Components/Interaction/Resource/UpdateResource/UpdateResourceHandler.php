@@ -34,7 +34,7 @@ class UpdateResourceHandler extends ResourceHandler
         try {
             $this->manager->save($resource);
         } catch (\Exception $reason) {
-            return new ErrorResponse('Unable to remove resource', 1, $reason);
+            return new ErrorResponse('Unable to update resource', 1, $reason);
         }
 
         return $this->createResponse($request, $resource);

@@ -85,5 +85,22 @@ class ResourceCollection implements Collection
         return $this->offset;
     }
 
+    public function hasNext()
+    {
+        return (($this->offset + $this->limit) < $this->total);
+    }
 
+    public function hasPrevious()
+    {
+        return ($this->offset > 0);
+    }
+
+    public function getNextOffset()
+    {
+        return min($this->total, $this->offset + $this->limit);
+    }
+    public function getPreviousOffset()
+    {
+        return max(0 , $this->offset - $this->limit);
+    }
 }

@@ -22,9 +22,12 @@ use Components\Infrastructure\Response\IResponse;
 use Components\Interaction\Translations\CreateTranslation\CreateTranslationRequest;
 use Components\Interaction\Translations\ExportCatalogue\ExportCatalogueRequest;
 use Components\Interaction\Translations\ExportCatalogue\ExportCatalogueResponse;
+use Components\Interaction\Translations\GetCollection\GetCollectionRequest;
+use Components\Interaction\Translations\GetCollection\GetCollectionResponse;
 use Components\Interaction\Translations\ImportCatalogue\ImportCatalogueRequest;
 use Components\Interaction\Translations\LoadFile\LoadFileRequest;
 use Components\Interaction\Translations\LoadFile\LoadFileResponse;
+use Components\Interaction\Translations\Translate\TranslateRequest;
 use Components\Interaction\Translations\UpdateTranslation\UpdateTranslationRequest;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -192,8 +195,6 @@ class TransUnitController extends ResourceController implements ITemplateAware, 
     }
 
 
-
-
     public function updateAction($slug, Request $request)
     {
         $model = $this->getManager()->find($slug);
@@ -214,6 +215,50 @@ class TransUnitController extends ResourceController implements ITemplateAware, 
                 ['form' => $form, 'command' => $command, 'result' => $result],
                 $result->getStatus()
             ));
+    }
+
+    public function translateCatalogueAction($locale, $catalogue, Request $request)
+    {
+
+        $command = new GetCollectionRequest(
+            null,
+            'trans.unit',
+            $request->get('limit', 10),
+            $request->get('offset')
+        );
+
+        $command->setLocale($locale)->setCatalogue($catalogue);
+
+        /** @var GetCollectionResponse $result */
+        $result = $this->executeCommand($command);
+
+        return $this->createResponse(
+            new ViewHandlerTemplate(
+                $this->getTemplate(),
+                $request,
+                ['command' => $command, 'result' => $result]
+            )
+        );
+
+    }
+
+    public function translateUnitAction($locale, $catalogue, $id, Request $request)
+    {
+        $dao = $this->manager->find($id);
+        $this->throw404Unless($dao);
+        $command = new TranslateRequest($dao, $locale, $request->get('content'));
+        $result  = $this->executeCommand($command);
+
+
+        return $this->createResponse(
+            new ViewHandlerTemplate(
+                (string)$this->getTemplate(),
+                $request,
+                ['result' => $result],
+                $result->getStatus()
+            )
+
+        );
     }
 
 }

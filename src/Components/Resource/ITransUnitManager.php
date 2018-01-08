@@ -49,4 +49,14 @@ interface ITransUnitManager
      * @return IMessageCatalogue
      */
     public function loadTranslations($locale, $catalogue, $project = null);
+
+    /**
+     * @param     $locale
+     * @param     $catalogue
+     * @param int $offset
+     * @param int $limit
+     *
+     * @return ResourceCollection
+     */
+    public function getTranslatables($locale, $catalogue,  $offset = 0, $limit = 10);
 }

@@ -19,7 +19,8 @@ class AppKernel extends Kernel
             new \FOS\OAuthServerBundle\FOSOAuthServerBundle(),
             new \FOS\RestBundle\FOSRestBundle(),
             new \JMS\SerializerBundle\JMSSerializerBundle(),
-            new \JMS\TranslationBundle\JMSTranslationBundle()
+            new \JMS\TranslationBundle\JMSTranslationBundle(),
+            new \WhiteOctober\PagerfantaBundle\WhiteOctoberPagerfantaBundle(),
 
         ];
 
