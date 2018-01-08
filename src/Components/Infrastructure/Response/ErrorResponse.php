@@ -31,6 +31,12 @@ class ErrorResponse extends \Exception implements IResponse
         return (int)sprintf('%d%d%d', static::COMPONENT_KEY, static::INTERACTION_KEY, $code);
     }
 
+    public function getArguments()
+    {
+        return [];
+    }
+
+
     /**
      * @return string
      */

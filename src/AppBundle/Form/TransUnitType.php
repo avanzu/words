@@ -40,6 +40,11 @@ class TransUnitType extends AbstractType
                 /** @Desc(Translation key) */
                 'label' => 'trans.unit.label.key'
             ])
+            ->add('sourceString', TextareaType::class, [
+                /** @Desc("Source string") */
+                'label'    => 'trans.unit.source.string',
+                'required' => false,
+            ])
             ->add('description', TextareaType::class, [
                 /** @Desc("Description or meaning") */
                 'label'    => 'trans.unit.label.description',
@@ -51,7 +56,9 @@ class TransUnitType extends AbstractType
             ])
             ->add('project', ProjectChoiceType::class, [
                 /** @Desc("Project") */
-                'label' => 'trans.unit.label.project'
+                'label'       => 'trans.unit.label.project',
+                'required'    => false,
+                'placeholder' => 'trans.unit.project.none',
             ])
             ;
     }

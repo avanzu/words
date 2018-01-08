@@ -19,6 +19,10 @@ AppBundle\Entity\TransUnit:
         description:
             type: text
             nullable: true
+        sourceString:
+            type: text
+            nullable: true
+            column: source_string
 
     manyToOne:
         project:

@@ -55,7 +55,7 @@ class TransUnitRepository extends ResourceRepository
             ->andWhere('translations.locale = :locale')
             ->setParameters(['catalogue' => $catalogue, 'locale' => $locale])
             ->select(
-                sprintf('new %s(trans_unit.key, trans_unit.key, translations.content, trans_unit.key, trans_unit.description)', SimpleMessage::class)
+                sprintf('new %s(trans_unit.key, trans_unit.key, translations.content, trans_unit.sourceString, trans_unit.description)', SimpleMessage::class)
             )
 
             ;

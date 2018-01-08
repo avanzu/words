@@ -36,6 +36,8 @@ class SimpleMessage implements IMessage
      * @param string $id
      * @param string $desc
      * @param string $localeString
+     * @param string $sourceString
+     * @param string $description
      */
     public function __construct($id, $desc, $localeString, $sourceString = '', $description = '')
     {

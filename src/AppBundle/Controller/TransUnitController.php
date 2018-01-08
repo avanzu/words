@@ -11,6 +11,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Project;
 use AppBundle\Form\CreateTranslationRequestType;
 use AppBundle\Form\ExportCatalogueRequestType;
+use AppBundle\Form\UpdateTranslationRequestType;
 use AppBundle\Localization\MessageCatalogue;
 use AppBundle\Presentation\ViewHandlerTemplate;
 use AppBundle\Traits\Flasher;
@@ -24,6 +25,7 @@ use Components\Interaction\Translations\ExportCatalogue\ExportCatalogueResponse;
 use Components\Interaction\Translations\ImportCatalogue\ImportCatalogueRequest;
 use Components\Interaction\Translations\LoadFile\LoadFileRequest;
 use Components\Interaction\Translations\LoadFile\LoadFileResponse;
+use Components\Interaction\Translations\UpdateTranslation\UpdateTranslationRequest;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormInterface;
@@ -74,7 +76,7 @@ class TransUnitController extends ResourceController implements ITemplateAware, 
 
             return $next($tempFile->getRealPath());
         } catch(\Exception $e) {
-            return new ErrorResponse(error_get_last(), IResponse::STATUS_BAD_REQUEST, $e);
+            return new ErrorResponse('File upload failed.', IResponse::STATUS_BAD_REQUEST, $e);
         }
     }
 
@@ -191,18 +193,18 @@ class TransUnitController extends ResourceController implements ITemplateAware, 
 
 
 
-    /*
+
     public function updateAction($slug, Request $request)
     {
-        $model = $this->getManager()->loadProjectBySlug($slug);
+        $model = $this->getManager()->find($slug);
         $this->throw404Unless($model);
-        $command = new UpdateProjectRequest($model);
-        $form    = $this->createForm(UpdateProjectRequestType::class, $command);
+        $command = new UpdateTranslationRequest($model);
+        $form    = $this->createForm(UpdateTranslationRequestType::class, $command);
 
         $result = $this->getInteractionResponse($form, $request, $command);
         if ($result->isSuccessful()) {
             $this->flash($result);
-            return $this->redirectToRoute('app_projects_list');
+            return $this->redirectToRoute('app_translations_list');
         }
 
         return $this->createResponse(
@@ -213,5 +215,5 @@ class TransUnitController extends ResourceController implements ITemplateAware, 
                 $result->getStatus()
             ));
     }
-    */
+
 }

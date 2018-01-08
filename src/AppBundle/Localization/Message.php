@@ -12,7 +12,8 @@ use Components\Localization\IMessage;
 use JMS\TranslationBundle\Model\Message\XliffMessage;
 use JMS\TranslationBundle\Model\Message\XliffMessageState;
 
-class Message implements IMessage
+
+class Message extends XliffMessage implements IMessage
 {
     /**
      * @var  XliffMessage

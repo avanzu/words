@@ -25,6 +25,9 @@ services:
     AppBundle\Collector\AppCollector: '@app.collector'
     Components\Localization\Localizer: '@app.localizer'
     AppBundle\Manager\TransUnitManager: "@app.manager.trans.unit"
+    AppBundle\Localization\Message:
+        autowire: false
+        autoconfigure: false
     AppBundle\Manager\ResourceManager:
         autowire: false
         autoconfigure: false

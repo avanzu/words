@@ -44,10 +44,13 @@ class ImportCatalogueHandler implements ICommandHandler
 
         foreach ( $catalogue->getMessages() as $message ) {
             $unit = $this->manager->loadOrCreate($message->getId(), $catalogue->getCatalog(), $project);
+            $unit->setSourceString($message->getSourceString())
+                 ->setDescription(implode(PHP_EOL, $message->getNotes()));
+
             if( ! $value = $unit->getTranslation($catalogue->getLocale())) {
                 $value = $unit->createTranslation($catalogue->getLocale());
             }
-            $unit->setDescription(implode(PHP_EOL, $message->getNotes()));
+
             $value->setContent($message->getLocaleString());
 
             $units[] = $unit;

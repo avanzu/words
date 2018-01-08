@@ -38,6 +38,12 @@ class TransUnit
     protected $project;
 
     /**
+     * @var string
+     */
+    protected $sourceString;
+
+
+    /**
      * @var TransValue[]
      */
     protected $translations;
@@ -189,5 +195,27 @@ class TransUnit
         return $value;
 
     }
+
+    /**
+     * @return string
+     */
+    public function getSourceString()
+    {
+        return $this->sourceString;
+    }
+
+    /**
+     * @param string $sourceString
+     *
+     * @return $this
+     */
+    public function setSourceString($sourceString)
+    {
+        $this->sourceString = $sourceString;
+
+        return $this;
+    }
+
+
 
 }

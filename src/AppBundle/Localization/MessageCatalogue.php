@@ -10,8 +10,9 @@ namespace AppBundle\Localization;
 
 use Components\Localization\IMessage;
 use Components\Localization\IMessageCatalogue;
-use JMS\TranslationBundle\Model\Message;
+use JMS\TranslationBundle\Model\Message as JmsMessage;
 use JMS\TranslationBundle\Model\MessageCatalogue as JmsMessages;
+
 
 class MessageCatalogue extends  JmsMessages implements IMessageCatalogue
 {
@@ -73,14 +74,14 @@ class MessageCatalogue extends  JmsMessages implements IMessageCatalogue
         return $this;
     }
 
-    public function add(Message $message)
+    public function add(JmsMessage $message)
     {
         $this->messages->add($message);
         return $this;
 
     }
 
-    public function set(Message $message, $force = false)
+    public function set(JmsMessage $message, $force = false)
     {
         $this->messages->set($message, $force);
         return $this;
@@ -91,7 +92,7 @@ class MessageCatalogue extends  JmsMessages implements IMessageCatalogue
         return $this->messages->get($id, $domain);
     }
 
-    public function has(Message $message)
+    public function has(JmsMessage $message)
     {
         return $this->messages->has($message);
     }
