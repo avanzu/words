@@ -1,30 +1,20 @@
 <?php
 /**
- * GetCollectionRequest.php
+ * CatalogueSelection.php
  * words
  * Date: 08.01.18
  */
 
-namespace Components\Interaction\Translations\GetCollection;
-use Components\Interaction\Resource\GetCollection\GetCollectionRequest as CollectionRequest;
+namespace Components\DataAccess;
 
-class GetCollectionRequest extends CollectionRequest
+class CatalogueSelection
 {
 
-    /**
-     * @var string
-     */
-    protected $locale;
+    protected $project;
 
-    /**
-     * @var string
-     */
     protected $catalogue;
 
-    /**
-     * @var
-     */
-    protected $project;
+    protected $locale;
 
     /**
      * @return mixed
@@ -46,9 +36,8 @@ class GetCollectionRequest extends CollectionRequest
         return $this;
     }
 
-
     /**
-     * @return string
+     * @return mixed
      */
     public function getCatalogue()
     {
@@ -56,7 +45,7 @@ class GetCollectionRequest extends CollectionRequest
     }
 
     /**
-     * @param string $catalogue
+     * @param mixed $catalogue
      *
      * @return $this
      */
@@ -68,7 +57,7 @@ class GetCollectionRequest extends CollectionRequest
     }
 
     /**
-     * @return string
+     * @return mixed
      */
     public function getLocale()
     {
@@ -76,7 +65,7 @@ class GetCollectionRequest extends CollectionRequest
     }
 
     /**
-     * @param string $locale
+     * @param mixed $locale
      *
      * @return $this
      */
@@ -86,5 +75,4 @@ class GetCollectionRequest extends CollectionRequest
 
         return $this;
     }
-
 }

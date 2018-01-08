@@ -14,3 +14,15 @@ services:
         parent: app.controller.user
         calls:
             - [setFlasher, ["@app.flash"]]
+
+    app.controller.file:
+        class: AppBundle\Controller\FileController
+        parent: app.controller.trans.unit
+        calls:
+            - [setFlasher, ["@app.flash"]]
+
+    app.controller.translate:
+        class: AppBundle\Controller\TranslateController
+        parent: app.controller.trans.unit
+        calls:
+            - [setFlasher, ["@app.flash"]]

@@ -9,44 +9,17 @@ namespace AppBundle\Form;
 
 
 use Components\Interaction\Translations\ExportCatalogue\ExportCatalogueRequest;
-use Components\Resource\ITransUnitManager;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\LanguageType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ExportCatalogueRequestType extends AbstractType
 {
-    /**
-     * @var ITransUnitManager
-     */
-    protected $manager;
-
-    /**
-     * ExportCatalogueRequestType constructor.
-     *
-     * @param ITransUnitManager $manager
-     */
-    public function __construct(ITransUnitManager $manager) {
-        $this->manager = $manager;
-    }
-
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('locale', LanguageType::class, [
-                'label'             => 'language',
-                'preferred_choices' => $this->manager->loadLanguages(),
-            ])
-            ->add('catalogue', CatalogueChoiceType::class, [
-                'label'             => 'catalogue',
-
-            ])
-            ->add('project', ProjectChoiceType::class, [
-                'label'    => 'project',
-                'required' => false,
-            ])
+           ->add('selection', CatalogueSelectionType::class, ['label' => false])
         ;
     }
 
@@ -55,14 +28,13 @@ class ExportCatalogueRequestType extends AbstractType
         $resolver->setDefaults(
             [
                 'data_class'      => ExportCatalogueRequest::class,
-                'csrf_protection' => false,
             ]
         );
     }
 
     public function getBlockPrefix()
     {
-        return '';
+        return 'export_catalogue';
     }
 
 

@@ -47,7 +47,13 @@ class ExportCatalogueHandler implements ICommandHandler
      */
     public function handle(IRequest $request)
     {
-        $catalogue = $this->manager->loadTranslations($request->getLocale(), $request->getCatalogue(), $request->getProject());
+        $selection = $request->getSelection();
+        $catalogue = $this->manager->loadTranslations(
+            $selection->getLocale(),
+            $selection->getCatalogue(),
+            $selection->getProject()
+        );
+
         $content   = $this->writer->createWriter($catalogue, 'php://output');
         return new ExportCatalogueResponse($content);
     }

@@ -8,75 +8,34 @@
 namespace Components\Interaction\Translations\ExportCatalogue;
 
 
+use Components\DataAccess\CatalogueSelection;
 use Components\Infrastructure\Request\IRequest;
 
 class ExportCatalogueRequest implements IRequest
 {
-    protected $project;
-
-    protected $catalogue;
-
-    protected $locale;
+    /**
+     * @var  CatalogueSelection
+     */
+    protected $selection;
 
     /**
-     * @return mixed
+     * @return CatalogueSelection
      */
-    public function getProject()
+    public function getSelection()
     {
-        return $this->project;
+        return $this->selection;
     }
 
     /**
-     * @param mixed $project
+     * @param CatalogueSelection $selection
      *
      * @return $this
      */
-    public function setProject($project)
+    public function setSelection($selection)
     {
-        $this->project = $project;
+        $this->selection = $selection;
 
         return $this;
     }
-
-    /**
-     * @return mixed
-     */
-    public function getCatalogue()
-    {
-        return $this->catalogue;
-    }
-
-    /**
-     * @param mixed $catalogue
-     *
-     * @return $this
-     */
-    public function setCatalogue($catalogue)
-    {
-        $this->catalogue = $catalogue;
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getLocale()
-    {
-        return $this->locale;
-    }
-
-    /**
-     * @param mixed $locale
-     *
-     * @return $this
-     */
-    public function setLocale($locale)
-    {
-        $this->locale = $locale;
-
-        return $this;
-    }
-
 
 }

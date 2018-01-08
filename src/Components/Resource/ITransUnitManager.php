@@ -53,10 +53,11 @@ interface ITransUnitManager
     /**
      * @param     $locale
      * @param     $catalogue
+     * @param     $project
      * @param int $offset
      * @param int $limit
      *
      * @return ResourceCollection
      */
-    public function getTranslatables($locale, $catalogue,  $offset = 0, $limit = 10);
+    public function getTranslatables($locale, $catalogue, $project = null, $offset = 0, $limit = 10);
 }

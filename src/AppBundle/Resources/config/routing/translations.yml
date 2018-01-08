@@ -1,3 +1,11 @@
+app_translation_file:
+    prefix: /file
+    resource: "translations/file.yml"
+
+app_translations_translate:
+    prefix: /translate
+    resource: "translations/translate.yml"
+
 app_translations_list:
     path: /
     defaults:
@@ -14,42 +22,4 @@ app_translations_update:
     defaults:
         _controller: app.controller.trans.unit:updateAction
         _template: "@App/TransUnit/update.html.twig"
-
-app_translation_upload:
-    path: /upload-catalog
-    defaults:
-        _controller: app.controller.trans.unit:uploadCatalogAction
-        _template: "@App/TransUnit/update.html.twig"
-
-app_translation_select:
-    path: /export-catalog
-    defaults:
-        _controller: app.controller.trans.unit:selectCatalogAction
-        _template: "@App/TransUnit/update.html.twig"
-
-app_translation_translate_catalogue:
-    path: /translate/{locale}/{catalogue}
-    defaults:
-        _controller: app.controller.trans.unit:translateCatalogueAction
-        _template: "@App/TransUnit/translate.html.twig"
-
-app_translation_translate_unit:
-    path: /translate/{locale}/{catalogue}/{id}
-    defaults:
-        _controller: app.controller.trans.unit:translateUnitAction
-        _template: ""
-        _format: json
-
-app_translation_export:
-    path: /all/{catalogue}.{locale}.xliff
-    defaults:
-        _controller: app.controller.trans.unit:exportCatalogAction
-        _template: false
-        project: null
-
-app_translation_export_project:
-    path: /{project}/{catalogue}.{locale}.xliff
-    defaults:
-        _controller: app.controller.trans.unit:exportCatalogAction
-        _template: false
 

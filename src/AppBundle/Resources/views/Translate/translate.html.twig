@@ -3,6 +3,7 @@
     <table class="table table-striped ">
         <thead>
             <tr>
+                <th>DB-ID</th>
                 <th>Resname</th>
                 <th>source string</th>
                 <th>locale string</th>
@@ -12,10 +13,11 @@
         <tbody>
         {% for item in result.resource.items %}
             <tr>
-                <td>{{ item.key }}</td>
-                <td>{{  item.sourceString|default(item.key) }}</td>
-                <td contenteditable="true" data-unit="{{ item.id }}" data-key="{{ item.key }}" data-locale="{{ command.locale }}">
-                    {{ item.translation(command.locale) }}
+                <td>{{ item.entityid }}</td>
+                <td>{{ item.id }}</td>
+                <td>{{  item.sourceString|default(item.id) }}</td>
+                <td contenteditable="true" data-unit="{{ item.entityId }}" data-key="{{ item.id }}" data-locale="{{ command.locale }}">
+                    {{ item.localeString }}
                 </td>
             </tr>
         {% endfor %}

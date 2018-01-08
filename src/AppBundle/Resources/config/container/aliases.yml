@@ -10,4 +10,6 @@ services:
     Components\Resource\ITransUnitManager: '@app.manager.trans.unit'
     FOS\RestBundle\View\ViewHandler: '@fos_rest.view_handler'
     AppBundle\Controller\TransUnitController: '@app.controller.trans.unit'
+    AppBundle\Controller\FileController: "@app.controller.file"
+    AppBundle\Controller\TranslateController: '@app.controller.translate'
 

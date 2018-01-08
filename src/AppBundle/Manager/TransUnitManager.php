@@ -88,16 +88,18 @@ class TransUnitManager extends ResourceManager implements ITransUnitManager
     /**
      * @param     $locale
      * @param     $catalogue
+     * @param  $project
      * @param int $offset
      * @param int $limit
      *
      * @return ResourceCollection
      */
-    public function getTranslatables($locale, $catalogue,  $offset = 0, $limit = 10)
+    public function getTranslatables($locale, $catalogue, $project = null, $offset = 0, $limit = 10)
     {
-        $builder = $this->getRepository()->getTranslatableBuilder($locale, $catalogue);
+        $builder = $this->getRepository()->getTranslatableBuilder($locale, $catalogue, $project);
         $builder->setMaxResults($limit)->setFirstResult($offset);
-        $pager = new Paginator($builder);
+        $pager = new Paginator($builder, true);
+        $pager->setUseOutputWalkers(false);
 
         return new ResourceCollection($pager->getIterator(), count($pager), $limit, $offset);
 

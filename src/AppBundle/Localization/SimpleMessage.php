@@ -30,24 +30,37 @@ class SimpleMessage implements IMessage
 
     protected $notes;
 
+    protected $entityId;
+
     /**
      * SimpleMessage constructor.
      *
+     * @param        $entityId
      * @param string $id
      * @param string $desc
      * @param string $localeString
      * @param string $sourceString
      * @param string $description
      */
-    public function __construct($id, $desc, $localeString, $sourceString = '', $description = '')
+    public function __construct( $entityId, $id, $desc, $localeString, $sourceString = '', $description = '')
     {
+        $this->entityId     = $entityId;
         $this->id           = $id;
         $this->desc         = $desc;
-        $this->sourceString = $sourceString?:$desc;
+        $this->sourceString = $sourceString ?: $desc;
         $this->localeString = $localeString;
         $this->notes        = $description;
 
     }
+
+    /**
+     * @return mixed
+     */
+    public function getEntityId()
+    {
+        return $this->entityId;
+    }
+
 
     /**
      * @return string

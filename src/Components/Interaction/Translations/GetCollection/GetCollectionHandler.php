@@ -25,7 +25,13 @@ class GetCollectionHandler extends CollectionHandler
         /** @var ITransUnitManager $manager */
         $manager    = $this->getManager();
         try {
-            $collection = $manager->getTranslatables($request->getLocale(), $request->getCatalogue(), $request->getOffset(), $request->getLimit());
+            $collection = $manager->getTranslatables(
+                $request->getLocale(),
+                $request->getCatalogue(),
+                $request->getProject(),
+                $request->getOffset(),
+                $request->getLimit()
+            );
 
             return new GetCollectionResponse($collection, $request);
         } catch ( \Exception $e ) {
