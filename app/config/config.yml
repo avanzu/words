@@ -70,6 +70,12 @@ doctrine:
             AppBundle:
                 type: yml
 
+doctrine_migrations:
+    dir_name: "%kernel.root_dir%/Migrations"
+    namespace: Application\Migrations
+    table_name: migrations
+    name: Application Migrations
+    organize_migrations: false
 
 # Swiftmailer Configuration
 swiftmailer:

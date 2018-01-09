@@ -17,6 +17,21 @@ class CatalogueSelection
     protected $locale;
 
     /**
+     * CatalogueSelection constructor.
+     *
+     * @param $project
+     * @param $catalogue
+     * @param $locale
+     */
+    public function __construct($project = null, $catalogue = null, $locale = null)
+    {
+        $this->project   = $project;
+        $this->catalogue = $catalogue;
+        $this->locale    = $locale;
+    }
+
+
+    /**
      * @return mixed
      */
     public function getProject()

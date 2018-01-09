@@ -4,9 +4,11 @@ app_homepage:
         _controller: AppBundle\Controller\HomeController:indexAction
         _template: "@App/Home/index.html.twig"
 
-app_statistics:
-    prefix: /stats
-    resource: "routing/statistics.yml"
+app_homepage_project:
+    path:     /{project}
+    defaults:
+        _controller: AppBundle\Controller\HomeController:projectIndexAction
+        _template: "@App/Home/project-index.html.twig"
 
 app_account:
     prefix: /account
@@ -24,8 +26,12 @@ app_projects:
     defaults:
         resource: project
 
+app_statistics:
+    prefix: /{project}/stats
+    resource: "routing/statistics.yml"
+
 app_translations:
-    prefix: /translations
+    prefix: /{project}/translations
     resource: "routing/translations.yml"
     defaults:
         resource: "trans.unit"

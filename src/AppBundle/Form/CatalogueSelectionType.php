@@ -42,13 +42,15 @@ class CatalogueSelectionType extends AbstractType
             ])
             ->add('catalogue', CatalogueChoiceType::class, [
                 'label'             => 'catalogue',
-
             ])
             ->add('project', ProjectChoiceType::class, [
                 'label'    => 'project',
-                'required' => false,
             ])
         ;
+
+        if( false == $options['switch_project']) {
+            $builder->remove('project');
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -57,6 +59,7 @@ class CatalogueSelectionType extends AbstractType
             [
                 'data_class'      => CatalogueSelection::class,
                 'csrf_protection' => false,
+                'switch_project'  => true
             ]
         );
     }

@@ -10,6 +10,7 @@ namespace AppBundle\Repository;
 
 use AppBundle\Localization\SimpleMessage;
 use Components\Model\Completion;
+use Components\Model\Project;
 use Doctrine\ORM\QueryBuilder;
 
 class TransUnitRepository extends ResourceRepository
@@ -48,7 +49,7 @@ class TransUnitRepository extends ResourceRepository
      *
      * @return SimpleMessage[]
      */
-    public function fetchTranslations($locale, $catalogue, $project = null)
+    public function fetchTranslations($locale, $catalogue, $project = Project::__DEFAULT)
     {
         $builder = $this
             ->createQueryBuilder('trans_unit')
@@ -70,7 +71,7 @@ class TransUnitRepository extends ResourceRepository
      *
      * @return mixed
      */
-    protected function joinProject($builder, $project = null)
+    protected function joinProject($builder, $project = Project::__DEFAULT)
     {
         if( ! $project ) {
             return $builder->andWhere('trans_unit.project is null');
@@ -88,7 +89,7 @@ class TransUnitRepository extends ResourceRepository
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getTranslatableBuilder($locale, $catalogue, $project = null)
+    public function getTranslatableBuilder($locale, $catalogue, $project = Project::__DEFAULT)
     {
         $builder = $this
             ->createQueryBuilder('trans_unit')
@@ -104,9 +105,9 @@ class TransUnitRepository extends ResourceRepository
 
     }
 
-    public function getCompletion($locale, $catalogue, $project = null)
+    public function getCompletion($locale, $catalogue, $project = Project::__DEFAULT)
     {
-        return $this
+        $builder =$this
             ->createQueryBuilder('trans_unit')
             ->leftJoin('trans_unit.translations', 'translations', 'WITH', 'translations.locale = :locale')
             ->select(
@@ -117,9 +118,12 @@ class TransUnitRepository extends ResourceRepository
             )
             ->groupBy('trans_unit.catalogue')
             ->distinct()
-            ->setParameters(['locale' => $locale])
-            ->getQuery()
-            ->getResult()
+            ->setParameters(['locale' => $locale]);
+
+        return $this
+            ->joinProject($builder, $project)
+             ->getQuery()
+             ->getResult()
             ;
     }
 

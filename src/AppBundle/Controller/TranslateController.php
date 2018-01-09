@@ -27,24 +27,23 @@ class TranslateController extends ResourceController implements ITemplateAware, 
     {
         $params = [
             'locale'    => $command->getLocale(),
-            'catalogue' => $command->getCatalogue()
+            'catalogue' => $command->getCatalogue(),
+            'project'   => $command->getProject()
         ];
-        if( $command->getProject()) {
-            return $this->redirectToRoute(
-                'app_translation_translate_project_catalogue',
-                array_merge($params, ['project' => $command->getProject()])
-            );
-        }
+
         return $this->redirectToRoute(
             'app_translation_translate_catalogue',
             $params
         );
     }
 
-    public function selectCatalogAction(Request $request)
+    public function selectCatalogAction($project, Request $request)
     {
-        $command  = new CatalogueSelection();
-        $form     = $this->createForm(CatalogueSelectionType::class, $command, ['method' => 'GET']);
+        $command  = new CatalogueSelection($project);
+        $form     = $this->createForm(CatalogueSelectionType::class, $command, [
+            'method'         => 'GET',
+            'switch_project' => false,
+        ]);
 
         $form->handleRequest($request);
         if( $form->isSubmitted() ) {
@@ -63,7 +62,7 @@ class TranslateController extends ResourceController implements ITemplateAware, 
 
     }
 
-    protected function translateCatalogue($locale, $catalogue, Request $request, $project = null)
+    public function translateCatalogueAction($project, $locale, $catalogue, Request $request)
     {
         $command = new GetCollectionRequest(
             null,
@@ -84,21 +83,9 @@ class TranslateController extends ResourceController implements ITemplateAware, 
                 ['command' => $command, 'result' => $result]
             )
         );
-    }
-
-    public function translateCatalogueAction($locale, $catalogue, Request $request)
-    {
-        return $this->translateCatalogue($locale,$catalogue, $request);
 
     }
 
-
-    public function translateProjectCatalogueAction($locale, $catalogue, $project, Request $request)
-    {
-
-        return $this->translateCatalogue($locale,$catalogue, $request, $project);
-
-    }
 
 
     public function translateUnitAction($locale, $catalogue, $id, Request $request)

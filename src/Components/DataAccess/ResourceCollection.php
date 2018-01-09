@@ -7,11 +7,13 @@
 
 namespace Components\DataAccess;
 
+use Traversable;
+
 
 /**
  * Class ResourceCollection
  */
-class ResourceCollection implements Collection
+class ResourceCollection implements Collection, \IteratorAggregate
 {
     /**
      * @var \Traversable|\Countable
@@ -102,5 +104,18 @@ class ResourceCollection implements Collection
     public function getPreviousOffset()
     {
         return max(0 , $this->offset - $this->limit);
+    }
+
+    /**
+     * Retrieve an external iterator
+     *
+     * @link  http://php.net/manual/en/iteratoraggregate.getiterator.php
+     * @return Traversable An instance of an object implementing <b>Iterator</b> or
+     * <b>Traversable</b>
+     * @since 5.0.0
+     */
+    public function getIterator()
+    {
+        return new \ArrayIterator($this->getItems());
     }
 }

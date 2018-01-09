@@ -5,16 +5,16 @@ app_tanslation_translate_index:
         _template: "@App/TransUnit/select-catalogue.html.twig"
 
 app_translation_translate_catalogue:
-    path: /project/common/{locale}/{catalogue}
+    path: /{locale}/{catalogue}
     defaults:
         _controller: app.controller.translate:translateCatalogueAction
         _template: "@App/Translate/translate.html.twig"
 
-app_translation_translate_project_catalogue:
-    path: /project/{project}/{locale}/{catalogue}
-    defaults:
-        _controller: app.controller.translate:translateProjectCatalogueAction
-        _template: "@App/Translate/translate.html.twig"
+#app_translation_translate_project_catalogue:
+#    path: /project/{project}/{locale}/{catalogue}
+#    defaults:
+#        _controller: app.controller.translate:translateProjectCatalogueAction
+#        _template: "@App/Translate/translate.html.twig"
 
 app_translation_translate_unit:
     path: /unit/{id}/{locale}/{catalogue}

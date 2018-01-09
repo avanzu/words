@@ -1,21 +1,25 @@
 {% extends '@App/Layout/layout.html.twig' %}
 
 {% block body %}
+    
     <div class="row">
-        {% for language in result.languages %}
-            <div class="col-md-4">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3>{{ localizer.getLanguageName(language) }}</h3>
-                    </div>
-                    <div class="panel-body">
-                            <div>
-                                {{ render(url('app_statistics_completed', {'locale' : language})) }}
-                            </div>
-                    </div>
-                </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <strong>Projects</strong>
             </div>
-        {% endfor %}
+            <div class="panel-body">
+                <ul class="list-group">
+                {% for project in result.resource %}
+                <li class="list-group-item">
+                    <a href="{{ url('app_homepage_project', {"project" : project.canonical}) }}">
+                        {{ project.name }}
+                    </a>
+                </li>
+                {% endfor %}
+                </ul>
+            </div>
+        </div>
+        
     </div>
 
 {% endblock %}

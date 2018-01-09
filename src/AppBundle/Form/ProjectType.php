@@ -27,7 +27,6 @@ class ProjectType extends AbstractType
             ->add('description', TextareaType::class, [
                 /** @Desc("Project description") */
                 'label'    => 'project.label.description',
-                'required' => false
             ])
             ;
     }

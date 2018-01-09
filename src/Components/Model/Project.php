@@ -10,6 +10,9 @@ namespace Components\Model;
 
 class Project
 {
+
+    const __DEFAULT = 'common';
+
   //  protected $id;
 
     protected $name;
@@ -17,15 +20,6 @@ class Project
     protected $canonical;
 
     protected $description;
-
-    /**
-     * @return mixed
-     */
-    // public function getId()
-    // {
-    //     return $this->id;
-    // }
-
 
     /**
      * @return mixed

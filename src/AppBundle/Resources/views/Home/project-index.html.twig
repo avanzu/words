@@ -1,0 +1,21 @@
+{% extends '@App/Layout/layout.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        {% for language in result.languages %}
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3>{{ localizer.getLanguageName(language) }}</h3>
+                    </div>
+                    <div class="panel-body">
+                            <div>
+                                {{ render(url('app_statistics_completed', {'locale' : language, 'project' : project })) }}
+                            </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}

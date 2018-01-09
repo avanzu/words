@@ -57,8 +57,6 @@ class TransUnitType extends AbstractType
             ->add('project', ProjectChoiceType::class, [
                 /** @Desc("Project") */
                 'label'       => 'trans.unit.label.project',
-                'required'    => false,
-                'placeholder' => 'trans.unit.project.none',
             ])
             ;
     }

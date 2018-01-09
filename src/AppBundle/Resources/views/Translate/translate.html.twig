@@ -54,7 +54,14 @@
         
         var save = function(item) {
             
-            var url = '{{ path('app_translation_translate_unit', {'locale' : command.locale, 'catalogue': command.catalogue, 'id' : '__ID__'}) }}'.replace(/__ID__/, item.unit);
+            var url = '{{ path(
+                'app_translation_translate_unit', {
+                    'project' : command.project,
+                    'locale' : command.locale,
+                    'catalogue': command.catalogue,
+                    'id' : '__ID__'})
+            }}'.replace(/__ID__/, item.unit);
+            
             return $.post(url, {'content': item.content});
         };
         
