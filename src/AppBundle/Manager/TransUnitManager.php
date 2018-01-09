@@ -10,6 +10,7 @@ namespace AppBundle\Manager;
 use AppBundle\Localization\LazyMessageCatalogue;
 use AppBundle\Repository\TransUnitRepository;
 use Components\DataAccess\ResourceCollection;
+use Components\Model\Completion;
 use Components\Model\TransUnit;
 use Components\Resource\ITransUnitManager;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -104,5 +105,19 @@ class TransUnitManager extends ResourceManager implements ITransUnitManager
         return new ResourceCollection($pager->getIterator(), count($pager), $limit, $offset);
 
     }
+
+    /**
+     * @param      $locale
+     * @param      $catalogue
+     * @param null $project
+     *
+     * @return Completion
+     */
+    public function getCompletion($locale, $catalogue, $project = null)
+    {
+        $result = $this->getRepository()->getCompletion($locale, $catalogue, $project);
+        return $result;
+    }
+
 
 }

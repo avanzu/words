@@ -1,0 +1,14 @@
+{% for completion in result.completions %}
+<div class="row">
+    <div class="col-xs-6 text-left">
+    <strong >{{ completion.catalogue }}</strong>
+    </div>
+    <div class="col-xs-6 text-right"><small>{{ completion.translated }} / {{ completion.total }}</small></div>
+</div>
+<br>
+<div class="progress">
+    <div class="progress-bar" role="progressbar" style="width: {{ completion.percentCompleted }}%;" aria-valuenow="{{ completion.percentCompleted }}" aria-valuemin="0" aria-valuemax="100">
+        {{ completion.percentCompleted }}%
+    </div>
+</div>
+{% endfor %}

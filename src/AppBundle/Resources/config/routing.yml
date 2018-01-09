@@ -4,6 +4,10 @@ app_homepage:
         _controller: AppBundle\Controller\HomeController:indexAction
         _template: "@App/Home/index.html.twig"
 
+app_statistics:
+    prefix: /stats
+    resource: "routing/statistics.yml"
+
 app_account:
     prefix: /account
     resource: "routing/account.yml"

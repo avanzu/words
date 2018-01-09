@@ -8,8 +8,9 @@
 namespace AppBundle\Manager;
 
 use Components\Model\Project;
+use Components\Resource\IProjectManager;
 
-class ProjectManager extends ResourceManager
+class ProjectManager extends ResourceManager implements IProjectManager
 {
 
     /**

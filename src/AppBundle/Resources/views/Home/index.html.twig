@@ -1,26 +1,21 @@
 {% extends '@App/Layout/layout.html.twig' %}
 
 {% block body %}
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Catalogue</th>
-            {% for language in languages %}
-            <th>{{ language }}</th>
-            {% endfor %}
-    </tr>
-    
-    </thead>
-    <tbody>
-    {% for catalogue in catalogues %}
-        <tr>
-            <td>{{ catalogue }}</td>
-            {% for language in languages %}
-                <td>{{ random(100) }}% </td>
-            {% endfor %}
-        </tr>
-    {% endfor %}
-    </tbody>
+    <div class="row">
+        {% for language in result.languages %}
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3>{{ localizer.getLanguageName(language) }}</h3>
+                    </div>
+                    <div class="panel-body">
+                            <div>
+                                {{ render(url('app_statistics_completed', {'locale' : language})) }}
+                            </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 
-</table>
 {% endblock %}

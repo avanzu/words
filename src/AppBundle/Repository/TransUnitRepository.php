@@ -9,6 +9,7 @@ namespace AppBundle\Repository;
 
 
 use AppBundle\Localization\SimpleMessage;
+use Components\Model\Completion;
 use Doctrine\ORM\QueryBuilder;
 
 class TransUnitRepository extends ResourceRepository
@@ -33,7 +34,7 @@ class TransUnitRepository extends ResourceRepository
             ->join('trans_unit.translations', 'translations')
             ->select('translations.locale', 'count(translations.locale) as nbTranslations')
             ->groupBy('translations.locale')
-            ->addOrderBy('nbTranslations')
+            ->addOrderBy('nbTranslations', 'DESC')
             ->getQuery()
             ->getScalarResult()
             ;
@@ -101,6 +102,25 @@ class TransUnitRepository extends ResourceRepository
 
         return $this->joinProject($builder, $project);
 
+    }
+
+    public function getCompletion($locale, $catalogue, $project = null)
+    {
+        return $this
+            ->createQueryBuilder('trans_unit')
+            ->leftJoin('trans_unit.translations', 'translations', 'WITH', 'translations.locale = :locale')
+            ->select(
+                sprintf(
+                    'new %s(:locale, trans_unit.catalogue, count(trans_unit.key), count(translations.content))',
+                    Completion::class
+                )
+            )
+            ->groupBy('trans_unit.catalogue')
+            ->distinct()
+            ->setParameters(['locale' => $locale])
+            ->getQuery()
+            ->getResult()
+            ;
     }
 
 }

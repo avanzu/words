@@ -1,0 +1,5 @@
+app_statistics_completed:
+    path: /{locale}
+    defaults:
+        _controller: AppBundle\Controller\HomeController:completionAction
+        _template: "@App/Statistics/completion.html.twig"

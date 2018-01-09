@@ -50,3 +50,18 @@ services:
             - "@app.manager.trans.unit"
         tags:
             - { name: app.command.handler }
+
+    app.handler.statistics.overview:
+        class: Components\Interaction\Statistics\GetOverview\GetOverviewHandler
+        arguments:
+            - "@app.manager.trans.unit"
+            - "@app.manager.project"
+        tags:
+            - { name: app.command.handler }
+
+    app.handler.statistics.completion:
+        class: Components\Interaction\Statistics\GetCompletion\GetCompletionHandler
+        arguments:
+            - "@app.manager.trans.unit"
+        tags:
+            - { name: app.command.handler }

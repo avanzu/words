@@ -8,18 +8,20 @@
 namespace AppBundle\Controller;
 
 
-use AppBundle\Manager\ProjectManager;
 use AppBundle\Presentation\ViewHandlerTemplate;
 use AppBundle\Traits\Flasher;
 use AppBundle\Traits\TemplateAware;
+use Components\Infrastructure\ICommandBus;
 use Components\Infrastructure\Presentation\IPresenter;
 use Components\Infrastructure\Presentation\TemplateView;
+use Components\Interaction\Statistics\GetCompletion\GetCompletionRequest;
+use Components\Interaction\Statistics\GetCompletion\GetCompletionResponse;
+use Components\Interaction\Statistics\GetOverview\GetOverviewRequest;
 use Components\Localization\ILocalizer;
-use Components\Resource\ITransUnitManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Intl\Intl;
 
 class HomeController extends AbstractController implements ITemplateAware, IFlashing
 {
@@ -35,29 +37,60 @@ class HomeController extends AbstractController implements ITemplateAware, IFlas
      * @var  ILocalizer
      */
     protected $localizer;
+
     /**
-     * @var ITransUnitManager
+     * @var ICommandBus
      */
-    protected $manager;
-    /**
-     * @var ProjectManager
-     */
-    private $projectManager;
+    protected $commandBus;
 
     /**
      * HomeController constructor.
      *
-     * @param IPresenter        $presenter
-     * @param ILocalizer        $localizer
-     * @param ITransUnitManager $manager
-     * @param ProjectManager    $projectManager
+     * @param IPresenter  $presenter
+     * @param ILocalizer  $localizer
+     * @param ICommandBus $commandBus
      */
-    public function __construct(IPresenter $presenter, ILocalizer $localizer, ITransUnitManager $manager, ProjectManager $projectManager)
+    public function __construct(
+        IPresenter $presenter,
+        ILocalizer $localizer,
+        ICommandBus $commandBus
+    ) {
+        $this->presenter      = $presenter;
+        $this->localizer      = $localizer;
+        $this->commandBus     = $commandBus;
+    }
+
+    public function indexAction(Request $request)
     {
-        $this->presenter = $presenter;
-        $this->localizer = $localizer;
-        $this->manager   = $manager;
-        $this->projectManager = $projectManager;
+
+        $command = new GetOverviewRequest();
+        $result  = $this->commandBus->execute($command);
+
+        return $this->createResponse(
+            new ViewHandlerTemplate(
+                $this->getTemplate(),
+                $request,
+                [
+                    'result' => $result,
+                    'localizer' => Intl::getLanguageBundle()
+                ]
+            )
+        );
+    }
+
+    public function completionAction($locale, Request $request)
+    {
+        $command = new GetCompletionRequest($locale);
+        /** @var GetCompletionResponse $result */
+        $result  = $this->commandBus->execute($command);
+
+        return $this->createResponse(
+            new ViewHandlerTemplate(
+                $this->getTemplate(),
+                $request,
+                ['result' => $result]
+            )
+        );
     }
 
     /**
@@ -68,23 +101,7 @@ class HomeController extends AbstractController implements ITemplateAware, IFlas
     protected function createResponse(TemplateView $view)
     {
         $result = $this->presenter->show($view);
-        return  $result instanceof Response ? $result : new Response($result);
-    }
 
-
-    public function indexAction(Request $request)
-    {
-
-        $languages  = $this->manager->loadLanguages();
-        $catalogues = $this->manager->loadCatalogues();
-        $projects   = $this->projectManager->loadProjects();
-
-        return $this->createResponse(
-            new ViewHandlerTemplate(
-                $this->getTemplate(),
-                $request,
-                [ 'languages' => $languages, 'catalogues' => $catalogues, 'projects' => $projects ]
-            )
-        );
+        return $result instanceof Response ? $result : new Response($result);
     }
 }

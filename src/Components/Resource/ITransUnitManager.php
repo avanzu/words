@@ -60,4 +60,13 @@ interface ITransUnitManager
      * @return ResourceCollection
      */
     public function getTranslatables($locale, $catalogue, $project = null, $offset = 0, $limit = 10);
+
+    /**
+     * @param      $locale
+     * @param      $catalogue
+     * @param null $project
+     *
+     * @return mixed
+     */
+    public function getCompletion($locale, $catalogue, $project = null);
 }
