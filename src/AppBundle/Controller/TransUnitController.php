@@ -8,33 +8,14 @@
 namespace AppBundle\Controller;
 
 
-use AppBundle\Entity\Project;
 use AppBundle\Form\CreateTranslationRequestType;
-use AppBundle\Form\ExportCatalogueRequestType;
 use AppBundle\Form\UpdateTranslationRequestType;
-use AppBundle\Localization\MessageCatalogue;
 use AppBundle\Presentation\ViewHandlerTemplate;
 use AppBundle\Traits\Flasher;
 use AppBundle\Traits\TemplateAware;
-use Components\Infrastructure\Response\ContinueCommandResponse;
-use Components\Infrastructure\Response\ErrorResponse;
-use Components\Infrastructure\Response\IResponse;
 use Components\Interaction\Translations\CreateTranslation\CreateTranslationRequest;
-use Components\Interaction\Translations\ExportCatalogue\ExportCatalogueRequest;
-use Components\Interaction\Translations\ExportCatalogue\ExportCatalogueResponse;
-use Components\Interaction\Translations\GetCollection\GetCollectionRequest;
-use Components\Interaction\Translations\GetCollection\GetCollectionResponse;
-use Components\Interaction\Translations\ImportCatalogue\ImportCatalogueRequest;
-use Components\Interaction\Translations\LoadFile\LoadFileRequest;
-use Components\Interaction\Translations\LoadFile\LoadFileResponse;
-use Components\Interaction\Translations\Translate\TranslateRequest;
 use Components\Interaction\Translations\UpdateTranslation\UpdateTranslationRequest;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class TransUnitController extends ResourceController implements ITemplateAware, IFlashing
 {
@@ -42,6 +23,18 @@ class TransUnitController extends ResourceController implements ITemplateAware, 
         Flasher;
 
 
+    public function indexAction($project, Request $request)
+    {
+
+        return $this->createResponse(
+            new ViewHandlerTemplate(
+                $this->getTemplate(),
+                $request,
+                []
+            )
+        )
+            ;
+    }
 
     public function createAction(Request $request)
     {

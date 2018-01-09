@@ -9,7 +9,8 @@ app_translations_translate:
 app_translations_list:
     path: /
     defaults:
-        _controller: app.controller.trans.unit:getCollectionAction
+        _controller: app.controller.trans.unit:indexAction
+        _template: "@App/TransUnit/index.html.twig"
 
 app_translations_create:
     path: /create

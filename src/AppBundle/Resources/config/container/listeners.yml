@@ -1,4 +1,7 @@
 services:
+    AppBundle\EventListener\ProjectResolver:
+        lazy: true
+
     AppBundle\EventListener\KernelControllerSubscriber:
         #class: AppBundle\EventListener\KernelControllerSubscriber
         tags:
