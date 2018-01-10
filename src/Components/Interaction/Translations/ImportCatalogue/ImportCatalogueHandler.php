@@ -11,6 +11,7 @@ namespace Components\Interaction\Translations\ImportCatalogue;
 use Components\Infrastructure\Command\Handler\ICommandHandler;
 use Components\Infrastructure\Request\IRequest;
 use Components\Resource\IManager;
+use Components\Resource\IProjectManager;
 use Components\Resource\ITransUnitManager;
 
 class ImportCatalogueHandler implements ICommandHandler
@@ -22,12 +23,19 @@ class ImportCatalogueHandler implements ICommandHandler
     protected $manager;
 
     /**
+     * @var IProjectManager
+     */
+    protected $projectManager;
+
+    /**
      * ImportCatalogueHandler constructor.
      *
      * @param ITransUnitManager $manager
+     * @param IProjectManager   $projectManager
      */
-    public function __construct(ITransUnitManager $manager) {
-        $this->manager = $manager;
+    public function __construct(ITransUnitManager $manager, IProjectManager $projectManager) {
+        $this->manager        = $manager;
+        $this->projectManager = $projectManager;
     }
 
     /**
@@ -37,7 +45,7 @@ class ImportCatalogueHandler implements ICommandHandler
      */
     public function handle(IRequest $request)
     {
-        $project   = $request->getProject();
+        $project   = $this->projectManager->getProject($request->getProject());
         $catalogue = $request->getCatalogue();
         $units     = [];
         $loop      = 0;

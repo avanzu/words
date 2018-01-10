@@ -22,12 +22,14 @@
     {% if result.clientError %}
         <div class="alert alert-warning">
             {{ result.message }}
+            {{ dump(result.previous) }}
         </div>
     {% endif %}
     
     {% if result.serverError %}
         <div class="alert alert-danger">
             {{ result.message }}
+            {{ dump(result.previous) }}
         </div>
     {% endif %}
 {% endif %}

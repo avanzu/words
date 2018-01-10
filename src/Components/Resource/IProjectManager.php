@@ -29,4 +29,11 @@ interface IProjectManager
      * @return null|object
      */
     public function find($id);
+
+    /**
+     * @param $candidate
+     *
+     * @return Project|null
+     */
+    public function getProject($candidate);
 }

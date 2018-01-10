@@ -31,7 +31,7 @@ class ImportCatalogueRequest implements IRequest
      * @param IMessageCatalogue $catalogue
      * @param Project|null      $project
      */
-    public function __construct( IMessageCatalogue $catalogue, Project $project = null)
+    public function __construct( IMessageCatalogue $catalogue,  $project)
     {
         $this->project   = $project;
         $this->catalogue = $catalogue;

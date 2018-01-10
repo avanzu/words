@@ -26,6 +26,8 @@ services:
     Components\Localization\Localizer: '@app.localizer'
     AppBundle\Manager\TransUnitManager: "@app.manager.trans.unit"
     AppBundle\Manager\ProjectManager: '@app.manager.project'
+    Components\Resource\IProjectManager: "@app.manager.project"
+    JMS\TranslationBundle\Translation\FileWriter: '@jms_translation.file_writer'
     AppBundle\Localization\Message:
         autowire: false
         autoconfigure: false

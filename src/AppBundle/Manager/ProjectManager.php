@@ -28,4 +28,15 @@ class ProjectManager extends ResourceManager implements IProjectManager
     {
         return $this->getRepository()->findAll();
     }
+
+    /**
+     * @param $candidate
+     *
+     * @return Project|null
+     */
+    public function getProject($candidate)
+    {
+        if( $candidate instanceof Project ) return $candidate;
+        return $this->loadProjectBySlug($candidate);
+    }
 }

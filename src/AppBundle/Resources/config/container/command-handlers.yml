@@ -40,6 +40,7 @@ services:
         class: Components\Interaction\Translations\ImportCatalogue\ImportCatalogueHandler
         arguments:
             - "@app.manager.trans.unit"
+            - "@app.manager.project"
         tags:
             - { name: app.command.handler }
 

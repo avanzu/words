@@ -71,14 +71,14 @@ class FileController extends ResourceController implements ITemplateAware, IFlas
         return $response->isSuccessful() ? $next($response) : $response;
     }
 
-    protected function importFile(MessageCatalogue $catalogue, Project $project = null)
+    protected function importFile(MessageCatalogue $catalogue,  $project )
     {
         $command  = new ImportCatalogueRequest($catalogue, $project);
         $response = $this->commandBus->execute($command);
         return $response;
     }
 
-    public function uploadCatalogAction(Request $request)
+    public function uploadCatalogAction($project, Request $request)
     {
         $form = $this
             ->createForm(FormType::class)
@@ -87,15 +87,15 @@ class FileController extends ResourceController implements ITemplateAware, IFlas
 
         $command = $response = false;
 
-        $response = $this->handleUpload($form, $request, function($fileName){
-            return $this->loadFile($fileName, function(LoadFileResponse $response){
-                return $this->importFile($response->getCatalog());
+        $response = $this->handleUpload($form, $request, function($fileName) use ($project){
+            return $this->loadFile($fileName, function(LoadFileResponse $response) use ($project) {
+                return $this->importFile($response->getCatalog(), $project);
             });
         });
 
         if( $response->isSuccessful() ) {
             $this->flash($response);
-            return $this->redirectToRoute('app_translation_upload');
+            return $this->redirectToRoute('app_translation_upload_file', ['project' => $project ]);
         }
 
         return $this->createResponse(
@@ -112,23 +112,19 @@ class FileController extends ResourceController implements ITemplateAware, IFlas
     {
         $params = [
             'locale'    => $command->getLocale(),
-            'catalogue' => $command->getCatalogue()
+            'catalogue' => $command->getCatalogue(),
+            'project'   => $command->getProject()
         ];
-        if( $command->getProject()) {
-            return $this->redirectToRoute(
-                'app_translation_export_project_file',
-                array_merge($params, ['project' => $command->getProject()])
-            );
-        }
+
         return $this->redirectToRoute(
             'app_translation_export_file',
             $params
         );
     }
 
-    public function selectCatalogAction(Request $request)
+    public function selectCatalogAction($project, Request $request)
     {
-        $command  = new CatalogueSelection();
+        $command  = new CatalogueSelection($project);
         $form     = $this->createForm(CatalogueSelectionType::class, $command, ['method' => 'GET']);
 
         $form->handleRequest($request);
@@ -149,7 +145,7 @@ class FileController extends ResourceController implements ITemplateAware, IFlas
     }
 
 
-    public function exportCatalogAction($locale, $catalogue, $project = null,  Request $request)
+    public function exportCatalogAction($locale, $catalogue, $project,  Request $request)
     {
         $command   = new ExportCatalogueRequest();
         $selection = new CatalogueSelection();

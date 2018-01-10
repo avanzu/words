@@ -18,7 +18,7 @@ app_translation_select_file:
 #        _template: false
 #        project: null
 
-app_translation_export_project_file:
+app_translation_export_file:
     path: /{catalogue}.{locale}.xliff
     defaults:
         _controller: app.controller.file:exportCatalogAction
