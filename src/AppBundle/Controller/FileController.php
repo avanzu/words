@@ -7,9 +7,7 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Project;
 use AppBundle\Form\CatalogueSelectionType;
-use AppBundle\Form\ExportCatalogueRequestType;
 use AppBundle\Localization\MessageCatalogue;
 use AppBundle\Presentation\ViewHandlerTemplate;
 use AppBundle\Traits\Flasher;
@@ -19,7 +17,6 @@ use Components\Infrastructure\Response\ContinueCommandResponse;
 use Components\Infrastructure\Response\ErrorResponse;
 use Components\Infrastructure\Response\IResponse;
 use Components\Interaction\Translations\ExportCatalogue\ExportCatalogueRequest;
-use Components\Interaction\Translations\ExportCatalogue\ExportCatalogueResponse;
 use Components\Interaction\Translations\ImportCatalogue\ImportCatalogueRequest;
 use Components\Interaction\Translations\LoadFile\LoadFileRequest;
 use Components\Interaction\Translations\LoadFile\LoadFileResponse;
@@ -125,7 +122,14 @@ class FileController extends ResourceController implements ITemplateAware, IFlas
     public function selectCatalogAction($project, Request $request)
     {
         $command  = new CatalogueSelection($project);
-        $form     = $this->createForm(CatalogueSelectionType::class, $command, ['method' => 'GET']);
+        $form     = $this->createForm(
+            CatalogueSelectionType::class,
+            $command,
+            [
+                'method'         => 'GET',
+                'switch_project' => false,
+            ]
+        );
 
         $form->handleRequest($request);
         if( $form->isSubmitted() ) {
