@@ -1,12 +1,12 @@
 {% extends '@App/Layout/layout.html.twig' %}
-
+{# @var localizer \Symfony\Component\Intl\ResourceBundle\LocaleBundle #}
 {% block body %}
     <div class="row">
         {% for language in result.languages %}
             <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3>{{ localizer.getLanguageName(language) }}</h3>
+                        <h4>{{ localizer.localeName(language) }}</h4>
                     </div>
                     <div class="panel-body">
                         <div>
