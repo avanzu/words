@@ -1,6 +1,8 @@
 AppBundle\Entity\Project:
     type: entity
     table: project
+    uniqueConstraints:
+        uidx_canonical: { columns: [canonical] }
     id:
         id:
             type: integer

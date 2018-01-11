@@ -1,6 +1,10 @@
 AppBundle\Entity\TransValue:
     type: entity
     table: trans_value
+    indexes:
+        idx_locale: { columns: [locale] }
+        idx_state: { columns: [state] }
+        ics_locale_state: { columns: [locale, state] }
     id:
         id:
             type: integer
@@ -11,10 +15,17 @@ AppBundle\Entity\TransValue:
         locale:
             type: string
             nullable: false
+            length: 10
 
         content:
             type: text
             nullable: true
+
+        state:
+            type: string
+            nullable: true
+            length: 50
+
     manyToOne:
         unit:
             targetEntity: AppBundle\Entity\TransUnit
