@@ -19,6 +19,8 @@ class Completion
 
     protected $translated;
 
+    protected $completed;
+
     /**
      * Completion constructor.
      *
@@ -37,7 +39,11 @@ class Completion
 
     public function getPercentCompleted()
     {
-        return floor(($this->translated / $this->total) * 100);
+        if( is_null($this->completed )) {
+            $this->completed = floor(($this->translated / $this->total) * 100);
+        }
+
+        return $this->completed;
     }
 
 
