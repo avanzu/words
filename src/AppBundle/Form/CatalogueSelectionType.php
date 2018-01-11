@@ -12,6 +12,7 @@ use Components\DataAccess\CatalogueSelection;
 use Components\Resource\ITransUnitManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\LanguageType;
+use Symfony\Component\Form\Extension\Core\Type\LocaleType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -36,7 +37,7 @@ class CatalogueSelectionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('locale', LanguageType::class, [
+            ->add('locale', LocaleType::class, [
                 'label'             => 'language',
                 'preferred_choices' => $this->manager->loadLanguages(),
             ])
