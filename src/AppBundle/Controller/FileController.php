@@ -92,7 +92,7 @@ class FileController extends ResourceController implements ITemplateAware, IFlas
 
         if( $response->isSuccessful() ) {
             $this->flash($response);
-            return $this->redirectToRoute('app_translation_upload_file', ['project' => $project ]);
+            return $this->redirectToRoute('app_homepage_project', ['project' => $project ]);
         }
 
         return $this->createResponse(
@@ -114,7 +114,7 @@ class FileController extends ResourceController implements ITemplateAware, IFlas
         ];
 
         return $this->redirectToRoute(
-            'app_translation_export_file',
+            'app_translation_file_export',
             $params
         );
     }

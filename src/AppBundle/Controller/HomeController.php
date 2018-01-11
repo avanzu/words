@@ -107,7 +107,7 @@ class HomeController extends AbstractController implements ITemplateAware, IFlas
             new ViewHandlerTemplate(
                 $this->getTemplate(),
                 $request,
-                ['result' => $result]
+                ['result' => $result, 'project' => $project]
             )
         );
     }

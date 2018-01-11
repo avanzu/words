@@ -22,6 +22,7 @@ class AppKernel extends Kernel
             new \JMS\TranslationBundle\JMSTranslationBundle(),
             new \WhiteOctober\PagerfantaBundle\WhiteOctoberPagerfantaBundle(),
             new \Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
+            new \Knp\Bundle\MenuBundle\KnpMenuBundle(),
 
         ];
 

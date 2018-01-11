@@ -6,9 +6,17 @@ imports:
     - { resource: "container/listeners.yml" }
     - { resource: "container/forms.yml" }
     - { resource: "container/presentation.yml" }
+    - { resource: "container/menu.yml" }
     - { resource: "container/aliases.yml" }
 
 services:
+    app.runtime:
+        class: Components\Application\Runtime
+        arguments:
+            -
+                appName: "%app_name%"
+
+
     app.manager.email:
         class: AppBundle\Manager\EMailManager
         lazy: true

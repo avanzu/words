@@ -17,33 +17,22 @@ class ProjectResolver
      */
     protected $manager;
 
-    protected $canonical = null;
-
     /**
      * ProjectResolver constructor.
      *
      * @param IProjectManager $manager
-     * @param null            $canonical
      */
-    public function __construct(IProjectManager $manager, $canonical = null)
+    public function __construct(IProjectManager $manager)
     {
         $this->manager   = $manager;
-        $this->canonical = $canonical;
     }
 
 
-    public function __toString()
-    {
-        if( $this->canonical ) {
-            return (string)$this->manager->loadProjectBySlug($this->canonical);
-        }
-        return '';
-
-
-    }
 
     public function createResolver($canonical)
     {
-        return new static($this->manager, $canonical);
+        return function() use ($canonical) {
+            return $this->manager->loadProjectBySlug($canonical);
+        };
     }
 }

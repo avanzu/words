@@ -1,0 +1,9 @@
+
+services:
+    app.menu.main:
+        class: AppBundle\Menu\MenuBuilder
+        arguments:
+            - '@knp_menu.factory'
+            - "@app.runtime"
+        tags:
+            - { name: knp_menu.menu_builder, method: createMainMenu, alias: main }

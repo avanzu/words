@@ -9,6 +9,7 @@ namespace AppBundle\EventListener;
 
 
 use AppBundle\Controller\ITemplateAware;
+use Components\Application\Runtime;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
@@ -21,14 +22,20 @@ class KernelControllerSubscriber implements EventSubscriberInterface
      * @var ProjectResolver
      */
     protected $resolver;
+    /**
+     * @var Runtime
+     */
+    private $runtime;
 
     /**
      * KernelControllerSubscriber constructor.
      *
      * @param ProjectResolver $resolver
+     * @param Runtime         $runtime
      */
-    public function __construct(ProjectResolver $resolver) {
+    public function __construct(ProjectResolver $resolver, Runtime $runtime) {
         $this->resolver = $resolver;
+        $this->runtime  = $runtime;
     }
 
 
@@ -54,7 +61,7 @@ class KernelControllerSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $event->getRequest()->attributes->set('_project', $this->resolver->createResolver($project));
+        $this->runtime->set('project', $this->resolver->createResolver($project));
 
     }
 

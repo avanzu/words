@@ -1,14 +1,25 @@
 {% for completion in result.completions %}
-<div class="row">
-    <div class="col-xs-6 text-left">
-    <strong >{{ completion.catalogue }}</strong>
+    {# @var completion \Components\Model\Completion #}
+    <div class="row">
+        <div class="col-xs-6 text-left">
+            <h4>{{ completion.catalogue }}<small> ({{ completion.translated }} / {{ completion.total }})</small></h4>
+        </div>
+        <div class="col-xs-6 text-right">
+            <small></small>
+        </div>
     </div>
-    <div class="col-xs-6 text-right"><small>{{ completion.translated }} / {{ completion.total }}</small></div>
-</div>
-<br>
-<div class="progress">
-    <div class="progress-bar" role="progressbar" style="width: {{ completion.percentCompleted }}%;" aria-valuenow="{{ completion.percentCompleted }}" aria-valuemin="0" aria-valuemax="100">
-        {{ completion.percentCompleted }}%
+    <div class="row">
+        <div class="col-md-10">
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" style="width: {{ completion.percentCompleted }}%;" aria-valuenow="{{ completion.percentCompleted }}" aria-valuemin="0" aria-valuemax="100">
+                    {{ completion.percentCompleted }}%
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <a class="btn btn-primary btn-block btn-xs" href="{{ url('app_translation_translate_catalogue', {"project" : project, "locale": completion.language, "catalogue" : completion.catalogue}) }}">Translate</a>
+        </div>
     </div>
-</div>
+    
+    
 {% endfor %}

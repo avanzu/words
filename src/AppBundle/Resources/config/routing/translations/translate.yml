@@ -1,4 +1,4 @@
-app_tanslation_translate_index:
+app_translation_translate_index:
     path: /
     defaults:
         _controller: app.controller.translate:selectCatalogAction

@@ -1,8 +1,7 @@
-{% set _project = app.request.get('_project') %}
-{% if _project %}
+{% if runtime.project %}
     <div class="container">
     <div class="page-header">
-        <h1>{{ _project }}</h1>
+        <h1>{{ runtime.project }}</h1>
     </div>
     </div>
 {% endif %}

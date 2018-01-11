@@ -1,24 +1,24 @@
-app_translation_upload_file:
+app_translation_file_upload:
     path: /upload
     defaults:
         _controller: app.controller.file:uploadCatalogAction
         _template: "@App/TransUnit/update.html.twig"
 
-app_translation_select_file:
+app_translation_file_select:
     path: /export
     defaults:
         _controller: app.controller.file:selectCatalogAction
         _template: "@App/TransUnit/select-catalogue.html.twig"
 
 
-#app_translation_export_file:
+#app_translation_file_export:
 #    path: /all/{catalogue}.{locale}.xliff
 #    defaults:
 #        _controller: app.controller.file:exportCatalogAction
 #        _template: false
 #        project: null
 
-app_translation_export_file:
+app_translation_file_export:
     path: /{catalogue}.{locale}.xliff
     defaults:
         _controller: app.controller.file:exportCatalogAction

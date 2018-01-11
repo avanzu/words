@@ -43,6 +43,8 @@ twig:
     strict_variables: '%kernel.debug%'
     form_themes:
         - "bootstrap_3_layout.html.twig"
+    globals:
+        runtime: '@Components\Application\Runtime'
 
 # Doctrine Configuration
 doctrine:
@@ -128,6 +130,15 @@ jms_serializer:
             interactions:
                 namespace_prefix: "Components\\Interaction"
                 path: "@AppBundle/Resources/config/serializer/components/interaction"
+
+knp_menu:
+    # use "twig: false" to disable the Twig extension and the TwigRenderer
+    twig:
+        template: "@App/Partials/menu.html.twig"
+    #  if true, enables the helper for PHP templates
+    templating: false
+    # the renderer to use, list is also available by default
+    default_renderer: twig
 
 app:
     email:

@@ -3,15 +3,18 @@
 {% block body %}
     <div class="row">
         {% for language in result.languages %}
-            <div class="col-md-4">
+            <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h3>{{ localizer.getLanguageName(language) }}</h3>
                     </div>
                     <div class="panel-body">
-                            <div>
-                                {{ render(url('app_statistics_completed', {'locale' : language, 'project' : project })) }}
-                            </div>
+                        <div>
+                            {{ render(url('app_statistics_completed', {'locale' : language, 'project' : project })) }}
+                        </div>
+                    </div>
+                    <div class="panel-footer clearfix">
+                        <a class="btn btn-success btn-sm pull-right" href="{{ url('app_translation_file_upload', {"project" : project}) }}">Upload</a>
                     </div>
                 </div>
             </div>
