@@ -2,16 +2,16 @@
     {# @var completion \Components\Model\Completion #}
     <div class="row">
         <div class="col-xs-6 text-left">
-            <h4>{{ completion.catalogue }}<small> ({{ completion.translated }} / {{ completion.total }})</small></h4>
+            <strong>{{ completion.catalogue }}</strong>
         </div>
-        <div class="col-xs-6 text-right">
-            <small></small>
+        <div class="col-xs-4 text-right">
+            <span class="{{ completion.percentCompleted|colorize("text") }} text-light">({{ completion.translated }} / {{ completion.total }})</span>
         </div>
     </div>
     <div class="row">
         <div class="col-md-10">
             <div class="progress">
-                <div class="progress-bar" role="progressbar" style="width: {{ completion.percentCompleted }}%;" aria-valuenow="{{ completion.percentCompleted }}" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-bar {{ completion.percentCompleted|colorize("progress-bar") }}" role="progressbar" style="width: {{ completion.percentCompleted }}%;" aria-valuenow="{{ completion.percentCompleted }}" aria-valuemin="0" aria-valuemax="100">
                     {{ completion.percentCompleted }}%
                 </div>
             </div>
