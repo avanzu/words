@@ -1,6 +1,6 @@
 Components\Interaction\Users\CreateUser\CreateUserRequest:
     properties:
-        dao:
+        payload:
             - Collection:
                 username:
                     - NotBlank: ~

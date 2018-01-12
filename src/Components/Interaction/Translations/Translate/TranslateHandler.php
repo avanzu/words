@@ -23,7 +23,7 @@ class TranslateHandler extends ResourceHandler
      */
     public function handle(IRequest $request)
     {
-        $resource     = $request->getDao();
+        $resource     = $request->getPayload();
         $locale       = $request->getLocale();
         $localeString = $request->getLocaleString();
 

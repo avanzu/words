@@ -22,7 +22,7 @@ class ResetPasswordRequest extends ResourceRequest
      */
     public function getUser()
     {
-        return $this->getDao();
+        return $this->getPayload();
     }
 
     /**

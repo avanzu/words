@@ -13,7 +13,7 @@ use Components\Model\TransUnit;
 
 /**
  * Class TranslateRequest
- * @method TransUnit getDao
+ * @method TransUnit getPayload
  */
 class TranslateRequest extends ResourceRequest
 {
@@ -28,10 +28,10 @@ class TranslateRequest extends ResourceRequest
      */
     protected $localeString;
 
-    public function __construct($dao = null, $locale = null, $localeString = null) {
+    public function __construct($payload = null, $locale = null, $localeString = null) {
         $this->locale       = $locale;
         $this->localeString = $localeString;
-        parent::__construct($dao);
+        parent::__construct($payload);
     }
 
     /**

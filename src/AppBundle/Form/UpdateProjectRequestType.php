@@ -17,7 +17,7 @@ class UpdateProjectRequestType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('dao', ProjectType::class, ['label' => false]);
+        $builder->add('payload', ProjectType::class, ['label' => false]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

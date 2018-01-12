@@ -50,7 +50,7 @@ class ChangePasswordHandler extends ResourceHandler
         $manager->startTransaction();
 
         try {
-            $user          = $request->getDao();
+            $user          = $request->getPayload();
             $plainPassword = $request->getPlainPassword();
             $encoded       = $this->getManager()->encodePassword($user, $plainPassword);
             $response      = new ChangePasswordResponse($user, $request, IResponse::STATUS_ACCEPTED);

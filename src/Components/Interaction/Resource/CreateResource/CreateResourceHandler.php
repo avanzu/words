@@ -25,7 +25,7 @@ class CreateResourceHandler extends ResourceHandler
      */
     public function handle(IRequest $request)
     {
-        $resource = $request->getDao();
+        $resource = $request->getPayload();
         $result   = $this->manager->validate($resource, ["Default", $request->getIntention()]);
 
         if( ! $result->isValid() ) {

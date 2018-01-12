@@ -18,7 +18,7 @@ class CreateProjectRequestType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('dao', ProjectType::class, ['label' => false])
+            ->add('payload', ProjectType::class, ['label' => false])
             ;
     }
 

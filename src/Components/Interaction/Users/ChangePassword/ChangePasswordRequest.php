@@ -56,9 +56,9 @@ class ChangePasswordRequest extends ResourceRequest
     /**
      * @return User|null
      */
-    public function getDao()
+    public function getPayload()
     {
-        return $this->dao;
+        return $this->payload;
     }
 
     /**

@@ -1,5 +1,5 @@
 Components\Interaction\Users\Register\RegisterRequest:
     properties:
-        dao:
+        payload:
             - NotBlank: { message: user.entity.not_created }
             - Valid: ~

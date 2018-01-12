@@ -30,7 +30,7 @@ class ActivateHandler extends ResourceHandler
     public function handle(IRequest $request)
     {
         /** @var User $user */
-        $user     = $request->getDao();
+        $user     = $request->getPayload();
         $manager  = $this->getManager();
         $response = new ActivateResponse($user, $request);
         $manager->startTransaction();

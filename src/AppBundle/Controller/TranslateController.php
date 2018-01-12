@@ -90,9 +90,9 @@ class TranslateController extends ResourceController implements ITemplateAware, 
 
     public function translateUnitAction($locale, $catalogue, $id, Request $request)
     {
-        $dao = $this->manager->find($id);
-        $this->throw404Unless($dao);
-        $command = new TranslateRequest($dao, $locale, $request->get('content'));
+        $payload = $this->manager->find($id);
+        $this->throw404Unless($payload);
+        $command = new TranslateRequest($payload, $locale, $request->get('content'));
         $result  = $this->executeCommand($command);
 
 

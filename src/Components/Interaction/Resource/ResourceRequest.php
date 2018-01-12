@@ -12,17 +12,17 @@ use Components\Infrastructure\Request\IRequest;
 
 abstract class ResourceRequest implements IRequest
 {
-    protected $dao;
+    protected $payload;
 
 
     /**
      * ResourceRequest constructor.
      *
-     * @param $dao
+     * @param $payload
      */
-    public function __construct($dao = null)
+    public function __construct($payload = null)
     {
-        $this->dao       = $dao;
+        $this->payload       = $payload;
     }
 
     /**
@@ -38,19 +38,19 @@ abstract class ResourceRequest implements IRequest
     /**
      * @return mixed
      */
-    public function getDao()
+    public function getPayload()
     {
-        return $this->dao;
+        return $this->payload;
     }
 
     /**
-     * @param mixed $dao
+     * @param mixed $payload
      *
      * @return $this
      */
-    public function setDao($dao)
+    public function setPayload($payload)
     {
-        $this->dao = $dao;
+        $this->payload = $payload;
 
         return $this;
     }

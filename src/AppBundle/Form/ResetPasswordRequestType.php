@@ -18,7 +18,7 @@ class ResetPasswordRequestType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('dao', UserLookupType::class, [
+        $builder->add('payload', UserLookupType::class, [
             'manager' => $options['manager'],
         ]);
     }

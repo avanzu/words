@@ -27,19 +27,19 @@ class GetCollectionRequest extends ResourceRequest
     /**
      * GetCollectionRequest constructor.
      *
-     * @param null       $dao
+     * @param null       $payload
      * @param            $resourceName
      * @param int        $limit
      * @param int        $offset
      * @param Criteria[] $criteria
      */
-    public function __construct($dao = null, $resourceName = null, $limit = 10, $offset = null, array $criteria = null)
+    public function __construct($payload = null, $resourceName = null, $limit = 10, $offset = null, array $criteria = null)
     {
         $this->limit        = $limit;
         $this->offset       = $offset;
         $this->resourceName = $resourceName;
         $this->criteria     = $criteria;
-        parent::__construct($dao);
+        parent::__construct($payload);
     }
 
     /**

@@ -17,7 +17,7 @@ class UpdateTranslationRequestType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('dao', TransUnitType::class, ['label' => false]);
+        $builder->add('payload', TransUnitType::class, ['label' => false]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

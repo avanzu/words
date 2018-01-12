@@ -46,7 +46,7 @@ class RegisterHandler extends ResourceHandler
     public function handle(IRequest $request)
     {
         $manager  = $this->getManager();
-        $resource = $request->getDao();
+        $resource = $request->getPayload();
         $result   = $manager->validate($resource, ['Default', $request->getIntention()]);
         $response = new RegisterResponse($resource, $request);
 
