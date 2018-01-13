@@ -8,6 +8,8 @@
 namespace AppBundle\Twig;
 
 
+use Symfony\Component\Intl\Intl;
+use Symfony\Component\Intl\ResourceBundle\LocaleBundle;
 use Twig\TwigFilter;
 
 class AppExtension extends \Twig_Extension
@@ -15,7 +17,8 @@ class AppExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new TwigFilter('colorize', [$this, 'colorize'])
+            new TwigFilter('colorize', [$this, 'colorize']),
+            new TwigFilter('locale_name', [$this, 'getLocaleName'])
         ];
     }
 
@@ -35,4 +38,13 @@ class AppExtension extends \Twig_Extension
         return "$prefix-info";
     }
 
+    /**
+     * @param $locale
+     *
+     * @return null|string
+     */
+    public function getLocaleName($locale)
+    {
+        return Intl::getLocaleBundle()->getLocaleName($locale);
+    }
 }

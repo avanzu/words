@@ -21,21 +21,15 @@ class GetOverviewHandler implements ICommandHandler
      */
     protected $transUnitManager;
 
-    /**
-     * @var IProjectManager
-     */
-    protected $projectManager;
 
     /**
      * GetOverviewHandler constructor.
      *
      * @param ITransUnitManager $transUnitManager
-     * @param IProjectManager   $projectManager
      */
-    public function __construct(ITransUnitManager $transUnitManager, IProjectManager $projectManager)
+    public function __construct(ITransUnitManager $transUnitManager)
     {
         $this->transUnitManager = $transUnitManager;
-        $this->projectManager   = $projectManager;
     }
 
 
@@ -48,8 +42,7 @@ class GetOverviewHandler implements ICommandHandler
     {
         $languages  = $this->transUnitManager->loadLanguages();
         $catalogues = $this->transUnitManager->loadCatalogues();
-        $projects   = $this->projectManager->loadProjects();
 
-        return new GetOverviewResponse($languages, $catalogues, $projects);
+        return new GetOverviewResponse($languages, $catalogues);
     }
 }

@@ -1,0 +1,26 @@
+app_api_translation_file:
+    prefix: /file
+    resource: "translations/file.yml"
+
+app_api_translations_translate:
+    prefix: /translate
+    resource: "translations/translate.yml"
+
+app_api_translations_list:
+    path: /
+    defaults:
+        _controller: app.controller.trans.unit:indexAction
+        _template: "@App/TransUnit/index.html.twig"
+
+app_api_translations_create:
+    path: /create
+    defaults:
+        _controller: app.controller.trans.unit:createAction
+        _template: "@App/TransUnit/create.html.twig"
+
+app_api_translations_update:
+    path: /{slug}/update
+    defaults:
+        _controller: app.controller.trans.unit:updateAction
+        _template: "@App/TransUnit/update.html.twig"
+

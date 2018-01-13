@@ -91,7 +91,6 @@ class HomeController extends AbstractController implements ITemplateAware, IFlas
                 [
                     'result'    => $result,
                     'project'   => $project,
-                    'localizer' => Intl::getLocaleBundle(),
                 ]
             )
         );

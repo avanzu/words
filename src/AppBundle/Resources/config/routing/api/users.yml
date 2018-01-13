@@ -1,0 +1,4 @@
+app_api_users_list:
+    path: /
+    defaults:
+        _controller: app.controller.user:getCollectionAction

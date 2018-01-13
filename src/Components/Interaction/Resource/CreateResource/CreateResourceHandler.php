@@ -26,6 +26,11 @@ class CreateResourceHandler extends ResourceHandler
     public function handle(IRequest $request)
     {
         $resource = $request->getPayload();
+
+        if( is_array($resource)) {
+            $resource = $this->getManager()->createNew($resource);
+        }
+
         $result   = $this->manager->validate($resource, ["Default", $request->getIntention()]);
 
         if( ! $result->isValid() ) {

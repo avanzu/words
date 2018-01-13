@@ -25,10 +25,6 @@ class GetOverviewResponse extends Response
      */
     protected $catalogues;
 
-    /**
-     * @var
-     */
-    protected $projects;
 
     /**
      * @var
@@ -45,15 +41,13 @@ class GetOverviewResponse extends Response
      *
      * @param     $languages
      * @param     $catalogues
-     * @param     $projects
      * @param     $message
      * @param int $status
      */
-    public function __construct($languages, $catalogues, $projects, $message = '', $status = IResponse::STATUS_OK)
+    public function __construct($languages, $catalogues, $message = '', $status = IResponse::STATUS_OK)
     {
         $this->languages  = $languages;
         $this->catalogues = $catalogues;
-        $this->projects   = $projects;
         $this->message    = $message;
         $this->status     = $status;
     }
@@ -81,14 +75,6 @@ class GetOverviewResponse extends Response
     public function getCatalogues()
     {
         return $this->catalogues;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getProjects()
-    {
-        return $this->projects;
     }
 
     /**

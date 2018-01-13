@@ -56,7 +56,6 @@ services:
         class: Components\Interaction\Statistics\GetOverview\GetOverviewHandler
         arguments:
             - "@app.manager.trans.unit"
-            - "@app.manager.project"
         tags:
             - { name: app.command.handler }
 

@@ -1,49 +1,37 @@
-app_security:
-    resource: "routing/security.yml"
-
-app_oauth_authorize:
-    resource: "routing/api/oauth-authorize.yml"
-
-app_api:
-    prefix: /api
-    resource: "routing/api/main.yml"
-    defaults:
-        _format: json
-
-app_homepage:
+app_api_homepage:
     path:     /
     defaults:
         _controller: AppBundle\Controller\HomeController:indexAction
         _template: "@App/Home/index.html.twig"
 
-app_homepage_project:
+app_api_homepage_project:
     path:     /{project}
     defaults:
         _controller: AppBundle\Controller\HomeController:projectIndexAction
         _template: "@App/Home/project-index.html.twig"
 
-app_account:
+app_api_account:
     prefix: /account
-    resource: "routing/account.yml"
+    resource: "account.yml"
 
-app_users:
+app_api_users:
     prefix: /users
-    resource: "routing/users.yml"
+    resource: "users.yml"
     defaults:
         resource: user
 
-app_projects:
+app_api_projects:
     prefix: /projects
-    resource: "routing/projects.yml"
+    resource: "projects.yml"
     defaults:
         resource: project
 
-app_statistics:
+app_api_statistics:
     prefix: /{project}/stats
-    resource: "routing/statistics.yml"
+    resource: "statistics.yml"
 
-app_translations:
+app_api_translations:
     prefix: /{project}/translations
-    resource: "routing/translations.yml"
+    resource: "translations.yml"
     defaults:
         resource: "trans.unit"
