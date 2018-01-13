@@ -56,17 +56,27 @@ interface IPager
     public function getItems();
 
     /**
-     * @return mixed
+     * @return bool
      */
     public function hasNext();
 
     /**
-     * @return mixed
+     * @return int
+     */
+    public function getNext();
+
+    /**
+     * @return bool
      */
     public function hasPrevious();
 
     /**
-     * @return mixed
+     * @return int
+     */
+    public function getPrevious();
+
+    /**
+     * @return \Traversable
      */
     public function getIterator();
     /**

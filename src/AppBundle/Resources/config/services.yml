@@ -8,6 +8,7 @@ imports:
     - { resource: "container/presentation.yml" }
     - { resource: "container/menu.yml" }
     - { resource: "container/aliases.yml" }
+    - { resource: "container/hateoas.yml" }
 
 services:
     app.runtime:

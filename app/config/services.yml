@@ -30,7 +30,8 @@ services:
     JMS\TranslationBundle\Translation\FileWriter: '@jms_translation.file_writer'
     Components\Application\Runtime: '@app.runtime'
     AppBundle\Application\Runtime: '@app.runtime'
-
+    AppBundle\Hateoas\PagerProvider: '@hateoas.provider.pager'
+    AppBundle\EventListener\HateoasSerializationSubscriber: '@app.subscriber.serializer.hateoas'
     AppBundle\Localization\Message:
         autowire: false
         autoconfigure: false

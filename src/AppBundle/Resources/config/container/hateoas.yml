@@ -1,0 +1,13 @@
+services:
+    hateoas.url.generator:
+        class: AppBundle\Hateoas\UrlGenerator
+        lazy: true
+        autowire: true
+
+    hateoas.provider.pager:
+        class: AppBundle\Hateoas\PagerProvider
+        arguments:
+            - "@request_stack"
+            - "@router.default"
+        tags:
+            - { name: hateoas.provider }

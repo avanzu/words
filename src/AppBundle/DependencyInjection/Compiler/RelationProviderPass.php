@@ -25,11 +25,13 @@ class RelationProviderPass implements CompilerPassInterface
         if( ! $container->hasDefinition('app.subscriber.serializer.hateoas')) {
             return;
         }
+
         $definition = $container->getDefinition('app.subscriber.serializer.hateoas');
+
         foreach(array_keys( $container->findTaggedServiceIds('hateoas.provider')) as $id ) {
             $providerDefinition = $container->getDefinition($id);
             $providerDefinition->setLazy(true);
-            $definition->addMethodCall('addProvider', new Reference($id));
+            $definition->addMethodCall('addProvider', [new Reference($id)]);
         }
     }
 }

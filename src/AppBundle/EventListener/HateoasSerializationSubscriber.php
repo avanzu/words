@@ -8,6 +8,8 @@
 namespace AppBundle\EventListener;
 
 
+use Components\Hateoas\IUrlGenerator;
+use Components\Hateoas\Relation\NamedRouteRelation;
 use Components\Hateoas\RelationProviderInterface;
 use JMS\Serializer\EventDispatcher\Events;
 use JMS\Serializer\EventDispatcher\EventSubscriberInterface;
@@ -31,6 +33,21 @@ class HateoasSerializationSubscriber implements EventSubscriberInterface, Contai
      * @var RelationProviderInterface[]
      */
     protected $providers = [];
+
+    /**
+     * @var  IUrlGenerator
+     */
+    protected $generator;
+
+    /**
+     * HateoasSerializationSubscriber constructor.
+     *
+     * @param IUrlGenerator $generator
+     */
+    public function __construct(IUrlGenerator $generator) {
+        $this->generator = $generator;
+    }
+
 
     /**
      * @param RelationProviderInterface[] $providers
@@ -93,8 +110,33 @@ class HateoasSerializationSubscriber implements EventSubscriberInterface, Contai
         }
 
         $context->startVisiting($object);
-        $visitor->setData('_links', $links);
+        $visitor->setData('_links', $this->processRelations($links));
         $context->stopVisiting($object);
+    }
+
+
+    /**
+     * @param NamedRouteRelation[] $relations
+     *
+     * @return array
+     */
+    protected function processRelations($relations)
+    {
+        $resolved = [];
+        foreach($relations as $rel => $route) {
+            if( $href = $this->processRelation($route) ) {
+                $resolved[$rel] = array_merge($route->getAttributes(), [ 'href' => $href ]);
+            }
+        }
+
+        return array_filter($resolved);
+    }
+
+    protected function processRelation($route)
+    {
+        if( ! $this->generator->supports($route) ) return false;
+        return $this->generator->generate($route);
+
     }
 
     /**
