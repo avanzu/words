@@ -9,11 +9,13 @@ namespace AppBundle\EventListener;
 
 
 use AppBundle\Controller\ITemplateAware;
-use Components\Application\Runtime;
+use AppBundle\Application\Runtime;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 class KernelControllerSubscriber implements EventSubscriberInterface
 {
@@ -57,11 +59,15 @@ class KernelControllerSubscriber implements EventSubscriberInterface
 
     public function onKernelRequest(GetResponseEvent $event)
     {
+        if( $event->getRequestType() === KernelInterface::SUB_REQUEST ) {
+            return;
+        }
+
         if (!$project = $event->getRequest()->get('project')) {
             return;
         }
 
-        $this->runtime->set('project', $this->resolver->createResolver($project));
+        $this->runtime->setProject($this->resolver->createResolver($project));
 
     }
 

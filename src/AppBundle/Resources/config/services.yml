@@ -11,7 +11,7 @@ imports:
 
 services:
     app.runtime:
-        class: Components\Application\Runtime
+        class: AppBundle\Application\Runtime
         arguments:
             -
                 appName: "%app_name%"

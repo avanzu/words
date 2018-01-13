@@ -25,7 +25,7 @@ class GetCollectionHandler extends ResourceHandler
     {
         $manager    = $this->getManager();
         try {
-            $collection = $manager->getCollection($request->getLimit(), $request->getOffset(), $request->getCriteria());
+            $collection = $manager->getCollection($request->getLimit(), $request->getPage(), $request->getCriteria());
 
             return new GetCollectionResponse($collection, $request);
         } catch ( \Exception $e ) {

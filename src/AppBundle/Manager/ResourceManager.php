@@ -8,8 +8,10 @@
 namespace AppBundle\Manager;
 
 
+use AppBundle\DataAccess\Pager;
 use AppBundle\Repository\ResourceRepository;
 use Components\DataAccess\Criteria;
+use Components\DataAccess\IPager;
 use Components\DataAccess\ResourceCollection;
 use Components\Resource\IManager;
 use Components\Resource\Repository\IFactory as RepositoryFactory;
@@ -19,6 +21,7 @@ use Components\Resource\Validator\IValidator;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -181,20 +184,24 @@ class ResourceManager implements IManager
     }
 
     /**
-     * @param int  $limit
-     * @param int  $offset
+     * @param int             $limit
+     * @param int             $page
      * @param Criteria[]|null $criteriaList
      *
-     * @return ResourceCollection
+     * @return IPager
      */
-    public function getCollection($limit, $offset = 0, $criteriaList = null)
+    public function getCollection($limit, $page = 1, $criteriaList = null)
     {
         $builder = $this->getRepository()->createQueryBuilder('collection');
         $this->applyCriteria($criteriaList, $builder);
-        $builder->setMaxResults($limit)->setFirstResult($offset);
-        $pager = new Paginator($builder);
 
-        return new ResourceCollection($pager->getIterator(), count($pager), $limit, $offset);
+        $pager   = new Pager(new DoctrineORMAdapter($builder));
+        $pager->setMaxPerPage($limit)->setCurrentPage($page);
+
+        // $builder->setMaxResults($limit)->setFirstResult($offset);
+        // $pager = new Paginator($builder);
+
+        return $pager; //new ResourceCollection($pager, count($pager), $limit, $page);
     }
 
     /**

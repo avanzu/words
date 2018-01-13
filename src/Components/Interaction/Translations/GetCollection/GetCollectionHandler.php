@@ -29,7 +29,7 @@ class GetCollectionHandler extends CollectionHandler
                 $request->getLocale(),
                 $request->getCatalogue(),
                 $request->getProject(),
-                $request->getOffset(),
+                $request->getPage(),
                 $request->getLimit()
             );
 

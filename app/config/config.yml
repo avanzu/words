@@ -44,7 +44,7 @@ twig:
     form_themes:
         - "bootstrap_3_layout.html.twig"
     globals:
-        runtime: '@Components\Application\Runtime'
+        runtime: '@app.runtime'
 
 # Doctrine Configuration
 doctrine:
@@ -130,6 +130,12 @@ jms_serializer:
             interactions:
                 namespace_prefix: "Components\\Interaction"
                 path: "@AppBundle/Resources/config/serializer/components/interaction"
+            application:
+                namespace_prefix: "AppBundle"
+                path: "@AppBundle/Resources/config/serializer/application"
+            vendors:
+                namespace_prefix: ""
+                path: "@AppBundle/Resources/config/serializer"
 
 knp_menu:
     # use "twig: false" to disable the Twig extension and the TwigRenderer

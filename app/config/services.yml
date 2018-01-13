@@ -28,6 +28,9 @@ services:
     AppBundle\Manager\ProjectManager: '@app.manager.project'
     Components\Resource\IProjectManager: "@app.manager.project"
     JMS\TranslationBundle\Translation\FileWriter: '@jms_translation.file_writer'
+    Components\Application\Runtime: '@app.runtime'
+    AppBundle\Application\Runtime: '@app.runtime'
+
     AppBundle\Localization\Message:
         autowire: false
         autoconfigure: false

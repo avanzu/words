@@ -25,6 +25,8 @@
         
     </table>
     
+    {{ pagerfanta(result.resource, 'twitter_bootstrap3') }}
+    {#
     <ul class="pager">
         <li class="previous">
             {% if result.resource.previous %}
@@ -37,7 +39,7 @@
         {% endif %}
         </li>
     </ul>
-    
+    #}
 {% endblock %}
 {% block inline_scripts %}
 <script>

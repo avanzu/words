@@ -8,7 +8,7 @@
 namespace AppBundle\Menu;
 
 
-use Components\Application\Runtime;
+use AppBundle\Application\Runtime;
 use Components\Model\Project;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
@@ -42,7 +42,7 @@ class MenuBuilder
         $menu->addChild('Home', array('route' => 'app_homepage'));
         $menu->addChild('Projects', array('route' => 'app_projects_list'));
 
-        if($project = $this->runtime->get('project') ) {
+        if($project = $this->runtime->getProject() ) {
             $this->addProjectMenu($menu, $project, $options);
         }
 

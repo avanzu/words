@@ -56,13 +56,13 @@ interface IManager
     public function initialize($model, $properties = []);
 
     /**
-     * @param  int     $limit
-     * @param  int     $offset
+     * @param  int       $limit
+     * @param int        $page
      * @param Criteria[] $criteria
      *
      * @return mixed
      */
-    public function getCollection($limit, $offset = 0, $criteria = null);
+    public function getCollection($limit, $page = 1, $criteria = null);
 
     /**
      * @return IRepository

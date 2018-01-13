@@ -68,7 +68,7 @@ class TranslateController extends ResourceController implements ITemplateAware, 
             null,
             'trans.unit',
             $request->get('limit', 10),
-            $request->get('offset')
+            $request->get('page', 1)
         );
 
         $command->setLocale($locale)->setCatalogue($catalogue)->setProject($project);

@@ -13,10 +13,10 @@ use Traversable;
 /**
  * Class ResourceCollection
  */
-class ResourceCollection implements Collection, \IteratorAggregate
+class ResourceCollection implements Collection, \IteratorAggregate, IPager
 {
     /**
-     * @var \Traversable|\Countable
+     * @var \Traversable|\Countable|\IteratorAggregate
      */
     protected $items;
     /**
@@ -26,7 +26,7 @@ class ResourceCollection implements Collection, \IteratorAggregate
     /**
      * @var int
      */
-    protected $offset;
+    protected $page;
     /**
      * @var
      */
@@ -35,16 +35,16 @@ class ResourceCollection implements Collection, \IteratorAggregate
     /**
      * ResourceCollection constructor.
      *
-     * @param \Traversable $items
-     * @param              $total
-     * @param int          $limit
-     * @param int          $offset
+     * @param \Traversable|\IteratorAggregate|callable $items
+     * @param                                          $total
+     * @param int                                      $limit
+     * @param int                                      $page
      */
-    public function __construct(\Traversable $items, $total, $limit = 10, $offset = 0) {
-        $this->items  = $items;
-        $this->limit  = $limit;
-        $this->offset = $offset;
-        $this->total  = $total;
+    public function __construct( $items, $total, $limit = 10, $page = 1) {
+        $this->items = $items;
+        $this->limit = $limit;
+        $this->page  = $page;
+        $this->total = $total;
     }
 
     /**
@@ -52,7 +52,11 @@ class ResourceCollection implements Collection, \IteratorAggregate
      */
     public function getItems()
     {
-        return iterator_to_array($this->items);
+        if( is_callable($this->items)) {
+            $this->items = call_user_func($this->items);
+        }
+
+        return $this->items;
     }
 
     /**
@@ -82,28 +86,28 @@ class ResourceCollection implements Collection, \IteratorAggregate
     /**
      * @return int
      */
-    public function getOffset()
+    public function getPage()
     {
-        return $this->offset;
+        return $this->page;
     }
 
     public function hasNext()
     {
-        return (($this->offset + $this->limit) < $this->total);
+        return (($this->page + $this->limit) < $this->total);
     }
 
     public function hasPrevious()
     {
-        return ($this->offset > 0);
+        return ($this->page > 0);
     }
 
     public function getNextOffset()
     {
-        return min($this->total, $this->offset + $this->limit);
+        return min($this->total, $this->page + $this->limit);
     }
     public function getPreviousOffset()
     {
-        return max(0 , $this->offset - $this->limit);
+        return max(0 , $this->page - $this->limit);
     }
 
     /**
@@ -117,5 +121,10 @@ class ResourceCollection implements Collection, \IteratorAggregate
     public function getIterator()
     {
         return new \ArrayIterator($this->getItems());
+    }
+
+    public function getOffset()
+    {
+        return (($this->page-1)  * $this->limit);
     }
 }

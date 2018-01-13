@@ -15,7 +15,7 @@ class GetCollectionRequest extends ResourceRequest
 {
 
     protected $limit    = 10;
-    protected $offset   = 0;
+    protected $page   = 1;
 
     protected $resourceName;
 
@@ -33,10 +33,10 @@ class GetCollectionRequest extends ResourceRequest
      * @param int        $offset
      * @param Criteria[] $criteria
      */
-    public function __construct($payload = null, $resourceName = null, $limit = 10, $offset = null, array $criteria = null)
+    public function __construct($payload = null, $resourceName = null, $limit = 10, $page = 1, array $criteria = null)
     {
         $this->limit        = $limit;
-        $this->offset       = $offset;
+        $this->page         = $page;
         $this->resourceName = $resourceName;
         $this->criteria     = $criteria;
         parent::__construct($payload);
@@ -73,19 +73,19 @@ class GetCollectionRequest extends ResourceRequest
     /**
      * @return int
      */
-    public function getOffset()
+    public function getPage()
     {
-        return $this->offset;
+        return $this->page ?: 1;
     }
 
     /**
-     * @param int $offset
+     * @param int $page
      *
      * @return $this
      */
-    public function setOffset($offset)
+    public function setPage($page)
     {
-        $this->offset = $offset;
+        $this->page = $page;
 
         return $this;
     }

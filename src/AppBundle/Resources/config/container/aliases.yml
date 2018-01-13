@@ -13,5 +13,5 @@ services:
     AppBundle\Controller\TransUnitController: '@app.controller.trans.unit'
     AppBundle\Controller\FileController: "@app.controller.file"
     AppBundle\Controller\TranslateController: '@app.controller.translate'
-    Components\Application\Runtime: '@app.runtime'
+
 

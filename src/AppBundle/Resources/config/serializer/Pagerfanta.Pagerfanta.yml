@@ -1,0 +1,4 @@
+Pagerfanta\Pagerfanta:
+    exclusion_policy: ALL
+    read_only: true
+    exclude: true

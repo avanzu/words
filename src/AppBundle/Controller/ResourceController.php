@@ -107,7 +107,7 @@ class ResourceController extends Controller implements ICommandRunner, IPresente
             null,
             $resource,
             $request->get('limit', 10),
-            $request->get('offset')
+            $request->get('page', 1)
         );
 
         $result = $this->executeCommand($command);

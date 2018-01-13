@@ -7,13 +7,16 @@
 
 namespace AppBundle\Manager;
 
+use AppBundle\DataAccess\Pager;
 use AppBundle\Localization\LazyMessageCatalogue;
 use AppBundle\Repository\TransUnitRepository;
+use Components\DataAccess\IPager;
 use Components\DataAccess\ResourceCollection;
 use Components\Model\Completion;
 use Components\Model\TransUnit;
 use Components\Resource\ITransUnitManager;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Pagerfanta\Adapter\DoctrineORMAdapter;
 
 
 /**
@@ -89,20 +92,26 @@ class TransUnitManager extends ResourceManager implements ITransUnitManager
     /**
      * @param     $locale
      * @param     $catalogue
-     * @param  $project
-     * @param int $offset
+     * @param     $project
+     * @param int $page
      * @param int $limit
      *
-     * @return ResourceCollection
+     * @return IPager
      */
-    public function getTranslatables($locale, $catalogue, $project = null, $offset = 0, $limit = 10)
+    public function getTranslatables($locale, $catalogue, $project = null, $page = 1, $limit = 10)
     {
         $builder = $this->getRepository()->getTranslatableBuilder($locale, $catalogue, $project);
+        /*
         $builder->setMaxResults($limit)->setFirstResult($offset);
         $pager = new Paginator($builder, true);
         $pager->setUseOutputWalkers(false);
+        */
 
-        return new ResourceCollection($pager->getIterator(), count($pager), $limit, $offset);
+        $pager = new Pager(new DoctrineORMAdapter($builder, true, false));
+        $pager->setMaxPerPage($limit)->setCurrentPage($page);
+        return $pager;
+
+        // return new ResourceCollection($pager, count($pager), $limit, $page);
 
     }
 

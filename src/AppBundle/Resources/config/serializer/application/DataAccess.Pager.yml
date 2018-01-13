@@ -1,0 +1,14 @@
+AppBundle\DataAccess\Pager:
+    exclusion_policy: ALL
+    read_only: true
+#    exclude: true
+    virtual_properties:
+        getPageSize:
+            serialized_name: page_size
+        getPage:
+            serialized_name: page
+        getPagesTotal:
+            serialized_name: pages_total
+        getItems:
+            serialized_name: items
+            type: array
