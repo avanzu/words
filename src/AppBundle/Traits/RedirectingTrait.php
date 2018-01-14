@@ -20,4 +20,6 @@ trait RedirectingTrait
     {
         return $this->redirect;
     }
+
+
 }

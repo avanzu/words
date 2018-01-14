@@ -16,6 +16,7 @@ use Components\Infrastructure\Response\IResponse;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 trait InteractiveTrait
 {
@@ -40,6 +41,26 @@ trait InteractiveTrait
         }
 
         return $this->executeCommand($form->getData());
+
+    }
+
+    protected function createSuccessResponse(IResponse $response, Request $request)
+    {
+
+        if(! $response->isSuccessful()) {
+            return null;
+        }
+        // ignore GET and HEAD which will be handled by outer flow
+        if( in_array($request->getMethod(), [Request::METHOD_GET, Request::METHOD_HEAD])){
+            return null;
+        }
+
+        if( $request->isXmlHttpRequest() ) {
+            return new Response('', Response::HTTP_NO_CONTENT);
+        }
+
+        $this->flash($response);
+        return $this->redirectToRoute($this->getRedirect());
 
     }
 

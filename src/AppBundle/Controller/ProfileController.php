@@ -9,6 +9,7 @@ namespace AppBundle\Controller;
 
 
 use AppBundle\Form\PutProfileRequestType;
+use AppBundle\Presentation\ResultFlashBuilder;
 use AppBundle\Presentation\ViewHandlerTemplate;
 use AppBundle\Traits\Flasher;
 use AppBundle\Traits\InteractiveTrait;
@@ -54,18 +55,21 @@ class ProfileController extends AbstractController implements ITemplateAware, IF
     /**
      * HomeController constructor.
      *
-     * @param IPresenter  $presenter
-     * @param ILocalizer  $localizer
-     * @param ICommandBus $commandBus
+     * @param IPresenter         $presenter
+     * @param ILocalizer         $localizer
+     * @param ICommandBus        $commandBus
+     * @param ResultFlashBuilder $flasher
      */
     public function __construct(
         IPresenter $presenter,
         ILocalizer $localizer,
-        ICommandBus $commandBus
+        ICommandBus $commandBus,
+        ResultFlashBuilder $flasher
     ) {
         $this->presenter      = $presenter;
         $this->localizer      = $localizer;
         $this->commandBus     = $commandBus;
+        $this->flasher        = $flasher;
     }
 
     /**
@@ -96,9 +100,9 @@ class ProfileController extends AbstractController implements ITemplateAware, IF
         $form    = $this->createForm(PutProfileRequestType::class, $command, ['method' => 'PUT']);
         $result  = $this->getInteractionResponse($form, $request, $command);
 
-        if ($result->isSuccessful()) {
-            $this->flash($result);
-            return $this->redirectToRoute($this->getRedirect());
+
+        if( $response = $this->createSuccessResponse($result, $request)){
+            return $response;
         }
 
         return $this->createResponse(

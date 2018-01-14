@@ -31,7 +31,8 @@ class GetProfileHandler extends ResourceHandler
         $user = $request->getPayload();
         try {
             $profile = $this->getManager()->loadUserProfile($user);
-            return new GetProfileResponse($profile, $request);
+            // do not return the request object since it may contain sensible data
+            return new GetProfileResponse($profile);
         } catch(\Exception $e) {
             return new ErrorResponse('Activation failed.', IResponse::STATUS_INTERNAL_SERVER_ERROR, $e);
         }
