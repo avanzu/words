@@ -33,7 +33,7 @@ class ResourceResponse extends Response
      *
      * @internal param null $resourceName
      */
-    public function __construct($resource, ResourceRequest $request, $status = IResponse::STATUS_OK) {
+    public function __construct($resource, ResourceRequest $request = null, $status = IResponse::STATUS_OK) {
         $this->resource     = $resource;
         $this->status       = $status;
         $this->request      = $request;
