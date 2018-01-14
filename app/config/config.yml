@@ -137,6 +137,10 @@ jms_serializer:
                 namespace_prefix: ""
                 path: "@AppBundle/Resources/config/serializer"
 
+    property_naming:
+        id: 'jms_serializer.identical_property_naming_strategy'
+
+
 knp_menu:
     # use "twig: false" to disable the Twig extension and the TwigRenderer
     twig:
