@@ -18,6 +18,20 @@ class User extends UserModel implements AdvancedUserInterface, \Serializable
         $this->profile = new Profile($this);
     }
 
+    /**
+     * @return Profile
+     */
+    public function getProfile()
+    {
+        if( ! $this->profile ) {
+            $this->profile = new Profile($this);
+        }
+
+        return $this->profile;
+    }
+
+
+
 
     /**
      * @inheritdoc
