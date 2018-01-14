@@ -10,6 +10,14 @@ use Components\Model\User as UserModel;
  */
 class User extends UserModel implements AdvancedUserInterface, \Serializable
 {
+    /**
+     * User constructor.
+     */
+    public function __construct() {
+        parent::__construct();
+        $this->profile = new Profile($this);
+    }
+
 
     /**
      * @inheritdoc

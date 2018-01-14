@@ -5,3 +5,7 @@ app_api_registration:
 app_api_resetting:
     prefix: /reset
     resource: "resetting.yml"
+
+app_api_profile:
+    prefix: /profile
+    resource: "profile.yml"

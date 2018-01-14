@@ -12,6 +12,7 @@ use Components\Exception\ActivationFailedException;
 use Components\Exception\RegistrationFailedException;
 use Components\Exception\ResetAccountException;
 use Components\Model\User;
+use Components\Model\UserProfile;
 
 
 /**
@@ -34,7 +35,6 @@ interface IUserManager extends IManager
      */
     public function loadUserByToken($token);
 
-
     /**
      * @param User $model
      * @param      $plainPassword
@@ -42,4 +42,11 @@ interface IUserManager extends IManager
      * @return string
      */
     public function encodePassword(User $model, $plainPassword);
+
+    /**
+     * @param User $model
+     *
+     * @return UserProfile
+     */
+    public function loadUserProfile(User $model);
 }

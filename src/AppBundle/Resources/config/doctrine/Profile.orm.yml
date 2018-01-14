@@ -1,0 +1,32 @@
+AppBundle\Entity\Profile:
+    type: entity
+    table: user_profile
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        avatar:
+            type: string
+            nullable: true
+        gender:
+            type: string
+            length: 1
+            nullable: true
+        firstName:
+            type: string
+            nullable: true
+            column: first_name
+        lastName:
+            type: string
+            nullable: true
+            column: last_name
+
+    oneToOne:
+        user:
+            targetEntity: AppBundle\Entity\User
+            inversedBy: profile
+            joinColumn:
+                onDelete: CASCADE

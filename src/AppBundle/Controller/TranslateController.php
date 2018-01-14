@@ -71,7 +71,14 @@ class TranslateController extends ResourceController implements ITemplateAware, 
             $request->get('page', 1)
         );
 
-        $command->setLocale($locale)->setCatalogue($catalogue)->setProject($project);
+        // configure
+        $command
+            ->setLocale($locale)
+            ->setCatalogue($catalogue)
+            ->setProject($project)
+        ;
+
+
 
         /** @var GetCollectionResponse $result */
         $result = $this->executeCommand($command);

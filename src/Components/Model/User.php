@@ -57,6 +57,11 @@ class User
     protected $token;
 
     /**
+     * @var Profile
+     */
+    protected $profile;
+
+    /**
      * User constructor.
      */
     public function __construct()
@@ -276,5 +281,24 @@ class User
         return (string)$this->getUsername();
     }
 
+    /**
+     * @return Profile
+     */
+    public function getProfile()
+    {
+        return $this->profile;
+    }
+
+    /**
+     * @param Profile $profile
+     *
+     * @return $this
+     */
+    public function setProfile($profile)
+    {
+        $this->profile = $profile;
+
+        return $this;
+    }
 
 }

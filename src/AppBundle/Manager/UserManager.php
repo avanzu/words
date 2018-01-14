@@ -10,6 +10,7 @@ namespace AppBundle\Manager;
 
 use AppBundle\Repository\UserRepository;
 use Components\Model\User;
+use Components\Model\UserProfile;
 use Components\Resource\IUserManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -138,6 +139,15 @@ class UserManager extends ResourceManager implements UserProviderInterface, Cont
 
         return $this->loadUserByUsername($user->getUsername());
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function loadUserProfile(User $model)
+    {
+        return $this->getRepository()->fetchUserProfile($model);
+    }
+
 
     /**
      * @return ContainerInterface

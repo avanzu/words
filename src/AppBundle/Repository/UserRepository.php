@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\User;
+use Components\Model\UserProfile;
 
 /**
  * UserRepository
@@ -36,5 +37,29 @@ class UserRepository extends ResourceRepository
             ->getResult();
 
         return current($result);
+    }
+
+    /**
+     * @param $model
+     *
+     * @return UserProfile
+     */
+    public function fetchUserProfile($model) {
+        return current(
+            $this
+                ->createQueryBuilder('user')
+                ->leftJoin('user.profile', 'profile')
+                ->select(
+                    sprintf(
+                        'new %s(user.id, user.username, user.email, profile.gender, profile.firstName, profile.lastName, profile.avatar)',
+                        UserProfile::class
+                    )
+                )
+                ->where('user = :model')
+                ->setParameter('model', $model)
+                ->getQuery()
+                ->getResult()
+            );
+
     }
 }

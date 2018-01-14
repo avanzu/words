@@ -58,3 +58,8 @@ AppBundle\Entity\User:
             nullable: true
             precision: 0
     lifecycleCallbacks: {  }
+    oneToOne:
+        profile:
+            targetEntity: AppBundle\Entity\Profile
+            mappedBy: user
+            cascade: [ all ]

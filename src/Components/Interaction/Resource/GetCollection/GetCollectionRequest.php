@@ -14,8 +14,8 @@ use Components\Interaction\Resource\ResourceRequest;
 class GetCollectionRequest extends ResourceRequest
 {
 
-    protected $limit    = 10;
-    protected $page   = 1;
+    protected $limit = 10;
+    protected $page  = 1;
 
     protected $resourceName;
 
@@ -24,13 +24,15 @@ class GetCollectionRequest extends ResourceRequest
      */
     protected $criteria = null;
 
+
+
     /**
      * GetCollectionRequest constructor.
      *
      * @param null       $payload
      * @param            $resourceName
      * @param int        $limit
-     * @param int        $offset
+     * @param int        $page
      * @param Criteria[] $criteria
      */
     public function __construct($payload = null, $resourceName = null, $limit = 10, $page = 1, array $criteria = null)
@@ -47,7 +49,6 @@ class GetCollectionRequest extends ResourceRequest
      *
      * @param $resourceName
      */
-
 
 
     /**

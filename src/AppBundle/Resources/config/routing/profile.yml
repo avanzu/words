@@ -1,0 +1,11 @@
+app_profile_index:
+    path: /
+    defaults:
+        _controller: AppBundle\Controller\ProfileController:indexAction
+        _template: "@App/Profile/index.html.twig"
+app_profile_update:
+    path: /update
+    defaults:
+        _controller: AppBundle\Controller\ProfileController:updateAction
+        _template: '@App/Profile/update.html.twig'
+        _redirect: app_profile_index

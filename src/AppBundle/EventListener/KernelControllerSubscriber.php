@@ -8,11 +8,14 @@
 namespace AppBundle\EventListener;
 
 
+use AppBundle\Controller\IRedirectAware;
 use AppBundle\Controller\ITemplateAware;
 use AppBundle\Application\Runtime;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
+use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -54,20 +57,31 @@ class KernelControllerSubscriber implements EventSubscriberInterface
         $object = reset($controller);
 
         $this->configureTemplate($object, $event->getRequest());
+        $this->configureRedirect($object, $event->getRequest());
 
     }
 
     public function onKernelRequest(GetResponseEvent $event)
     {
-        if( $event->getRequestType() === KernelInterface::SUB_REQUEST ) {
-            return;
-        }
+        if( ! $event->isMasterRequest()) return;
 
         if (!$project = $event->getRequest()->get('project')) {
             return;
         }
 
         $this->runtime->setProject($this->resolver->createResolver($project));
+
+
+
+
+    }
+
+    public function onKernelResponse(FilterResponseEvent $event)
+    {
+        // Don't do anything if it's not the master request.
+        if (!$event->isMasterRequest()) {
+            return;
+        }
 
     }
 
@@ -86,12 +100,25 @@ class KernelControllerSubscriber implements EventSubscriberInterface
         }
     }
 
+    protected function configureRedirect($controller, $request)
+    {
+        if( ! $controller instanceof IRedirectAware ) {
+            return;
+        }
+
+        if( $request->attributes->has('_redirect')) {
+            $controller->setRedirect($request->attributes->get('_redirect'));
+        }
+    }
+
+
     /** @inheritdoc */
     public static function getSubscribedEvents()
     {
         return [
             KernelEvents::CONTROLLER => 'onKernelController',
-            KernelEvents::REQUEST    => 'onKernelRequest'
+            KernelEvents::REQUEST    => 'onKernelRequest',
+            KernelEvents::RESPONSE   => 'onKernelResponse'
         ];
     }
 
