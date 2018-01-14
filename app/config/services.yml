@@ -32,6 +32,7 @@ services:
     AppBundle\Application\Runtime: '@app.runtime'
     AppBundle\Hateoas\PagerProvider: '@hateoas.provider.pager'
     AppBundle\EventListener\HateoasSerializationSubscriber: '@app.subscriber.serializer.hateoas'
+    AppBundle\Presentation\ResultFlashBuilder: '@app.flash'
     AppBundle\Localization\Message:
         autowire: false
         autoconfigure: false
