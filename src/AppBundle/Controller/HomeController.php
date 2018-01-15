@@ -14,6 +14,7 @@ use AppBundle\Traits\TemplateAware;
 use Components\Infrastructure\ICommandBus;
 use Components\Infrastructure\Presentation\IPresenter;
 use Components\Infrastructure\Presentation\TemplateView;
+use Components\Interaction\Environment\GetEnvironmentRequest;
 use Components\Interaction\Projects\GetProjects\GetProjectsRequest;
 use Components\Interaction\Statistics\GetCompletion\GetCompletionRequest;
 use Components\Interaction\Statistics\GetCompletion\GetCompletionResponse;
@@ -107,6 +108,19 @@ class HomeController extends AbstractController implements ITemplateAware, IFlas
                 $this->getTemplate(),
                 $request,
                 ['result' => $result, 'project' => $project]
+            )
+        );
+    }
+
+    public function environmentAction(Request $request)
+    {
+        $command = new GetEnvironmentRequest();
+        $result = $this->commandBus->execute($command);
+        return $this->createResponse(
+            new ViewHandlerTemplate(
+                $this->getTemplate(),
+                $request,
+                ['result' => $result]
             )
         );
     }

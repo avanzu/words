@@ -1,15 +1,3 @@
-app_api_homepage:
-    path:     /
-    defaults:
-        _controller: AppBundle\Controller\HomeController:indexAction
-        _template: "@App/Home/index.html.twig"
-
-app_api_homepage_project:
-    path:     /{project}
-    defaults:
-        _controller: AppBundle\Controller\HomeController:projectIndexAction
-        _template: "@App/Home/project-index.html.twig"
-
 app_api_account:
     prefix: /account
     resource: "account.yml"
@@ -35,3 +23,21 @@ app_api_translations:
     resource: "translations.yml"
     defaults:
         resource: "trans.unit"
+
+app_api_environment:
+    path: /environment
+    defaults:
+        _controller: AppBundle\Controller\HomeController:environmentAction
+        _template: '@App/Home/environment.html.twig'
+
+app_api_homepage_project:
+    path:     /{project}
+    defaults:
+        _controller: AppBundle\Controller\HomeController:projectIndexAction
+        _template: "@App/Home/project-index.html.twig"
+
+app_api_homepage:
+    path:     /
+    defaults:
+        _controller: AppBundle\Controller\HomeController:indexAction
+        _template: "@App/Home/index.html.twig"

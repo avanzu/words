@@ -65,3 +65,11 @@ services:
             - "@app.manager.trans.unit"
         tags:
             - { name: app.command.handler }
+
+    app.handler.environment:
+        class: Components\Interaction\Environment\GetEnvironmentHandler
+        arguments:
+            - "@app.manager.project"
+            - "@app.manager.trans.unit"
+        tags:
+            - { name: app.command.handler }
