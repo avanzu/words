@@ -64,10 +64,9 @@ interface ITransUnitManager
 
     /**
      * @param      $locale
-     * @param      $catalogue
      * @param null $project
      *
      * @return mixed
      */
-    public function getCompletion($locale, $catalogue, $project = null);
+    public function getCompletion($locale, $project = null);
 }

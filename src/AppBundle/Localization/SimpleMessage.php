@@ -26,11 +26,24 @@ class SimpleMessage implements IMessage
      */
     protected $localeString;
 
+    /**
+     * @var string
+     */
     protected $sourceString;
 
+    /**
+     * @var string
+     */
     protected $notes;
 
+    /**
+     * @var int
+     */
     protected $entityId;
+    /**
+     * @var string
+     */
+    protected $state;
 
     /**
      * SimpleMessage constructor.
@@ -41,8 +54,9 @@ class SimpleMessage implements IMessage
      * @param string $localeString
      * @param string $sourceString
      * @param string $description
+     * @param null   $state
      */
-    public function __construct( $entityId, $id, $desc, $localeString, $sourceString = '', $description = '')
+    public function __construct( $entityId, $id, $desc, $localeString, $sourceString = '', $description = '', $state = Message::STATE_NONE)
     {
         $this->entityId     = $entityId;
         $this->id           = $id;
@@ -50,6 +64,7 @@ class SimpleMessage implements IMessage
         $this->sourceString = $sourceString ?: $desc;
         $this->localeString = $localeString;
         $this->notes        = $description;
+        $this->state        = $state ?: $this->localeString ? Message::STATE_TRANSLATED : Message::STATE_NEEDS_TRANSLATION;
 
     }
 
@@ -135,7 +150,7 @@ class SimpleMessage implements IMessage
      */
     public function hasState()
     {
-        return false;
+        return !!$this->state;
     }
 
     /**
@@ -143,7 +158,7 @@ class SimpleMessage implements IMessage
      */
     public function getState()
     {
-        return '';
+        return $this->state;
     }
 
     /**
@@ -182,4 +197,6 @@ class SimpleMessage implements IMessage
     {
         return [];
     }
+
+
 }

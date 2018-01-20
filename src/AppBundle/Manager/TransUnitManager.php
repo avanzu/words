@@ -117,14 +117,13 @@ class TransUnitManager extends ResourceManager implements ITransUnitManager
 
     /**
      * @param      $locale
-     * @param      $catalogue
      * @param null $project
      *
      * @return Completion
      */
-    public function getCompletion($locale, $catalogue, $project = null)
+    public function getCompletion($locale,  $project = null)
     {
-        $result = $this->getRepository()->getCompletion($locale, $catalogue, $project);
+        $result = $this->getRepository()->getCompletion($locale, $project);
         return $result;
     }
 

@@ -35,7 +35,7 @@ class GetCompletionHandler implements ICommandHandler
      */
     public function handle(IRequest $request)
     {
-        $completion = $this->manager->getCompletion($request->getLocale(), $request->getCatalogue(), $request->getProject());
+        $completion = $this->manager->getCompletion($request->getLocale(), $request->getProject());
 
         return new GetCompletionResponse($completion);
     }

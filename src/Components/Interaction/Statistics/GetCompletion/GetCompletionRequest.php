@@ -19,10 +19,6 @@ class GetCompletionRequest implements IRequest
     /**
      * @var
      */
-    protected $catalogue;
-    /**
-     * @var
-     */
     protected $locale;
     /**
      * @var null
@@ -32,35 +28,13 @@ class GetCompletionRequest implements IRequest
     /**
      * GetCompletionRequest constructor.
      *
-     * @param $catalogue
      * @param $locale
      * @param $project
      */
-    public function __construct( $locale, $catalogue = null, $project = null)
+    public function __construct( $locale, $project = null)
     {
-        $this->catalogue = $catalogue;
         $this->locale    = $locale;
         $this->project   = $project;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCatalogue()
-    {
-        return $this->catalogue;
-    }
-
-    /**
-     * @param mixed $catalogue
-     *
-     * @return $this
-     */
-    public function setCatalogue($catalogue)
-    {
-        $this->catalogue = $catalogue;
-
-        return $this;
     }
 
     /**

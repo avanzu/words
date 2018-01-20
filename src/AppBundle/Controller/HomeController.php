@@ -99,7 +99,7 @@ class HomeController extends AbstractController implements ITemplateAware, IFlas
 
     public function completionAction($project, $locale, Request $request)
     {
-        $command = new GetCompletionRequest($locale, null, $project);
+        $command = new GetCompletionRequest($locale, $project);
         /** @var GetCompletionResponse $result */
         $result  = $this->commandBus->execute($command);
 
@@ -111,6 +111,7 @@ class HomeController extends AbstractController implements ITemplateAware, IFlas
             )
         );
     }
+
 
     public function environmentAction(Request $request)
     {

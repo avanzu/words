@@ -105,7 +105,7 @@ class TransUnitRepository extends ResourceRepository
 
     }
 
-    public function getCompletion($locale, $catalogue, $project = Project::__DEFAULT)
+    public function getCompletion($locale, $project = Project::__DEFAULT)
     {
         $builder =$this
             ->createQueryBuilder('trans_unit')

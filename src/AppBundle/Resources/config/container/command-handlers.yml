@@ -66,6 +66,13 @@ services:
         tags:
             - { name: app.command.handler }
 
+    app.handler.statistics.project:
+        class: Components\Interaction\Statistics\ProjectStats\GetProjectStatsHandler
+        arguments:
+            - "@app.manager.trans.unit"
+        tags:
+            - { name: app.command.handler }
+
     app.handler.environment:
         class: Components\Interaction\Environment\GetEnvironmentHandler
         arguments:

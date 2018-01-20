@@ -1,0 +1,5 @@
+Components\Interaction\Statistics\ProjectStats\GetProjectStatsResponse:
+    read_only: true
+    properties:
+        resource:
+            access_type: public_method

@@ -15,6 +15,7 @@ use AppBundle\Traits\Flasher;
 use Components\Infrastructure\Presentation\TemplateView;
 use Components\Interaction\Projects\CreateProject\CreateProjectRequest;
 use Components\Interaction\Projects\UpdateProject\UpdateProjectRequest;
+use Components\Interaction\Statistics\ProjectStats\GetProjectStatsRequest;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -27,6 +28,11 @@ class ProjectController extends ResourceController implements ITemplateAware, IF
         Flasher;
 
 
+    /**
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
     public function createAction(Request $request)
     {
         $command = new CreateProjectRequest();
@@ -47,6 +53,12 @@ class ProjectController extends ResourceController implements ITemplateAware, IF
     }
 
 
+    /**
+     * @param         $slug
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
     public function updateAction($slug, Request $request)
     {
         $model = $this->getManager()->loadProjectBySlug($slug);
@@ -67,6 +79,26 @@ class ProjectController extends ResourceController implements ITemplateAware, IF
                 ['form' => $form, 'command' => $command, 'result' => $result],
                 $result->getStatus()
             ));
+    }
+
+    /**
+     * @param         $slug
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function completionAction($slug, Request $request)
+    {
+        $command = new GetProjectStatsRequest($slug);
+        $result  = $this->commandBus->execute($command);
+
+        return $this->createResponse(
+            new ViewHandlerTemplate(
+                $this->getTemplate(),
+                $request,
+                ['result' => $result]
+            )
+        );
     }
 
 }
