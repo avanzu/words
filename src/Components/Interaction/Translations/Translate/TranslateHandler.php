@@ -8,11 +8,17 @@
 namespace Components\Interaction\Translations\Translate;
 
 
+use AppBundle\Manager\ResourceManager;
 use Components\Infrastructure\Request\IRequest;
 use Components\Infrastructure\Response\ErrorResponse;
 use Components\Infrastructure\Response\ValidationFailedResponse;
 use Components\Interaction\Resource\ResourceHandler;
+use Components\Resource\ITransUnitManager;
 
+/**
+ * Class TranslateHandler
+ * @property ITransUnitManager|ResourceManager $manager
+ */
 class TranslateHandler extends ResourceHandler
 {
 
@@ -26,12 +32,13 @@ class TranslateHandler extends ResourceHandler
         $resource     = $request->getPayload();
         $locale       = $request->getLocale();
         $localeString = $request->getLocaleString();
+        $message      = false;
 
         if( ! $value = $resource->getTranslation($locale)) {
             $value = $resource->createTranslation($locale);
         }
 
-        $value->setContent($localeString);
+        $value->setContent($localeString)->setState($request->getState());
 
         $result   = $this->manager->validate($resource, ["Default", $request->getIntention()]);
 
@@ -41,10 +48,12 @@ class TranslateHandler extends ResourceHandler
 
         try {
             $this->manager->save($resource);
+            $message = $this->manager->getMessage($resource->getId(), $locale);
+
         } catch (\Exception $reason) {
             return new ErrorResponse('Unable to translate resource', 1, $reason);
         }
 
-        return new TranslateResponse($resource, $request);
+        return new TranslateResponse($message, $request);
     }
 }

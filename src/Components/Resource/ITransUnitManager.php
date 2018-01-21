@@ -9,6 +9,7 @@ namespace Components\Resource;
 
 
 use Components\DataAccess\IPager;
+use Components\Localization\IMessage;
 use Components\Localization\IMessageCatalogue;
 use Components\Model\TransUnit;
 
@@ -62,6 +63,13 @@ interface ITransUnitManager
      */
     public function getTranslatables($locale, $catalogue, $project = null, $page = 1, $limit = 10);
 
+    /**
+     * @param $id
+     * @param $locale
+     *
+     * @return IMessage|false
+     */
+    public function getMessage($id, $locale);
     /**
      * @param      $locale
      * @param null $project

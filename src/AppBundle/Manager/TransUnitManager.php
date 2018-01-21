@@ -116,6 +116,16 @@ class TransUnitManager extends ResourceManager implements ITransUnitManager
     }
 
     /**
+     * @param $id
+     * @param $locale
+     *
+     * @return \Components\Localization\IMessage|false
+     */
+    public function getMessage($id, $locale) {
+        return $this->getRepository()->fetchMessage($id, $locale);
+    }
+
+    /**
      * @param      $locale
      * @param null $project
      *

@@ -82,7 +82,6 @@ class TranslateController extends ResourceController implements ITemplateAware, 
 
         /** @var GetCollectionResponse $result */
         $result = $this->executeCommand($command);
-
         return $this->createResponse(
             new ViewHandlerTemplate(
                 $this->getTemplate(),
@@ -99,9 +98,8 @@ class TranslateController extends ResourceController implements ITemplateAware, 
     {
         $payload = $this->manager->find($id);
         $this->throw404Unless($payload);
-        $command = new TranslateRequest($payload, $locale, $request->get('content'));
+        $command = new TranslateRequest($payload, $locale, $request->get('content'), $request->get('state'));
         $result  = $this->executeCommand($command);
-
 
         return $this->createResponse(
             new ViewHandlerTemplate(

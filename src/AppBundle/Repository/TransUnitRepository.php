@@ -9,8 +9,10 @@ namespace AppBundle\Repository;
 
 
 use AppBundle\Localization\SimpleMessage;
+use Components\Localization\IMessage;
 use Components\Model\Completion;
 use Components\Model\Project;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 
 class TransUnitRepository extends ResourceRepository
@@ -42,12 +44,34 @@ class TransUnitRepository extends ResourceRepository
 
     }
 
+    private function getSimpleMessageFields($unitAlias = 'trans_unit', $valueAlias = 'translations')
+    {
+        return strtr(
+            implode(
+                ', ',
+                [
+                    '{trans_unit}.id',
+                    '{trans_unit}.key',
+                    '{trans_unit}.key',
+                    '{translations}.content',
+                    '{trans_unit}.sourceString',
+                    '{trans_unit}.description',
+                    '{translations}.state',
+                ]
+            ),
+            [
+                '{trans_unit}' => $unitAlias,
+                '{translations}' => $valueAlias
+            ]
+        );
+    }
+
     /**
-     * @param      $locale
-     * @param      $catalogue
-     * @param null $project
+     * @param        $locale
+     * @param        $catalogue
+     * @param string $project
      *
-     * @return SimpleMessage[]
+     * @return IMessage[]|SimpleMessage[]
      */
     public function fetchTranslations($locale, $catalogue, $project = Project::__DEFAULT)
     {
@@ -58,11 +82,40 @@ class TransUnitRepository extends ResourceRepository
             ->andWhere('translations.locale = :locale')
             ->setParameters(['catalogue' => $catalogue, 'locale' => $locale])
             ->select(
-                sprintf('new %s( trans_unit.id, trans_unit.key,trans_unit.key, translations.content, trans_unit.sourceString, trans_unit.description)', SimpleMessage::class)
+                sprintf(
+                    'new %s(%s)',
+                    SimpleMessage::class,
+                    $this->getSimpleMessageFields()
+                )
             )
             ;
 
         return $this->joinProject($builder, $project)->getQuery()->getResult();
+    }
+
+    /**
+     * @param $id
+     * @param $locale
+     *
+     * @return IMessage
+     */
+    public function fetchMessage($id, $locale)
+    {
+        $builder = $this->createQueryBuilder('trans_unit')
+            ->leftJoin('trans_unit.translations', 'translations', Join::WITH, 'translations.locale = :locale' )
+            //->andWhere('translations.locale = :locale')
+            ->andWhere('trans_unit.id = :id')
+            ->setParameters(['locale' => $locale, 'id' => $id])
+            ->select(
+                sprintf(
+                    'new %s(%s)',
+                    SimpleMessage::class,
+                    $this->getSimpleMessageFields()
+                )
+            );
+
+        return current($builder->getQuery()->getResult());
+
     }
 
     /**
@@ -97,7 +150,11 @@ class TransUnitRepository extends ResourceRepository
             ->where('trans_unit.catalogue = :catalogue')
             ->setParameters(['catalogue' => $catalogue, 'locale' => $locale])
             ->select(
-                sprintf('new %s(trans_unit.id, trans_unit.key,  trans_unit.key, translations.content, trans_unit.sourceString, trans_unit.description)', SimpleMessage::class)
+                sprintf(
+                    'new %s(%s)',
+                    SimpleMessage::class,
+                    $this->getSimpleMessageFields()
+                )
             )
         ;
 

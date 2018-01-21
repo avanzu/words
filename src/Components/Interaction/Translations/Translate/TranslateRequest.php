@@ -8,6 +8,7 @@
 namespace Components\Interaction\Translations\Translate;
 
 
+use AppBundle\Localization\Message;
 use Components\Interaction\Resource\ResourceRequest;
 use Components\Model\TransUnit;
 
@@ -28,9 +29,15 @@ class TranslateRequest extends ResourceRequest
      */
     protected $localeString;
 
-    public function __construct($payload = null, $locale = null, $localeString = null) {
+    /**
+     * @var string
+     */
+    protected $state;
+
+    public function __construct($payload = null, $locale = null, $localeString = null, $state = Message::STATE_TRANSLATED) {
         $this->locale       = $locale;
         $this->localeString = $localeString;
+        $this->state        = $state;
         parent::__construct($payload);
     }
 
@@ -72,6 +79,14 @@ class TranslateRequest extends ResourceRequest
         $this->localeString = $localeString;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getState()
+    {
+        return $this->state;
     }
 
     /**

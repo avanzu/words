@@ -64,7 +64,7 @@ class SimpleMessage implements IMessage
         $this->sourceString = $sourceString ?: $desc;
         $this->localeString = $localeString;
         $this->notes        = $description;
-        $this->state        = $state ?: $this->localeString ? Message::STATE_TRANSLATED : Message::STATE_NEEDS_TRANSLATION;
+        $this->state        = strlen($state) ? $state : ($this->localeString ? Message::STATE_TRANSLATED : Message::STATE_NEEDS_TRANSLATION);
 
     }
 
