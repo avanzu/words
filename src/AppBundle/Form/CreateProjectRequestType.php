@@ -32,5 +32,10 @@ class CreateProjectRequestType extends AbstractType
         );
     }
 
+    public function getBlockPrefix()
+    {
+        return '';
+    }
+
 
 }

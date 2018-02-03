@@ -10,6 +10,7 @@ namespace Components\Interaction\Resource\UpdateResource;
 
 use Components\Infrastructure\Request\IRequest;
 use Components\Infrastructure\Response\ErrorResponse;
+use Components\Infrastructure\Response\Response;
 use Components\Infrastructure\Response\ValidationFailedResponse;
 use Components\Interaction\Resource\ResourceHandler;
 use Components\Interaction\Resource\ResourceRequest;
@@ -34,7 +35,7 @@ class UpdateResourceHandler extends ResourceHandler
         try {
             $this->manager->save($resource);
         } catch (\Exception $reason) {
-            return new ErrorResponse('Unable to update resource', 1, $reason);
+            return new ErrorResponse('Unable to update resource', Response::STATUS_INTERNAL_SERVER_ERROR, $reason);
         }
 
         return $this->createResponse($request, $resource);

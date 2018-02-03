@@ -35,7 +35,8 @@ class ProjectType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => Project::class
+                'data_class'         => Project::class,
+                'allow_extra_fields' => true,
             ]
         );
 

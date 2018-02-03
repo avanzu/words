@@ -8,6 +8,7 @@
 namespace AppBundle\Repository;
 
 
+use AppBundle\Entity\TransUnit;
 use AppBundle\Localization\SimpleMessage;
 use Components\Localization\IMessage;
 use Components\Model\Completion;
@@ -131,8 +132,8 @@ class TransUnitRepository extends ResourceRepository
         }
         return $builder
             ->join('trans_unit.project', 'project')
-            ->andWhere('project.canonical = :project')
-            ->setParameter('project' , $project);
+            ->andWhere('project.canonical in (:project)')
+            ->setParameter('project' , array_unique([$project, Project::__DEFAULT]));
     }
 
     /**

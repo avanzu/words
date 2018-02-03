@@ -24,9 +24,15 @@ class UpdateProjectRequestType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => UpdateProjectRequest::class
+                'data_class'         => UpdateProjectRequest::class,
+                'allow_extra_fields' => true,
             ]
         );
+    }
+
+    public function getBlockPrefix()
+    {
+        return '';
     }
 
 
