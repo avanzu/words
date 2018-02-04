@@ -51,7 +51,7 @@ class TransUnitRepository extends ResourceRepository
             implode(
                 ', ',
                 [
-                    '{trans_unit}.id',
+                    '{trans_unit}.key',
                     '{trans_unit}.key',
                     '{trans_unit}.key',
                     '{translations}.content',
@@ -131,9 +131,10 @@ class TransUnitRepository extends ResourceRepository
             return $builder->andWhere('trans_unit.project is null');
         }
         return $builder
-            ->join('trans_unit.project', 'project')
+            ->leftJoin('trans_unit.project', 'project')
             ->andWhere('project.canonical in (:project)')
-            ->setParameter('project' , array_unique([$project, Project::__DEFAULT]));
+            ->setParameter('project' , array_unique([$project, Project::__DEFAULT]))
+            ;
     }
 
     /**
@@ -183,6 +184,31 @@ class TransUnitRepository extends ResourceRepository
              ->getQuery()
              ->getResult()
             ;
+    }
+
+    /**
+     * @param        $key
+     * @param        $catalogue
+     * @param string $project
+     *
+     * @return mixed
+     */
+    public function findUnit($key, $catalogue, $project = Project::__DEFAULT) {
+
+        $builder = $this
+            ->createQueryBuilder('trans_unit')
+            ->where('trans_unit.key = :key')
+            ->andWhere('trans_unit.catalogue = :catalogue')
+            ->setParameters(['key' => $key, 'catalogue' => $catalogue]);
+
+        $canonical = $project instanceof  Project ? $project->getCanonical() : $project;
+
+        $builder->join('trans_unit.project', 'project')
+                ->andWhere('project.canonical = :canonical')
+                ->setParameter('canonical', $canonical);
+
+
+        return current($builder->getQuery()->getResult());
     }
 
 }

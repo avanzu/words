@@ -9,6 +9,11 @@ app_api_projects_create:
         _controller: app.controller.project:createAction
         _template: "@App/Project/create.html.twig"
 
+app_api_projects_show:
+    path: /{slug}
+    defaults:
+        _controller: app.controller.project:showAction
+        _template: "@App/Project/show.html.twig"
 app_api_projects_stats:
     path: /{slug}/stats
     defaults:

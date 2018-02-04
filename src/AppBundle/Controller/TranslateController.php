@@ -12,17 +12,28 @@ use AppBundle\Presentation\ViewHandlerTemplate;
 use AppBundle\Traits\Flasher;
 use AppBundle\Traits\TemplateAware;
 use Components\DataAccess\CatalogueSelection;
+use Components\Infrastructure\Response\ErrorResponse;
+use Components\Interaction\Projects\FindProject\FindProjectRequest;
+use Components\Interaction\Projects\FindProject\FindProjectResponse;
 use Components\Interaction\Translations\GetCollection\GetCollectionRequest;
 use Components\Interaction\Translations\GetCollection\GetCollectionResponse;
 use Components\Interaction\Translations\Translate\TranslateRequest;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * Class TranslateController
+ */
 class TranslateController extends ResourceController implements ITemplateAware, IFlashing
 {
     use TemplateAware,
         Flasher;
 
 
+    /**
+     * @param CatalogueSelection $command
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
     protected function generateExportUrl(CatalogueSelection $command)
     {
         $params = [
@@ -37,6 +48,12 @@ class TranslateController extends ResourceController implements ITemplateAware, 
         );
     }
 
+    /**
+     * @param         $project
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
     public function selectCatalogAction($project, Request $request)
     {
         $command  = new CatalogueSelection($project);
@@ -62,6 +79,14 @@ class TranslateController extends ResourceController implements ITemplateAware, 
 
     }
 
+    /**
+     * @param         $project
+     * @param         $locale
+     * @param         $catalogue
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function translateCatalogueAction($project, $locale, $catalogue, Request $request)
     {
         $command = new GetCollectionRequest(
@@ -93,12 +118,29 @@ class TranslateController extends ResourceController implements ITemplateAware, 
     }
 
 
-
-    public function translateUnitAction($locale, $catalogue, $id, Request $request)
+    /**
+     * @param         $project
+     * @param         $locale
+     * @param         $catalogue
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function translateUnitAction($project, $locale, $catalogue, Request $request)
     {
-        $payload = $this->manager->find($id);
-        $this->throw404Unless($payload);
-        $command = new TranslateRequest($payload, $locale, $request->get('content'), $request->get('state'));
+
+        /** @var FindProjectResponse|ErrorResponse $projectResponse */
+        $projectResponse = $this->executeCommand(new FindProjectRequest($project));
+
+        $command = new TranslateRequest(
+            $request->get('key'),
+            $locale,
+            $request->get('content'),
+            $catalogue,
+            $projectResponse->getResource(),
+            $request->get('state')
+        );
+
         $result  = $this->executeCommand($command);
 
         return $this->createResponse(

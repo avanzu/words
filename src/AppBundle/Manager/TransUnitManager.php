@@ -11,31 +11,44 @@ use AppBundle\DataAccess\Pager;
 use AppBundle\Localization\LazyMessageCatalogue;
 use AppBundle\Repository\TransUnitRepository;
 use Components\DataAccess\IPager;
-use Components\DataAccess\ResourceCollection;
 use Components\Model\Completion;
+use Components\Model\Project;
 use Components\Model\TransUnit;
 use Components\Resource\ITransUnitManager;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 
 
 /**
  * Class TransUnitManager
  * @method TransUnitRepository getRepository
+ * @method TransUnit createNew($properties = [])
  */
 class TransUnitManager extends ResourceManager implements ITransUnitManager
 {
+
+
 
     /**
      * @param $key
      * @param $catalogue
      * @param $project
      *
-     * @return TransUnit|null
+     * @return TransUnit|null|object
      */
     public function lookup($key, $catalogue, $project)
     {
-        return $this->getRepository()->findOneBy(['key' => $key, 'catalogue' => $catalogue, 'project' => $project]);
+        return $this->getRepository()->findUnit($key, $catalogue, $project); // ->findOneBy(['key' => $key, 'catalogue' => $catalogue, 'project' => $project]);
+    }
+
+    /**
+     * @param $key
+     * @param $catalogue
+     *
+     * @return null|TransUnit|object
+     */
+    protected function lookupTemplate($key, $catalogue)
+    {
+        return $this->getRepository()->findUnit($key,$catalogue, Project::__DEFAULT);
     }
 
     /**
@@ -47,11 +60,24 @@ class TransUnitManager extends ResourceManager implements ITransUnitManager
      */
     public function loadOrCreate($key, $catalogue, $project)
     {
-        if( ! $unit = $this->lookup($key, $catalogue, $project)) {
-            $unit = $this->createNew(['key' => $key, 'catalogue' => $catalogue, 'project' => $project]);
+        if( $unit = $this->lookup($key, $catalogue, $project)) {
+            return $unit;
+        }
+
+
+        $unit = $this->createNew(['key' => $key, 'catalogue' => $catalogue, 'project' => $project, 'sourceString' => $key]);
+
+        if( Project::isDefault($project) ) {
+            return $unit;
+        }
+
+        if( $template = $this->lookupTemplate($key, $catalogue)) {
+            $unit->setSourceString($template->getSourceString())
+                 ->setDescription($template->getDescription());
         }
 
         return $unit;
+
     }
 
     /**

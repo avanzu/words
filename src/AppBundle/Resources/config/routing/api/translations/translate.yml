@@ -17,7 +17,7 @@ app_api_translation_translate_catalogue:
 #        _template: "@App/Translate/translate.html.twig"
 
 app_api_translation_translate_unit:
-    path: /unit/{id}/{locale}/{catalogue}
+    path: /unit/{locale}/{catalogue}
     defaults:
         _controller: app.controller.translate:translateUnitAction
         _template: ""
