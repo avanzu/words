@@ -10,6 +10,8 @@ namespace Components\Interaction\Translations\Translate;
 
 use AppBundle\Localization\Message;
 use Components\Interaction\Resource\ResourceRequest;
+use Components\Localization\IMessageCatalogue;
+use Components\Model\Project;
 use Components\Model\TransUnit;
 
 /**
@@ -34,11 +36,53 @@ class TranslateRequest extends ResourceRequest
      */
     protected $state;
 
-    public function __construct($payload = null, $locale = null, $localeString = null, $state = Message::STATE_TRANSLATED) {
+    /**
+     * @var string
+     */
+    protected $catalogue;
+
+    /**
+     * @var string
+     */
+    protected $project;
+    /** @var string */
+    protected $key;
+
+    public function __construct(
+        $key = null,
+        $locale = null,
+        $localeString = null,
+        $catalogue = IMessageCatalogue::__DEFAULT,
+        $project = Project::__DEFAULT,
+        $state = Message::STATE_TRANSLATED
+    ) {
+        parent::__construct(null);
+        $this->key          = $key;
         $this->locale       = $locale;
         $this->localeString = $localeString;
         $this->state        = $state;
-        parent::__construct($payload);
+        $this->catalogue    = $catalogue;
+        $this->project      = $project;
+    }
+
+    /**
+     * @return string
+     */
+    public function getKey()
+    {
+        return $this->key;
+    }
+
+    /**
+     * @param string $key
+     *
+     * @return $this
+     */
+    public function setKey($key)
+    {
+        $this->key = $key;
+
+        return $this;
     }
 
     /**
@@ -92,9 +136,41 @@ class TranslateRequest extends ResourceRequest
     /**
      * @return string
      */
-    public function getResourceName()
+    public function getCatalogue()
     {
-        return 'trans.unit';
+        return $this->catalogue;
+    }
+
+    /**
+     * @param string $catalogue
+     *
+     * @return $this
+     */
+    public function setCatalogue($catalogue)
+    {
+        $this->catalogue = $catalogue;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getProject()
+    {
+        return $this->project;
+    }
+
+    /**
+     * @param string $project
+     *
+     * @return $this
+     */
+    public function setProject($project)
+    {
+        $this->project = $project;
+
+        return $this;
     }
 
     /**
@@ -103,5 +179,13 @@ class TranslateRequest extends ResourceRequest
     public function getIntention()
     {
         return 'translate';
+    }
+
+    /**
+     * @return string
+     */
+    public function getResourceName()
+    {
+        return 'trans.unit';
     }
 }

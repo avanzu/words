@@ -29,16 +29,18 @@ class TranslateHandler extends ResourceHandler
      */
     public function handle(IRequest $request)
     {
-        $resource     = $request->getPayload();
         $locale       = $request->getLocale();
-        $localeString = $request->getLocaleString();
-        $message      = false;
+        $resource     = $this->manager->loadOrCreate(
+            $request->getKey(),
+            $request->getCatalogue(),
+            $request->getProject()
+        );
 
         if( ! $value = $resource->getTranslation($locale)) {
             $value = $resource->createTranslation($locale);
         }
 
-        $value->setContent($localeString)->setState($request->getState());
+        $value->setContent($request->getLocaleString())->setState($request->getState());
 
         $result   = $this->manager->validate($resource, ["Default", $request->getIntention()]);
 
