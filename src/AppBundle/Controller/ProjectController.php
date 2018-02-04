@@ -12,13 +12,11 @@ use AppBundle\Manager\ProjectManager;
 use AppBundle\Presentation\ViewHandlerTemplate;
 use AppBundle\Traits\TemplateAware;
 use AppBundle\Traits\Flasher;
-use Components\Infrastructure\Presentation\TemplateView;
 use Components\Infrastructure\Response\ErrorResponse;
 use Components\Interaction\Projects\CreateProject\CreateProjectRequest;
 use Components\Interaction\Projects\UpdateProject\UpdateProjectRequest;
 use Components\Interaction\Resource\UpdateResource\UpdateResourceResponse;
 use Components\Interaction\Statistics\ProjectStats\GetProjectStatsRequest;
-use FOS\RestBundle\View\View;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -128,6 +126,19 @@ class ProjectController extends ResourceController implements ITemplateAware, IF
                 $this->getTemplate(),
                 $request,
                 ['result' => $result]
+            )
+        );
+    }
+
+    public function showAction($slug, Request $request)
+    {
+        $model = $this->getManager()->loadProjectBySlug($slug);
+        $this->throw404Unless($model);
+        return $this->createResponse(
+            new ViewHandlerTemplate(
+                $this->getTemplate(),
+                $request,
+                ['result' => $model]
             )
         );
     }
