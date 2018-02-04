@@ -9,6 +9,8 @@ namespace Components\Localization;
 
 interface IMessageCatalogue
 {
+    const __DEFAULT = 'messages';
+
     /**
      * @return IMessage[]
      */
