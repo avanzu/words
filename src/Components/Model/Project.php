@@ -87,5 +87,15 @@ class Project
         return (string)$this->getName();
     }
 
+    /**
+     * @param $candidate
+     *
+     * @return bool
+     */
+    public static function isDefault($candidate)
+    {
+        $canonical = $candidate instanceof Project ? $candidate->getCanonical() : $candidate;
+        return ($canonical === static::__DEFAULT);
+    }
 
 }
