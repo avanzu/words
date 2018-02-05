@@ -2,9 +2,12 @@ AppBundle\Entity\TransValue:
     type: entity
     table: trans_value
     indexes:
-        idx_locale: { columns: [locale] }
-        idx_state: { columns: [state] }
-        ics_locale_state: { columns: [locale, state] }
+        idx_locale:
+            columns: [locale]
+        idx_state:
+            columns: [state]
+        ics_locale_state:
+            columns: [locale, state]
     id:
         id:
             type: integer

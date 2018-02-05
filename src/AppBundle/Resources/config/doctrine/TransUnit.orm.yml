@@ -1,6 +1,14 @@
 AppBundle\Entity\TransUnit:
     type: entity
     table: trans_unit
+    indexes:
+        idx_catalogue:
+            columns: [catalogue]
+        idx_key:
+            columns: [ token ]
+        idx_key_catalogue:
+            columns: [catalogue, token]
+
     repositoryClass: AppBundle\Repository\TransUnitRepository
     id:
         id:
