@@ -8,17 +8,23 @@
 namespace AppBundle\Repository;
 
 
+use AppBundle\Entity\Project;
 use AppBundle\Entity\TransUnit;
 use AppBundle\Localization\SimpleMessage;
 use Components\Localization\IMessage;
 use Components\Model\Completion;
-use Components\Model\Project;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 
+/**
+ * Class TransUnitRepository
+ */
 class TransUnitRepository extends ResourceRepository
 {
 
+    /**
+     * @return array
+     */
     public function fetchCatalogues()
     {
         return $this
@@ -31,6 +37,9 @@ class TransUnitRepository extends ResourceRepository
             ;
     }
 
+    /**
+     * @return array
+     */
     public function fetchLanguages()
     {
         return $this
@@ -45,6 +54,12 @@ class TransUnitRepository extends ResourceRepository
 
     }
 
+    /**
+     * @param string $unitAlias
+     * @param string $valueAlias
+     *
+     * @return string
+     */
     private function getSimpleMessageFields($unitAlias = 'trans_unit', $valueAlias = 'translations')
     {
         return strtr(
@@ -62,7 +77,7 @@ class TransUnitRepository extends ResourceRepository
             ),
             [
                 '{trans_unit}' => $unitAlias,
-                '{translations}' => $valueAlias
+                '{translations}' => $valueAlias,
             ]
         );
     }
@@ -121,26 +136,56 @@ class TransUnitRepository extends ResourceRepository
 
     /**
      * @param QueryBuilder $builder
-     * @param null $project
+     * @param string       $project
      *
      * @return mixed
      */
     protected function joinProject($builder, $project = Project::__DEFAULT)
     {
-        if( ! $project ) {
-            return $builder->andWhere('trans_unit.project is null');
+        if ($project === Project::__DEFAULT) {
+            return $builder
+                ->join('trans_unit.project', 'project')
+                ->andWhere('project.canonical = :project')
+                ->setParameter('project', $project)
+                ;
         }
+
         return $builder
-            ->leftJoin('trans_unit.project', 'project')
-            ->andWhere('project.canonical in (:project)')
-            ->setParameter('project' , array_unique([$project, Project::__DEFAULT]))
+            ->join('trans_unit.project', 'common')
+            ->andWhere('common.canonical = :common')
+            ->setParameter('common', Project::__DEFAULT)
+            ->leftJoin(Project::class, 'project', 'WITH', 'project.canonical = :canonical')
+            ->leftJoin(
+                TransUnit::class,
+                'project_unit',
+                'WITH',
+                'project_unit.project = project.id '
+                .'and trans_unit.key = project_unit.key '
+                .'and trans_unit.catalogue = project_unit.catalogue'
+            )
+            ->leftJoin('project_unit.translations', 'project_values', 'WITH', 'project_values.locale = :locale')
+            ->setParameter('canonical', $project)
+            ->select(
+                sprintf(
+                    'new %s('
+                    .'trans_unit.key,'
+                    .'trans_unit.key,'
+                    .'trans_unit.sourceString,'
+                    .'project_values.content,'
+                    .'trans_unit.sourceString,'
+                    .'trans_unit.description,'
+                    .'project_values.state)',
+                    SimpleMessage::class
+                )
+            )
             ;
+
     }
 
     /**
-     * @param      $locale
-     * @param      $catalogue
-     * @param null $project
+     * @param        $locale
+     * @param        $catalogue
+     * @param string $project
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
@@ -164,10 +209,20 @@ class TransUnitRepository extends ResourceRepository
 
     }
 
+    /**
+     * @param        $locale
+     * @param string $project
+     *
+     * @return mixed
+     */
     public function getCompletion($locale, $project = Project::__DEFAULT)
     {
+
+
         $builder =$this
             ->createQueryBuilder('trans_unit')
+            ->join('trans_unit.project', 'project', 'WITH', 'project.canonical = :common')
+            ->setParameter('common', Project::__DEFAULT)
             ->leftJoin('trans_unit.translations', 'translations', 'WITH', 'translations.locale = :locale')
             ->select(
                 sprintf(
@@ -177,13 +232,58 @@ class TransUnitRepository extends ResourceRepository
             )
             ->groupBy('trans_unit.catalogue')
             ->distinct()
-            ->setParameters(['locale' => $locale]);
+            ->setParameter('locale' , $locale);
 
-        return $this
-            ->joinProject($builder, $project)
-             ->getQuery()
-             ->getResult()
-            ;
+        /** @var Completion[] $records */
+        $records = $builder->getQuery()->getResult();
+
+
+        if( Project::isDefault($project))  {
+            return $records;
+        }
+
+        /*
+         * -------------------------------------------------------------------------------------------------------------
+         * In order to get the actual translation count from any other project besides the default project,
+         * we need to issue another query and update the totals accordingly.
+         * -------------------------------------------------------------------------------------------------------------
+         */
+
+        /**
+         * Unfortunately, using indexBy will still return the records with numerical index.
+         * We have to index them "by hand"
+         *
+         * @var Completion[] $indexed
+         */
+        $indexed    = [];
+        foreach ($records as $record) {
+            $indexed[$record->getCatalogue()] = $record;
+        }
+
+        $projectRecords = $this
+            ->createQueryBuilder('unit')
+            ->join('unit.project', 'project', 'WITH', 'project.canonical = :project')
+            ->setParameter('project', $project)
+            ->join('unit.translations', 'values', 'WITH', 'values.locale =:locale')
+            ->setParameter('locale', $locale)
+            ->where('unit.catalogue in (:catalogues)')
+            ->setParameter('catalogues', array_keys($indexed))
+            ->select('unit.catalogue, count(values.content) as nb_translated')
+            ->groupBy('unit.catalogue')
+            ->getQuery()
+            ->getResult()
+        ;
+
+
+        foreach ($projectRecords as $projectRecord) {
+            $catalogue    = $projectRecord['catalogue'];
+            $nbTranslated = $projectRecord['nb_translated'];
+            $indexed[$catalogue]->setTranslated($nbTranslated);
+        }
+
+        return array_values($indexed);
+
+
     }
 
     /**

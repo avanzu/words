@@ -25,4 +25,3 @@ AppBundle\Entity\Project:
         description:
             type: text
             nullable: true
-
