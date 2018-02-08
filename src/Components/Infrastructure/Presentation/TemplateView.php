@@ -42,5 +42,15 @@ class TemplateView
         return $this->params;
     }
 
+    public function only($name) {
+        if( isset($this->params[$name])) return $this->params[$name];
+        return null;
+    }
+
+
+    public function pick(...$names)
+    {
+        return array_intersect_key(array_flip($names), $this->params);
+    }
 
 }

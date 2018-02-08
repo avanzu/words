@@ -6,11 +6,12 @@
  */
 
 namespace AppBundle\Presentation;
+use Components\Infrastructure\Presentation\IHttpStatusProvider;
 use Components\Infrastructure\Presentation\TemplateView;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class ViewHandlerTemplate extends TemplateView
+class ViewHandlerTemplate extends TemplateView implements IHttpStatusProvider
 {
     /**
      * @var Request

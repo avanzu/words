@@ -11,6 +11,7 @@ namespace AppBundle\EventListener;
 use AppBundle\Controller\IRedirectAware;
 use AppBundle\Controller\ITemplateAware;
 use AppBundle\Application\Runtime;
+use Components\Infrastructure\Presentation\IPresenter;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -61,6 +62,11 @@ class KernelControllerSubscriber implements EventSubscriberInterface
 
     }
 
+
+
+    /**
+     * @param GetResponseEvent $event
+     */
     public function onKernelRequest(GetResponseEvent $event)
     {
         if( ! $event->isMasterRequest()) return;
@@ -100,6 +106,10 @@ class KernelControllerSubscriber implements EventSubscriberInterface
         }
     }
 
+    /**
+     * @param $controller
+     * @param $request
+     */
     protected function configureRedirect($controller, $request)
     {
         if( ! $controller instanceof IRedirectAware ) {

@@ -87,7 +87,7 @@ class AppExtension extends Extension
 
         $definition = new Definition($settings['controller'], [
            new Reference(sprintf('app.manager.%s', $key)),
-           new Reference('app.presenter.view'),
+           new Reference('app.presenter'),
            new Reference('app.localizer'),
            new Reference('app.command_bus')
         ]);

@@ -8,6 +8,7 @@
 namespace AppBundle\Controller;
 
 
+use AppBundle\Presentation\ViewHandlerTemplate;
 use Components\Infrastructure\Controller\ICommandRunner;
 use Components\Infrastructure\ICommandBus;
 use Components\Infrastructure\Presentation\IPresenter;
@@ -111,9 +112,15 @@ class ResourceController extends Controller implements ICommandRunner, IPresente
         );
 
         $result = $this->executeCommand($command);
-        return new Response($this->get('serializer')->serialize($result, 'json'));
+        return $this->createResponse(
+            new ViewHandlerTemplate('', $request, ['result' => $result], $result->getStatus())
+        );
+
+        // return new Response($this->get('serializer')->serialize($result, 'json'));
 
     }
+
+
 
 
 

@@ -19,7 +19,6 @@ use Components\Infrastructure\ICommandBus;
 use Components\Infrastructure\Presentation\IPresenter;
 use Components\Infrastructure\Presentation\TemplateView;
 use Components\Interaction\Users\GetProfile\GetProfileRequest;
-use Components\Interaction\Users\GetProfile\GetProfileResponse;
 use Components\Interaction\Users\PutProfile\PutProfileRequest;
 use Components\Localization\ILocalizer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

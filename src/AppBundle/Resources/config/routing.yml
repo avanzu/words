@@ -9,6 +9,8 @@ app_api:
     resource: "routing/api/main.yml"
     defaults:
         _format: json
+    options:
+        api : json
 
 app_homepage:
     path:     /

@@ -1,6 +1,6 @@
 services:
 
-    app.presenter:
+    app.presenter.twig:
         class: AppBundle\Presentation\TwigPresenter
         arguments:
             - "@twig"
@@ -10,6 +10,12 @@ services:
         arguments:
             - "@fos_rest.view_handler"
 
+    app.presenter.json:
+        class: AppBundle\Presentation\JsonPresenter
+        arguments:
+            - "@serializer"
+
+    app.presenter: '@app.presenter.json'
 
     app.flash:
         class: AppBundle\Presentation\ResultFlashBuilder

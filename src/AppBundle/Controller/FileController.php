@@ -78,7 +78,8 @@ class FileController extends ResourceController implements ITemplateAware, IFlas
     public function uploadCatalogAction($project, Request $request)
     {
         $form = $this
-            ->createForm(FormType::class)
+            ->get('form.factory')
+            ->createNamed(null,FormType::class,null, ['csrf_protection' => (!$request->isXmlHttpRequest())])
             ->add('catalog', FileType::class)
         ;
 
