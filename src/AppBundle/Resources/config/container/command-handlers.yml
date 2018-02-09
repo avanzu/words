@@ -52,6 +52,14 @@ services:
         tags:
             - { name: app.command.handler }
 
+    app.handler.translation.export_locale:
+        class: Components\Interaction\Translations\ExportLocale\ExportLocaleHandler
+        arguments:
+            - "@app.localization.message_writer"
+            - "@app.manager.trans.unit"
+        tags:
+            - { name: app.command.handler }
+
     app.handler.statistics.overview:
         class: Components\Interaction\Statistics\GetOverview\GetOverviewHandler
         arguments:

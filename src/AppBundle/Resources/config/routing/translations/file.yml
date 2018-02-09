@@ -23,3 +23,9 @@ app_translation_file_export:
     defaults:
         _controller: app.controller.file:exportCatalogAction
         _template: false
+
+app_translation_locale_export:
+    path: /{locale}.zip
+    defaults:
+        _controller: app.controller.file:exportProjectAction
+        _template: false

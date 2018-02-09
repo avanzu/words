@@ -17,14 +17,19 @@ use Components\Infrastructure\Response\ContinueCommandResponse;
 use Components\Infrastructure\Response\ErrorResponse;
 use Components\Infrastructure\Response\IResponse;
 use Components\Interaction\Translations\ExportCatalogue\ExportCatalogueRequest;
+use Components\Interaction\Translations\ExportCatalogue\ExportCatalogueResponse;
+use Components\Interaction\Translations\ExportLocale\ExportLocaleRequest;
+use Components\Interaction\Translations\ExportLocale\ExportLocaleResponse;
 use Components\Interaction\Translations\ImportCatalogue\ImportCatalogueRequest;
 use Components\Interaction\Translations\LoadFile\LoadFileRequest;
 use Components\Interaction\Translations\LoadFile\LoadFileResponse;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class FileController extends ResourceController implements ITemplateAware, IFlashing
@@ -156,6 +161,7 @@ class FileController extends ResourceController implements ITemplateAware, IFlas
         $selection = new CatalogueSelection();
         $selection->setCatalogue($catalogue)->setLocale($locale)->setProject($project);
         $command->setSelection($selection);
+        /** @var ExportCatalogueResponse $response */
         $response = $this->commandBus->execute($command);
         if( $response->isSuccessful() ) {
             return new StreamedResponse($response->getContent(), 200, ['Content-Type' => 'text/xml']);
@@ -168,6 +174,33 @@ class FileController extends ResourceController implements ITemplateAware, IFlas
                 ['command' => $command, 'result' => $response]
             )
         );
+    }
+
+    public function exportProjectAction($locale, $project, Request $request)
+    {
+        $command = new ExportLocaleRequest();
+        $command->setProject($project)->setLocale($locale);
+        /** @var ExportLocaleResponse $result */
+        $result = $this->commandBus->execute($command);
+        if( $result->isSuccessful() ) {
+            $response    = new StreamedResponse($result->getContent(), 200);
+            $disposition = $response->headers->makeDisposition(
+                ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+                $result->getFileName()
+            );
+            $response->headers->set('Content-Disposition', $disposition);
+
+            return $response;
+        }
+
+        return $this->createResponse(
+            new ViewHandlerTemplate(
+                $this->getTemplate(),
+                $request,
+                ['command' => $command, 'result' => $result]
+            )
+        );
+
     }
 
 }
