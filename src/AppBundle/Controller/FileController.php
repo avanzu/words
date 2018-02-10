@@ -26,18 +26,27 @@ use Components\Interaction\Translations\LoadFile\LoadFileResponse;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
+/**
+ * Class FileController
+ */
 class FileController extends ResourceController implements ITemplateAware, IFlashing
 {
     use TemplateAware,
         Flasher;
 
 
+    /**
+     * @param FormInterface $form
+     * @param Request       $request
+     * @param callable      $next
+     *
+     * @return ContinueCommandResponse|ErrorResponse
+     */
     protected function handleUpload(FormInterface $form, Request $request, callable  $next)
     {
         $form->handleRequest($request);
@@ -73,6 +82,12 @@ class FileController extends ResourceController implements ITemplateAware, IFlas
         return $response->isSuccessful() ? $next($response) : $response;
     }
 
+    /**
+     * @param MessageCatalogue $catalogue
+     * @param                  $project
+     *
+     * @return IResponse
+     */
     protected function importFile(MessageCatalogue $catalogue,  $project )
     {
         $command  = new ImportCatalogueRequest($catalogue, $project);
@@ -80,6 +95,12 @@ class FileController extends ResourceController implements ITemplateAware, IFlas
         return $response;
     }
 
+    /**
+     * @param         $project
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
     public function uploadCatalogAction($project, Request $request)
     {
         $form = $this
@@ -111,6 +132,11 @@ class FileController extends ResourceController implements ITemplateAware, IFlas
 
     }
 
+    /**
+     * @param CatalogueSelection $command
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
     protected function generateExportUrl(CatalogueSelection $command)
     {
         $params = [
@@ -125,6 +151,12 @@ class FileController extends ResourceController implements ITemplateAware, IFlas
         );
     }
 
+    /**
+     * @param         $project
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
     public function selectCatalogAction($project, Request $request)
     {
         $command  = new CatalogueSelection($project);
@@ -155,6 +187,14 @@ class FileController extends ResourceController implements ITemplateAware, IFlas
     }
 
 
+    /**
+     * @param         $locale
+     * @param         $catalogue
+     * @param         $project
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response|StreamedResponse
+     */
     public function exportCatalogAction($locale, $catalogue, $project,  Request $request)
     {
         $command   = new ExportCatalogueRequest();
@@ -176,6 +216,13 @@ class FileController extends ResourceController implements ITemplateAware, IFlas
         );
     }
 
+    /**
+     * @param         $locale
+     * @param         $project
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response|StreamedResponse
+     */
     public function exportProjectAction($locale, $project, Request $request)
     {
         $command = new ExportLocaleRequest();
