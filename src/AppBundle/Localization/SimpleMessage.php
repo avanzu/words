@@ -46,6 +46,11 @@ class SimpleMessage implements IMessage
     protected $state;
 
     /**
+     * @var bool
+     */
+    protected $fallback;
+
+    /**
      * SimpleMessage constructor.
      *
      * @param        $entityId
@@ -55,8 +60,9 @@ class SimpleMessage implements IMessage
      * @param string $sourceString
      * @param string $description
      * @param null   $state
+     * @param string $fallback
      */
-    public function __construct( $entityId, $id, $desc, $localeString, $sourceString = '', $description = '', $state = Message::STATE_NONE)
+    public function __construct( $entityId, $id, $desc, $localeString, $sourceString = '', $description = '', $state = Message::STATE_NONE, $fallback = '')
     {
         $this->entityId     = $entityId;
         $this->id           = $id;
@@ -65,6 +71,7 @@ class SimpleMessage implements IMessage
         $this->localeString = $localeString;
         $this->notes        = $description;
         $this->state        = strlen($state) ? $state : ($this->localeString ? Message::STATE_TRANSLATED : Message::STATE_NEEDS_TRANSLATION);
+        $this->fallback     = !!$fallback;
 
     }
 
@@ -196,6 +203,14 @@ class SimpleMessage implements IMessage
     public function getSources()
     {
         return [];
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFallback()
+    {
+        return $this->fallback;
     }
 
 

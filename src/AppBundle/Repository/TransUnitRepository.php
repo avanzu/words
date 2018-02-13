@@ -171,10 +171,11 @@ class TransUnitRepository extends ResourceRepository
                     .'trans_unit.key,'
                     .'trans_unit.key,'
                     .'trans_unit.sourceString,'
-                    .'project_values.content,'
+                    .'coalesce(project_values.content, translations.content),'
                     .'trans_unit.sourceString,'
                     .'trans_unit.description,'
-                    .'project_values.state)',
+                    .'project_values.state,'
+                    .'project_values.content)',
                     SimpleMessage::class
                 )
             )
